@@ -413,13 +413,16 @@ export default function Home() {
         title={selectedHero?.name || ""}
       >
         {selectedHero && (
-          <div className="flex flex-col items-center">
-            <div className="relative w-64 h-64 mb-8">
+          <div className="flex flex-col items-center p-6 select-none">
+            <div className="relative w-64 h-64 mb-8 flex-shrink-0">
               <Image
                 src={selectedHero.image}
                 alt={selectedHero.name}
                 fill
                 className="object-contain"
+                style={{ imageRendering: "pixelated" }}
+                priority
+                draggable={false}
               />
               {selectedHero.level && (
                 <div
