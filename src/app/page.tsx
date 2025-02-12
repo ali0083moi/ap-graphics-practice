@@ -8,6 +8,7 @@ import Image from "next/image";
 import HeroCard from "@/components/HeroCard";
 import GameModal from "@/components/GameModal";
 import GameBackground from "@/components/GameBackground";
+import MiniGame from "@/components/MiniGame";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -403,6 +404,19 @@ export default function Home() {
               </button>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* Mini Game Section */}
+      <section className="section relative py-32 px-4">
+        <div className="max-w-7xl mx-auto">
+          <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
+            Try The Game
+          </motion.h2>
+          <motion.p className="text-xl text-center text-gray-400 mb-12 font-space-grotesk">
+            Click and drag to shoot at the enemies!
+          </motion.p>
+          <MiniGame />
         </div>
       </section>
 
