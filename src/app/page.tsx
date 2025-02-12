@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
@@ -71,7 +71,6 @@ const fadeIn = {
 };
 
 export default function Home() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedHero, setSelectedHero] = useState<(typeof heroes)[0] | null>(
     null
@@ -86,18 +85,6 @@ export default function Home() {
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
   const y = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      const x = (clientX / window.innerWidth - 0.5) * 20;
-      const y = (clientY / window.innerHeight - 0.5) * 20;
-      setMousePosition({ x, y });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   useEffect(() => {
     const sections = gsap.utils.toArray(".section");
@@ -139,6 +126,18 @@ export default function Home() {
         observer.unobserve(gameRef.current);
       }
     };
+  }, []);
+
+  // Create fixed positions for particles
+  const particles = useMemo(() => {
+    return Array.from({ length: 20 }).map(() => ({
+      id: Math.random(),
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      moveX: Math.random() * 100,
+      moveY: Math.random() * 100,
+      duration: 3 + Math.random() * 2,
+    }));
   }, []);
 
   return (
@@ -447,6 +446,100 @@ export default function Home() {
           <MiniGame isSectionVisible={isGameVisible} />
         </div>
       </section>
+
+      {/* Footer Section */}
+      <footer className="relative py-16 px-4 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#18101e] to-transparent opacity-50" />
+
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          {particles.map((particle) => (
+            <motion.div
+              key={particle.id}
+              className="absolute w-1 h-1 bg-[#f85c70] rounded-full"
+              style={{
+                left: `${particle.x}%`,
+                top: `${particle.y}%`,
+              }}
+              animate={{
+                x: [0, (particle.moveX % 30) - 15, 0],
+                y: [0, (particle.moveY % 30) - 15, 0],
+                opacity: [0.2, 1, 0.2],
+                scale: [1, 1.5, 1],
+              }}
+              transition={{
+                duration: particle.duration,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="max-w-7xl mx-auto relative">
+          <div className="text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="mb-6"
+            >
+              <Image
+                src="/images/20-minutes-till-dawn-logo.png"
+                alt="20 Minutes Till Dawn"
+                width={200}
+                height={71}
+                className="mx-auto opacity-50 hover:opacity-100 transition-opacity"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="flex flex-col items-center gap-4"
+            >
+              <p className="text-gray-400 font-space-grotesk">
+                Developed by{" "}
+                <a
+                  href="https://github.com/ali0083moi/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#f85c70] hover:text-[#ff99a6] transition-colors font-semibold relative group"
+                >
+                  Ali Moghadasi
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#f85c70] group-hover:w-full transition-all duration-300" />
+                </a>
+              </p>
+
+              <div className="flex items-center gap-4">
+                <motion.a
+                  href="https://github.com/ali0083moi/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-[#f85c70] transition-colors"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z"
+                    />
+                  </svg>
+                </motion.a>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </footer>
 
       {/* Hero Modal */}
       <GameModal
