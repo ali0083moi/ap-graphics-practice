@@ -143,3 +143,36 @@ html.lenis {
 .animate-flicker-slow {
   animation: flicker-slow 6s infinite;
 }
+
+/* Pixel Art Button Styles */
+.pixel-button {
+  @apply relative flex items-center justify-center p-2 bg-[#2b2436] border-2 border-[#1a1621];
+  image-rendering: pixelated;
+}
+
+.pixel-button.enhanced {
+  @apply border-[#f85c70];
+}
+
+.pixel-button::before {
+  content: "";
+  @apply absolute inset-0 bg-gradient-to-b from-[#3b3346] to-[#2b2436];
+  opacity: 0.5;
+}
+
+.pixel-button:hover::before {
+  opacity: 0.7;
+}
+
+.pixel-button-content {
+  @apply relative z-10 flex items-center gap-2;
+}
+
+.pixel-button-count {
+  @apply absolute -top-2 -right-2 px-2 py-0.5 text-xs bg-[#2b2436] border border-[#f85c70] rounded-sm;
+}
+
+.pixel-button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+  filter: grayscale(100%);
+}

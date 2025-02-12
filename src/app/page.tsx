@@ -159,17 +159,13 @@ export default function Home() {
                 const element = document.getElementById("project-overview");
                 element?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="px-8 py-3 bg-red-500 hover:bg-red-600 text-white
-                       rounded-lg font-space-grotesk text-lg
-                       transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,0,0,0.4)]
-                       hover-glow relative overflow-hidden group"
+              className="pixel-button enhanced"
             >
-              <span className="relative z-10">Learn More</span>
-              <div
-                className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-500
-                           transform scale-x-0 group-hover:scale-x-100
-                           transition-transform origin-left"
-              />
+              <div className="pixel-button-content">
+                <span className="text-white font-space-grotesk">
+                  Learn More
+                </span>
+              </div>
             </button>
 
             <button
@@ -177,12 +173,13 @@ export default function Home() {
                 const element = document.getElementById("heroes");
                 element?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="px-8 py-3 bg-gray-800 hover:bg-gray-700 text-white
-                       rounded-lg font-space-grotesk text-lg
-                       transition-all duration-300
-                       border border-red-500/30 hover:border-red-500/50"
+              className="pixel-button"
             >
-              View Heroes
+              <div className="pixel-button-content">
+                <span className="text-white font-space-grotesk">
+                  View Heroes
+                </span>
+              </div>
             </button>
           </motion.div>
         </motion.div>
@@ -310,26 +307,25 @@ export default function Home() {
               <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
                 Download all game sprites and animation assets.
               </p>
-              <button
-                className="relative z-10 w-full px-6 py-3 bg-red-500 hover:bg-red-600
-                              text-white rounded-lg font-space-grotesk
-                              transition-all duration-300 hover-glow
-                              flex items-center justify-center gap-2"
-              >
-                <span>Download</span>
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                  />
-                </svg>
+              <button className="pixel-button enhanced">
+                <div className="pixel-button-content">
+                  <span className="text-white font-space-grotesk">
+                    Download
+                  </span>
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                    />
+                  </svg>
+                </div>
               </button>
             </motion.div>
 
@@ -348,26 +344,25 @@ export default function Home() {
               <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
                 Get all sound effects and music files.
               </p>
-              <button
-                className="relative z-10 w-full px-6 py-3 bg-red-500 hover:bg-red-600
-                              text-white rounded-lg font-space-grotesk
-                              transition-all duration-300 hover-glow
-                              flex items-center justify-center gap-2"
-              >
-                <span>Download</span>
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                  />
-                </svg>
+              <button className="pixel-button enhanced">
+                <div className="pixel-button-content">
+                  <span className="text-white font-space-grotesk">
+                    Download
+                  </span>
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                    />
+                  </svg>
+                </div>
               </button>
             </motion.div>
 
@@ -386,26 +381,25 @@ export default function Home() {
               <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
                 Start with our base project template.
               </p>
-              <button
-                className="relative z-10 w-full px-6 py-3 bg-red-500 hover:bg-red-600
-                              text-white rounded-lg font-space-grotesk
-                              transition-all duration-300 hover-glow
-                              flex items-center justify-center gap-2"
-              >
-                <span>Download</span>
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                  />
-                </svg>
+              <button className="pixel-button enhanced">
+                <div className="pixel-button-content">
+                  <span className="text-white font-space-grotesk">
+                    Download
+                  </span>
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                    />
+                  </svg>
+                </div>
               </button>
             </motion.div>
           </div>

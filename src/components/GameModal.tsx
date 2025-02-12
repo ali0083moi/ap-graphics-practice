@@ -92,20 +92,19 @@ const GameModal = ({ isOpen, onClose, title, children }: GameModalProps) => {
                 {/* Modal Footer */}
                 <div className="px-8 py-5 border-t border-red-500/30 bg-black/50">
                   <div className="flex justify-end gap-4">
-                    <button
-                      onClick={onClose}
-                      className="px-6 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-300
-                               rounded-lg font-space-grotesk transition-colors"
-                    >
-                      Cancel
+                    <button onClick={onClose} className="pixel-button">
+                      <div className="pixel-button-content">
+                        <span className="text-white font-space-grotesk">
+                          Cancel
+                        </span>
+                      </div>
                     </button>
-                    <button
-                      onClick={onClose}
-                      className="px-6 py-2.5 bg-red-500 hover:bg-red-600 text-white
-                               rounded-lg font-space-grotesk transition-all duration-300
-                               hover:shadow-[0_0_15px_rgba(255,0,0,0.3)] hover-glow"
-                    >
-                      Confirm
+                    <button onClick={onClose} className="pixel-button enhanced">
+                      <div className="pixel-button-content">
+                        <span className="text-white font-space-grotesk">
+                          Confirm
+                        </span>
+                      </div>
                     </button>
                   </div>
                 </div>
