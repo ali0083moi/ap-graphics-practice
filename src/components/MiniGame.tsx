@@ -38,10 +38,23 @@ const MiniGame = ({ isSectionVisible = true }: MiniGameProps) => {
   const [isCursorInGame, setIsCursorInGame] = useState(false);
   const [countdown, setCountdown] = useState<number | null>(null);
   const [showTutorial, setShowTutorial] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const gameRef = useRef<HTMLDivElement>(null);
   const enemySpawnInterval = useRef<NodeJS.Timeout>();
   const bulletSpeed = 1200;
   const enemySpeed = 1; // Reduced enemy speed
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   // Handle countdown
   useEffect(() => {
@@ -326,6 +339,41 @@ const MiniGame = ({ isSectionVisible = true }: MiniGameProps) => {
   const resumeGame = () => {
     setCountdown(3);
   };
+
+  if (isMobile) {
+    return (
+      <div className="relative w-full h-[300px] bg-[#18101e]/50 backdrop-blur-sm rounded-lg overflow-hidden border-2 border-[#f85c70]/20 flex items-center justify-center">
+        <div className="text-center px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-4"
+          >
+            <svg
+              className="w-16 h-16 mx-auto text-[#f85c70] mb-4"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M17,1H7A2,2 0 0,0 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3A2,2 0 0,0 17,1M17,19H7V5H17V19M16,13H8V11H16V13M16,17H8V15H16V17M16,9H8V7H16V9Z" />
+            </svg>
+            <h3 className="text-xl font-orbitron text-[#f85c70] mb-2">
+              Desktop Experience Required
+            </h3>
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-gray-300 font-space-grotesk"
+          >
+            Please open this website on a desktop computer to enjoy the full
+            game experience with mouse controls.
+          </motion.p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
