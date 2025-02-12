@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer Glow Filter -->
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+      <feColorMatrix in="blur" type="matrix" values="
+        0 0 0 0 0.992
+        0 0 0 0 0.318
+        0 0 0 0 0.380
+        0 0 0 1 0
+      " result="glow" />
+      <feMerge>
+        <feMergeNode in="glow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Main Text -->
+  <text x="50%" y="50%" 
+    font-family="Orbitron, sans-serif" 
+    font-size="100" 
+    font-weight="900"
+    fill="#fd5161"
+    text-anchor="middle"
+    dominant-baseline="central"
+    filter="url(#glow)"
+    style="text-transform: uppercase;">
+    20
+  </text>
+
+  <!-- Decorative Lines -->
+  <path d="M40 80 L160 80" 
+    stroke="#fd5161" 
+    stroke-width="2" 
+    stroke-opacity="0.3"
+    stroke-dasharray="4 2" />
+  
+  <path d="M40 40 L160 40" 
+    stroke="#fd5161" 
+    stroke-width="2" 
+    stroke-opacity="0.3"
+    stroke-dasharray="4 2" />
+</svg> 
