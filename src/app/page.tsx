@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import HeroCard from "@/components/HeroCard";
 import GameModal from "@/components/GameModal";
+import GameBackground from "@/components/GameBackground";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -17,18 +18,24 @@ const heroes = [
     name: "Scarlett",
     description:
       "A skilled marksman with enhanced reflexes and precision shooting abilities.",
+    stats: { health: 100, speed: 85, damage: 90 },
+    level: 3,
   },
   {
     id: 2,
     image: "/images/hero2.png",
     name: "Shadow",
     description: "Master of stealth with the power to manipulate darkness.",
+    stats: { health: 80, speed: 95, damage: 85 },
+    level: 2,
   },
   {
     id: 3,
     image: "/images/hero3.png",
     name: "Nova",
     description: "Wielder of cosmic energy and devastating area attacks.",
+    stats: { health: 90, speed: 80, damage: 95 },
+    level: 4,
   },
   {
     id: 4,
@@ -36,6 +43,7 @@ const heroes = [
     name: "Frost",
     description: "Controls ice and creates defensive barriers.",
     unlocked: false,
+    stats: { health: 120, speed: 70, damage: 75 },
   },
   {
     id: 5,
@@ -43,12 +51,15 @@ const heroes = [
     name: "Phoenix",
     description: "Harnesses fire and regenerative abilities.",
     unlocked: false,
+    stats: { health: 95, speed: 85, damage: 85 },
   },
   {
     id: 6,
     image: "/images/hero6.png",
     name: "Volt",
     description: "Lightning-fast attacks and electromagnetic powers.",
+    stats: { health: 85, speed: 100, damage: 80 },
+    level: 1,
   },
 ];
 
@@ -69,8 +80,9 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
 
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
+  const y = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -101,32 +113,32 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-black text-white min-h-screen">
-      {/* Hero Section */}
-      <div
-        ref={heroRef}
-        className="relative h-screen flex items-center justify-center overflow-hidden"
-      >
-        <motion.div className="absolute inset-0 z-0" style={{ y: backgroundY }}>
-          <div className="absolute inset-0 bg-[url('/images/T_Shoggoth.png')] bg-repeat opacity-10 animate-pulse-slow" />
-          <div className="absolute inset-0 bg-gradient-to-br from-red-900/30 to-purple-900/30" />
-        </motion.div>
+    <main className="relative min-h-screen">
+      <GameBackground />
 
-        <div className="relative z-10 text-center max-w-4xl px-4">
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center px-4">
+        <motion.div
+          className="relative z-10 text-center"
+          style={{ opacity, scale, y }}
+        >
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, type: "spring" }}
-            className="mb-8"
+            className="mb-8 relative"
           >
             <Image
               src="/images/20-minutes-till-dawn-logo.png"
               alt="20 Minutes Till Dawn"
-              width={600}
-              height={200}
+              width={700}
+              height={250}
               className="mx-auto"
+              priority
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/50" />
           </motion.div>
+
           <motion.p
             className="text-xl md:text-2xl font-space-grotesk mb-8 text-gray-300"
             initial={{ opacity: 0, y: 20 }}
@@ -135,7 +147,9 @@ export default function Home() {
           >
             Advanced Programming Course Project
           </motion.p>
+
           <motion.div
+            className="flex flex-col sm:flex-row gap-4 justify-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -145,104 +159,112 @@ export default function Home() {
                 const element = document.getElementById("project-overview");
                 element?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-full
-                       font-space-grotesk text-lg transition-all duration-300
-                       hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] hover-glow"
+              className="px-8 py-3 bg-red-500 hover:bg-red-600 text-white
+                       rounded-lg font-space-grotesk text-lg
+                       transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,0,0,0.4)]
+                       hover-glow relative overflow-hidden group"
             >
-              Learn More
+              <span className="relative z-10">Learn More</span>
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-500
+                           transform scale-x-0 group-hover:scale-x-100
+                           transition-transform origin-left"
+              />
+            </button>
+
+            <button
+              onClick={() => {
+                const element = document.getElementById("heroes");
+                element?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="px-8 py-3 bg-gray-800 hover:bg-gray-700 text-white
+                       rounded-lg font-space-grotesk text-lg
+                       transition-all duration-300
+                       border border-red-500/30 hover:border-red-500/50"
+            >
+              View Heroes
             </button>
           </motion.div>
-        </div>
+        </motion.div>
 
-        {/* Floating Elements */}
+        {/* Scroll Indicator */}
         <motion.div
-          className="absolute left-10 top-1/4 opacity-30"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
           animate={{
-            y: [0, -20, 0],
-            rotate: [0, 10, 0],
+            y: [0, 10, 0],
           }}
           transition={{
-            duration: 8,
+            duration: 2,
             repeat: Infinity,
-            ease: "linear",
+            ease: "easeInOut",
           }}
         >
-          <Image
-            src="/images/enemy1.png"
-            alt="Enemy"
-            width={100}
-            height={100}
-          />
+          <div className="w-6 h-10 rounded-full border-2 border-red-500/50 flex justify-center p-2">
+            <motion.div
+              className="w-1 h-1 bg-red-500 rounded-full"
+              animate={{
+                y: [0, 16, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </div>
         </motion.div>
-        <motion.div
-          className="absolute right-10 bottom-1/4 opacity-30"
-          animate={{
-            y: [0, 20, 0],
-            rotate: [0, -10, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-        >
-          <Image
-            src="/images/T_FireballExplosion.png"
-            alt="Effect"
-            width={150}
-            height={150}
-          />
-        </motion.div>
-      </div>
+      </section>
 
       {/* Project Overview Section */}
-      <section
-        id="project-overview"
-        className="section py-20 px-4 md:px-8 max-w-6xl mx-auto"
-      >
-        <motion.h2 className="text-4xl font-orbitron font-bold mb-12 text-center text-glow">
-          Project Overview
-        </motion.h2>
-        <div className="grid md:grid-cols-2 gap-12">
-          <motion.div
-            className="glass p-8 rounded-lg"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          >
-            <h3 className="text-2xl font-orbitron mb-4 text-red-400 text-glow">
-              Game Description
-            </h3>
-            <p className="font-space-grotesk text-gray-300">
-              20 Minutes Till Dawn is a roguelite survival game where you must
-              survive waves of cosmic horrors for 20 minutes. Your task is to
-              recreate this game using Java and its graphics libraries.
-            </p>
-          </motion.div>
-          <motion.div
-            className="glass p-8 rounded-lg"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          >
-            <h3 className="text-2xl font-orbitron mb-4 text-red-400 text-glow">
-              Technical Requirements
-            </h3>
-            <ul className="font-space-grotesk text-gray-300 list-disc list-inside space-y-2">
-              <li>Java Graphics Implementation</li>
-              <li>Object-Oriented Design</li>
-              <li>Game State Management</li>
-              <li>Event Handling System</li>
-            </ul>
-          </motion.div>
+      <section id="project-overview" className="section relative py-32 px-4">
+        <div className="max-w-6xl mx-auto">
+          <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
+            Project Overview
+          </motion.h2>
+          <div className="grid md:grid-cols-2 gap-12">
+            <motion.div
+              className="glass p-8 rounded-lg relative overflow-hidden group"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <h3 className="text-2xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
+                Game Description
+              </h3>
+              <p className="font-space-grotesk text-gray-300 relative z-10">
+                20 Minutes Till Dawn is a roguelite survival game where you must
+                survive waves of cosmic horrors for 20 minutes. Your task is to
+                recreate this game using Java and its graphics libraries.
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="glass p-8 rounded-lg relative overflow-hidden group"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <h3 className="text-2xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
+                Technical Requirements
+              </h3>
+              <ul className="font-space-grotesk text-gray-300 list-disc list-inside space-y-2 relative z-10">
+                <li>Java Graphics Implementation</li>
+                <li>Object-Oriented Design</li>
+                <li>Game State Management</li>
+                <li>Event Handling System</li>
+              </ul>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Heroes Section */}
-      <section className="section py-20 px-4 md:px-8 bg-gray-900/30">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2 className="text-4xl font-orbitron font-bold mb-12 text-center text-glow">
+      <section id="heroes" className="section relative py-32 px-4">
+        <div className="max-w-7xl mx-auto">
+          <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
             Available Heroes
           </motion.h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {heroes.map((hero) => (
               <div
                 key={hero.id}
@@ -256,6 +278,8 @@ export default function Home() {
                   name={hero.name}
                   description={hero.description}
                   unlocked={hero.unlocked !== false}
+                  level={hero.level}
+                  stats={hero.stats}
                 />
               </div>
             ))}
@@ -264,56 +288,124 @@ export default function Home() {
       </section>
 
       {/* Download Section */}
-      <section className="section py-20 px-4 md:px-8 relative overflow-hidden">
+      <section className="section relative py-32 px-4">
         <div className="absolute inset-0 bg-[url('/images/T_EyeBlink.png')] bg-repeat opacity-5" />
         <div className="max-w-6xl mx-auto relative z-10">
-          <motion.h2 className="text-4xl font-orbitron font-bold mb-12 text-center text-glow">
+          <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
             Download Assets
           </motion.h2>
           <div className="grid md:grid-cols-3 gap-8">
             <motion.div
-              className="glass p-8 rounded-lg hover:border-red-500/50 transition-colors"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
+              className="glass p-8 rounded-lg hover:border-red-500/50 transition-all duration-300
+                       relative overflow-hidden group"
+              whileHover={{ scale: 1.02 }}
             >
-              <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow">
+              <div
+                className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10
+                           opacity-0 group-hover:opacity-100 transition-opacity"
+              />
+              <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
                 Sprites & Animations
               </h3>
-              <p className="text-gray-300 mb-4 font-space-grotesk">
+              <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
                 Download all game sprites and animation assets.
               </p>
-              <button className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full font-space-grotesk transition-colors hover-glow">
-                Download
+              <button
+                className="relative z-10 w-full px-6 py-3 bg-red-500 hover:bg-red-600
+                              text-white rounded-lg font-space-grotesk
+                              transition-all duration-300 hover-glow
+                              flex items-center justify-center gap-2"
+              >
+                <span>Download</span>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
               </button>
             </motion.div>
+
             <motion.div
-              className="glass p-8 rounded-lg hover:border-red-500/50 transition-colors"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
+              className="glass p-8 rounded-lg hover:border-red-500/50 transition-all duration-300
+                       relative overflow-hidden group"
+              whileHover={{ scale: 1.02 }}
             >
-              <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow">
+              <div
+                className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10
+                           opacity-0 group-hover:opacity-100 transition-opacity"
+              />
+              <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
                 Sound Effects
               </h3>
-              <p className="text-gray-300 mb-4 font-space-grotesk">
+              <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
                 Get all sound effects and music files.
               </p>
-              <button className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full font-space-grotesk transition-colors hover-glow">
-                Download
+              <button
+                className="relative z-10 w-full px-6 py-3 bg-red-500 hover:bg-red-600
+                              text-white rounded-lg font-space-grotesk
+                              transition-all duration-300 hover-glow
+                              flex items-center justify-center gap-2"
+              >
+                <span>Download</span>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
               </button>
             </motion.div>
+
             <motion.div
-              className="glass p-8 rounded-lg hover:border-red-500/50 transition-colors"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.3 }}
+              className="glass p-8 rounded-lg hover:border-red-500/50 transition-all duration-300
+                       relative overflow-hidden group"
+              whileHover={{ scale: 1.02 }}
             >
-              <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow">
+              <div
+                className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10
+                           opacity-0 group-hover:opacity-100 transition-opacity"
+              />
+              <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
                 Project Template
               </h3>
-              <p className="text-gray-300 mb-4 font-space-grotesk">
+              <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
                 Start with our base project template.
               </p>
-              <button className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-full font-space-grotesk transition-colors hover-glow">
-                Download
+              <button
+                className="relative z-10 w-full px-6 py-3 bg-red-500 hover:bg-red-600
+                              text-white rounded-lg font-space-grotesk
+                              transition-all duration-300 hover-glow
+                              flex items-center justify-center gap-2"
+              >
+                <span>Download</span>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
               </button>
             </motion.div>
           </div>
@@ -328,29 +420,71 @@ export default function Home() {
       >
         {selectedHero && (
           <div className="flex flex-col items-center">
-            <div className="relative w-48 h-48 mb-6">
+            <div className="relative w-64 h-64 mb-8">
               <Image
                 src={selectedHero.image}
                 alt={selectedHero.name}
                 fill
                 className="object-contain"
               />
+              {selectedHero.level && (
+                <div
+                  className="absolute top-4 right-4 bg-red-500/90 text-white px-3 py-1
+                            rounded-full font-orbitron text-sm shadow-lg backdrop-blur-sm"
+                >
+                  Level {selectedHero.level}
+                </div>
+              )}
             </div>
-            <p className="text-gray-300 font-space-grotesk text-center mb-6">
+
+            <p className="text-gray-300 font-space-grotesk text-center mb-8 max-w-lg">
               {selectedHero.description}
             </p>
-            <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
-              <div className="text-center p-4 glass rounded-lg">
-                <span className="block text-red-400 font-orbitron mb-2">
-                  Health
-                </span>
-                <span className="text-2xl font-space-grotesk">100</span>
+
+            <div className="w-full max-w-md space-y-4">
+              <div className="space-y-1">
+                <div className="flex justify-between text-sm font-space-grotesk text-gray-400">
+                  <span>Health</span>
+                  <span>{selectedHero.stats.health}%</span>
+                </div>
+                <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-green-500"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${selectedHero.stats.health}%` }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                  />
+                </div>
               </div>
-              <div className="text-center p-4 glass rounded-lg">
-                <span className="block text-red-400 font-orbitron mb-2">
-                  Speed
-                </span>
-                <span className="text-2xl font-space-grotesk">85</span>
+
+              <div className="space-y-1">
+                <div className="flex justify-between text-sm font-space-grotesk text-gray-400">
+                  <span>Speed</span>
+                  <span>{selectedHero.stats.speed}%</span>
+                </div>
+                <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-blue-500"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${selectedHero.stats.speed}%` }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex justify-between text-sm font-space-grotesk text-gray-400">
+                  <span>Damage</span>
+                  <span>{selectedHero.stats.damage}%</span>
+                </div>
+                <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-red-500"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${selectedHero.stats.damage}%` }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                  />
+                </div>
               </div>
             </div>
           </div>

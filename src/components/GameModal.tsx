@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
+import Image from "next/image";
 
 interface GameModalProps {
   isOpen: boolean;
@@ -23,50 +24,90 @@ const GameModal = ({ isOpen, onClose, title, children }: GameModalProps) => {
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50"
             onClick={onClose}
           />
+
+          {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: "spring", damping: 20, stiffness: 300 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50
-                     w-full max-w-2xl"
+                     w-full max-w-3xl"
           >
             <div className="relative mx-4">
-              {/* Modal Border Glow Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-purple-500/20 to-red-500/20 blur-lg" />
+              {/* Modal Border Effects */}
+              <div className="absolute -inset-1">
+                <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-purple-500/20 to-red-500/20 blur-lg opacity-75" />
+                <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-purple-500/20 to-red-500/20 blur-lg opacity-50 animate-pulse" />
+              </div>
 
               {/* Modal Content */}
-              <div
-                className="relative bg-gray-900/90 backdrop-blur-md border border-red-500/30
-                          rounded-lg overflow-hidden"
-              >
+              <div className="relative bg-black/95 backdrop-blur-xl border border-red-500/30 rounded-lg overflow-hidden">
                 {/* Modal Header */}
-                <div className="px-6 py-4 border-b border-red-500/30 bg-black/50">
-                  <h2 className="text-2xl font-orbitron text-red-400 text-glow">
-                    {title}
-                  </h2>
+                <div className="px-8 py-5 border-b border-red-500/30 bg-black/50">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-2xl font-orbitron text-red-400 text-glow tracking-wider">
+                      {title}
+                    </h2>
+                    <button
+                      onClick={onClose}
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
+                      <svg
+                        className="w-6 h-6"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
 
                 {/* Modal Body */}
-                <div className="p-6">{children}</div>
+                <div className="p-8">
+                  <div className="relative">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,0,0,0.1)_1px,transparent_1px)] bg-[length:20px_20px] opacity-20" />
+
+                    {/* Content */}
+                    <div className="relative">{children}</div>
+                  </div>
+                </div>
 
                 {/* Modal Footer */}
-                <div className="px-6 py-4 border-t border-red-500/30 bg-black/50 flex justify-end">
-                  <button
-                    onClick={onClose}
-                    className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white
-                             rounded-full font-space-grotesk transition-colors
-                             hover-glow"
-                  >
-                    Close
-                  </button>
+                <div className="px-8 py-5 border-t border-red-500/30 bg-black/50">
+                  <div className="flex justify-end gap-4">
+                    <button
+                      onClick={onClose}
+                      className="px-6 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-300
+                               rounded-lg font-space-grotesk transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={onClose}
+                      className="px-6 py-2.5 bg-red-500 hover:bg-red-600 text-white
+                               rounded-lg font-space-grotesk transition-all duration-300
+                               hover:shadow-[0_0_15px_rgba(255,0,0,0.3)] hover-glow"
+                    >
+                      Confirm
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

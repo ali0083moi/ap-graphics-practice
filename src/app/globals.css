@@ -115,3 +115,31 @@ html.lenis {
     0 0 30px rgba(255, 0, 0, 0.1);
   transform: translateY(-2px);
 }
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes flicker-slow {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.05;
+  }
+}
+
+.animate-flicker {
+  animation: flicker 4s infinite;
+}
+
+.animate-flicker-slow {
+  animation: flicker-slow 6s infinite;
+}
