@@ -76,9 +76,11 @@ export default function Home() {
   const [selectedHero, setSelectedHero] = useState<(typeof heroes)[0] | null>(
     null
   );
+  const [isGameVisible, setIsGameVisible] = useState(false);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const gameRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
 
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
@@ -111,6 +113,32 @@ export default function Home() {
         },
       });
     });
+  }, []);
+
+  // Add intersection observer for game section
+  useEffect(() => {
+    if (!gameRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsGameVisible(entry.isIntersecting);
+        });
+      },
+      {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.5,
+      }
+    );
+
+    observer.observe(gameRef.current);
+
+    return () => {
+      if (gameRef.current) {
+        observer.unobserve(gameRef.current);
+      }
+    };
   }, []);
 
   return (
@@ -408,7 +436,7 @@ export default function Home() {
       </section>
 
       {/* Mini Game Section */}
-      <section className="section relative py-32 px-4">
+      <section ref={gameRef} className="section relative py-32 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
             Try The Game
@@ -416,7 +444,7 @@ export default function Home() {
           <motion.p className="text-xl text-center text-gray-400 mb-12 font-space-grotesk">
             Click and drag to shoot at the enemies!
           </motion.p>
-          <MiniGame />
+          <MiniGame isSectionVisible={isGameVisible} />
         </div>
       </section>
 

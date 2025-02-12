@@ -21,18 +21,90 @@ interface Bullet {
   timestamp: number;
 }
 
-const MiniGame = () => {
+interface MiniGameProps {
+  isSectionVisible?: boolean;
+}
+
+const MiniGame = ({ isSectionVisible = true }: MiniGameProps) => {
   const [enemies, setEnemies] = useState<Enemy[]>([]);
   const [bullets, setBullets] = useState<Bullet[]>([]);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [playerHealth, setPlayerHealth] = useState(5);
+  const [playerHealth, setPlayerHealth] = useState(6);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [isGamePaused, setIsGamePaused] = useState(false);
+  const [isCursorInGame, setIsCursorInGame] = useState(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const [showTutorial, setShowTutorial] = useState(true);
   const gameRef = useRef<HTMLDivElement>(null);
   const enemySpawnInterval = useRef<NodeJS.Timeout>();
   const bulletSpeed = 1200;
   const enemySpeed = 1; // Reduced enemy speed
+
+  // Handle countdown
+  useEffect(() => {
+    if (countdown === null) return;
+    if (countdown === 0) {
+      setCountdown(null);
+      setIsGamePaused(false);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setCountdown(countdown - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
+  // Update game pause state when section visibility changes
+  useEffect(() => {
+    if (isGameStarted && !isGameOver) {
+      setIsGamePaused(!isSectionVisible);
+    }
+  }, [isSectionVisible, isGameStarted, isGameOver]);
+
+  // Add cursor position check
+  useEffect(() => {
+    const handleMouseEnter = () => setIsCursorInGame(true);
+    const handleMouseLeave = () => {
+      setIsCursorInGame(false);
+      if (isGameStarted && !isGameOver) {
+        setIsGamePaused(true);
+      }
+    };
+
+    const gameElement = gameRef.current;
+    if (gameElement) {
+      gameElement.addEventListener("mouseenter", handleMouseEnter);
+      gameElement.addEventListener("mouseleave", handleMouseLeave);
+    }
+
+    return () => {
+      if (gameElement) {
+        gameElement.removeEventListener("mouseenter", handleMouseEnter);
+        gameElement.removeEventListener("mouseleave", handleMouseLeave);
+      }
+    };
+  }, [isGameStarted, isGameOver]);
+
+  // Add scroll detection
+  useEffect(() => {
+    const checkIfGameVisible = () => {
+      if (!gameRef.current || !isGameStarted) return;
+
+      const rect = gameRef.current.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+      setIsGamePaused(!isVisible);
+    };
+
+    window.addEventListener("scroll", checkIfGameVisible);
+    checkIfGameVisible(); // Initial check
+
+    return () => window.removeEventListener("scroll", checkIfGameVisible);
+  }, [isGameStarted]);
 
   // Handle mouse movement
   useEffect(() => {
@@ -100,7 +172,7 @@ const MiniGame = () => {
 
   // Spawn enemies
   useEffect(() => {
-    if (isGameOver) return;
+    if (isGameOver || !isGameStarted || isGamePaused || !isCursorInGame) return;
 
     const spawnEnemy = () => {
       const side = Math.floor(Math.random() * 4);
@@ -148,11 +220,11 @@ const MiniGame = () => {
         clearInterval(enemySpawnInterval.current);
       }
     };
-  }, [isGameOver]);
+  }, [isGameOver, isGameStarted, isGamePaused, isCursorInGame]);
 
   // Game loop with smoother enemy movement and health check
   useEffect(() => {
-    if (isGameOver) return;
+    if (isGameOver || !isGameStarted || isGamePaused || !isCursorInGame) return;
     let animationFrame: number;
 
     const gameLoop = () => {
@@ -227,29 +299,149 @@ const MiniGame = () => {
 
     animationFrame = requestAnimationFrame(gameLoop);
     return () => cancelAnimationFrame(animationFrame);
-  }, [mousePosition, isGameOver]);
+  }, [mousePosition, isGameOver, isGameStarted, isGamePaused, isCursorInGame]);
+
+  const startGame = () => {
+    setIsGameStarted(true);
+    setPlayerHealth(6);
+    setEnemies([]);
+    setBullets([]);
+    setIsGameOver(false);
+    setIsGamePaused(false);
+    setIsCursorInGame(true);
+    setShowTutorial(false);
+  };
+
+  const resetGame = () => {
+    setIsGameStarted(false);
+    setPlayerHealth(6);
+    setEnemies([]);
+    setBullets([]);
+    setIsGameOver(false);
+    setIsGamePaused(false);
+    setIsCursorInGame(false);
+    setShowTutorial(true);
+  };
+
+  const resumeGame = () => {
+    setCountdown(3);
+  };
 
   return (
     <div
       ref={gameRef}
       className="relative w-full h-[600px] bg-[#18101e]/50 backdrop-blur-sm rounded-lg overflow-hidden border-2 border-[#f85c70]/20"
     >
-      {/* Health Bar */}
-      <div className="absolute top-4 left-4 z-20 bg-[#2b2436]/80 p-2 rounded-lg backdrop-blur-sm">
-        <div className="flex items-center gap-2">
-          <div className="text-[#f85c70] font-orbitron">HP:</div>
-          <div className="flex gap-1">
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className={`w-4 h-4 rounded-sm ${
-                  i < playerHealth ? "bg-[#f85c70]" : "bg-[#2b2436]"
-                } border border-[#f85c70]/50`}
-              />
-            ))}
+      {!isGameStarted ? (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm z-30">
+          {showTutorial && (
+            <div className="mb-12 relative">
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <motion.div
+                  initial={{ opacity: 0.5 }}
+                  animate={{ opacity: 1 }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                  }}
+                >
+                  <svg
+                    className="w-8 h-8 text-[#f85c70]"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M13.64,21.97C13.14,22.21 12.54,22 12.31,21.5L10.13,16.76L7.62,18.78C7.45,18.92 7.24,19 7,19A1,1 0 0,1 6,18V3A1,1 0 0,1 7,2C7.24,2 7.47,2.09 7.64,2.23L7.65,2.22L19.14,11.86C19.57,12.22 19.62,12.85 19.27,13.27C19.12,13.45 18.91,13.57 18.7,13.61L15.54,14.23L17.74,18.96C18,19.46 17.76,20.05 17.26,20.28L13.64,21.97Z" />
+                  </svg>
+                </motion.div>
+                <motion.div className="relative h-1 w-24 overflow-hidden">
+                  <motion.div
+                    className="absolute inset-0 bg-[#f85c70]"
+                    initial={{ x: "-100%" }}
+                    animate={{ x: "100%" }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  />
+                </motion.div>
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0.5 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{
+                    duration: 0.5,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                  }}
+                >
+                  <div className="w-4 h-4 rounded-full bg-[#f85c70] shadow-[0_0_10px_rgba(248,92,112,0.5)]" />
+                </motion.div>
+              </div>
+              <motion.p
+                className="text-[#f85c70] font-space-grotesk text-lg text-center"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                Click and drag to shoot!
+              </motion.p>
+            </div>
+          )}
+          <button onClick={startGame} className="pixel-button enhanced">
+            <div className="pixel-button-content">
+              <span className="text-white font-space-grotesk">Start Game</span>
+            </div>
+          </button>
+        </div>
+      ) : isGamePaused || !isCursorInGame ? (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-30">
+          <div className="text-center">
+            {countdown !== null ? (
+              <h2 className="text-6xl font-orbitron text-[#f85c70] mb-4">
+                {countdown}
+              </h2>
+            ) : (
+              <>
+                <h2 className="text-2xl font-orbitron text-[#f85c70] mb-4">
+                  {!isCursorInGame ? "Move Cursor Back to Game" : "Game Paused"}
+                </h2>
+                {isCursorInGame && (
+                  <button
+                    onClick={resumeGame}
+                    className="pixel-button enhanced"
+                  >
+                    <div className="pixel-button-content">
+                      <span className="text-white font-space-grotesk">
+                        Resume
+                      </span>
+                    </div>
+                  </button>
+                )}
+              </>
+            )}
           </div>
         </div>
-      </div>
+      ) : null}
+
+      {/* Health Bar */}
+      {isGameStarted && !isGamePaused && (
+        <div className="absolute top-4 left-4 z-20 bg-[#2b2436]/80 p-2 rounded-lg backdrop-blur-sm">
+          <div className="flex items-center gap-2">
+            <div className="text-[#f85c70] font-orbitron">HP:</div>
+            <div className="flex gap-1">
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-4 h-4 rounded-sm ${
+                    i < playerHealth ? "bg-[#f85c70]" : "bg-[#2b2436]"
+                  } border border-[#f85c70]/50`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Game Over Message */}
       {isGameOver && (
@@ -258,84 +450,91 @@ const MiniGame = () => {
             <h2 className="text-4xl font-orbitron text-[#f85c70] mb-4">
               Game Over
             </h2>
-            <button
-              onClick={() => {
-                setPlayerHealth(5);
-                setEnemies([]);
-                setBullets([]);
-                setIsGameOver(false);
-              }}
-              className="pixel-button enhanced"
-            >
-              <div className="pixel-button-content">
-                <span className="text-white font-space-grotesk">Try Again</span>
-              </div>
-            </button>
+            <div className="flex gap-4 justify-center">
+              <button onClick={startGame} className="pixel-button enhanced">
+                <div className="pixel-button-content">
+                  <span className="text-white font-space-grotesk">
+                    Try Again
+                  </span>
+                </div>
+              </button>
+              <button onClick={resetGame} className="pixel-button enhanced">
+                <div className="pixel-button-content">
+                  <span className="text-white font-space-grotesk">
+                    Main Menu
+                  </span>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Enemies */}
-      {enemies.map((enemy) => (
-        <motion.div
-          key={enemy.id}
-          className="absolute"
-          style={{
-            left: enemy.x - 20,
-            top: enemy.y - 20,
-            rotate: `${enemy.rotation}deg`,
-          }}
-          initial={{ scale: 0, rotate: 0 }}
-          animate={{
-            scale: 1,
-            rotate: enemy.rotation,
-          }}
-          transition={{
-            type: "spring",
-            stiffness: 200,
-            damping: 20,
-          }}
-        >
-          <Image
-            src="/images/enemy1.png"
-            alt="Enemy"
-            width={40}
-            height={40}
-            className="w-[40px] h-[40px] object-contain"
-            style={{ imageRendering: "pixelated" }}
-            priority
-          />
-        </motion.div>
-      ))}
+      {isGameStarted &&
+        !isGamePaused &&
+        enemies.map((enemy) => (
+          <motion.div
+            key={enemy.id}
+            className="absolute"
+            style={{
+              left: enemy.x - 20,
+              top: enemy.y - 20,
+              rotate: `${enemy.rotation}deg`,
+            }}
+            initial={{ scale: 0, rotate: 0 }}
+            animate={{
+              scale: 1,
+              rotate: enemy.rotation,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 200,
+              damping: 20,
+            }}
+          >
+            <Image
+              src="/images/enemy1.png"
+              alt="Enemy"
+              width={40}
+              height={40}
+              className="w-[40px] h-[40px] object-contain"
+              style={{ imageRendering: "pixelated" }}
+              priority
+            />
+          </motion.div>
+        ))}
 
       {/* Bullets */}
-      {bullets.map((bullet) => (
-        <motion.div
-          key={bullet.id}
-          className="absolute w-3 h-3"
-          style={{
-            left: bullet.startX - 1.5,
-            top: bullet.startY - 1.5,
-          }}
-          animate={{
-            x: bullet.targetX - bullet.startX,
-            y: bullet.targetY - bullet.startY,
-          }}
-          transition={{
-            duration:
-              Math.sqrt(
-                Math.pow(bullet.targetX - bullet.startX, 2) +
-                  Math.pow(bullet.targetY - bullet.startY, 2)
-              ) / bulletSpeed,
-            ease: "linear",
-          }}
-        >
-          <div className="w-full h-full bg-[#f85c70] rounded-full shadow-[0_0_10px_rgba(248,92,112,0.5)] animate-pulse" />
-        </motion.div>
-      ))}
+      {isGameStarted &&
+        !isGamePaused &&
+        bullets.map((bullet) => (
+          <motion.div
+            key={bullet.id}
+            className="absolute w-3 h-3"
+            style={{
+              left: bullet.startX - 1.5,
+              top: bullet.startY - 1.5,
+            }}
+            animate={{
+              x: bullet.targetX - bullet.startX,
+              y: bullet.targetY - bullet.startY,
+            }}
+            transition={{
+              duration:
+                Math.sqrt(
+                  Math.pow(bullet.targetX - bullet.startX, 2) +
+                    Math.pow(bullet.targetY - bullet.startY, 2)
+                ) / bulletSpeed,
+              ease: "linear",
+            }}
+          >
+            <div className="w-full h-full bg-[#f85c70] rounded-full shadow-[0_0_10px_rgba(248,92,112,0.5)] animate-pulse" />
+          </motion.div>
+        ))}
 
       {/* Drag Line */}
-      {isDragging && !isGameOver && (
+      {isGameStarted && !isGamePaused && isDragging && (
         <svg
           className="absolute inset-0 pointer-events-none z-10"
           style={{ filter: "drop-shadow(0 0 10px rgba(248,92,112,0.5))" }}
