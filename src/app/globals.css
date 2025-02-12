@@ -3,51 +3,195 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  --foreground-rgb: 245, 219, 201;
+  --background-start-rgb: 24, 16, 30;
+  --background-end-rgb: 18, 12, 24;
+  --accent-color: 248, 92, 112;
+  --dark-purple: 43, 36, 54;
+  --darker-purple: 26, 22, 33;
+  --text-glow: 0 0 10px rgba(248, 92, 112, 0.5);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    @apply bg-[#18101e] text-[#f5dbc9] overflow-x-hidden cursor-none;
+    background-image: radial-gradient(
+        circle at 50% 50%,
+        rgba(248, 92, 112, 0.03) 0%,
+        transparent 100%
+      ),
+      linear-gradient(
+        180deg,
+        rgb(var(--background-start-rgb)) 0%,
+        rgb(var(--background-end-rgb)) 100%
+      );
+  }
+
+  /* Game-style scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-1;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-[#1a1621];
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[#f85c70]/30 hover:bg-[#f85c70]/50 transition-colors;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-    to bottom,
-    rgb(var(--background-start-rgb)),
-    rgb(var(--background-end-rgb))
+/* Custom Game Cursor */
+.custom-cursor {
+  @apply fixed w-8 h-8 pointer-events-none z-50 mix-blend-screen;
+  background: radial-gradient(
+    circle,
+    rgba(248, 92, 112, 0.8) 0%,
+    rgba(248, 92, 112, 0.2) 50%,
+    transparent 100%
   );
-  overflow-x: hidden;
-  cursor: none;
-  font-family: Arial, Helvetica, sans-serif;
+  transform: translate(-50%, -50%);
+  transition: width 0.1s, height 0.1s, opacity 0.1s;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
+.custom-cursor.clicking {
+  @apply w-6 h-6;
+  background: radial-gradient(
+    circle,
+    rgba(248, 92, 112, 1) 0%,
+    rgba(248, 92, 112, 0.4) 50%,
+    transparent 100%
+  );
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+/* Game UI Elements */
+.game-card {
+  @apply relative overflow-hidden bg-[#2b2436]/95 backdrop-blur-lg border-2;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  image-rendering: pixelated;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 0, 0, 0.5);
-  border-radius: 3px;
+.game-card::before {
+  content: "";
+  @apply absolute inset-0 bg-gradient-to-b from-[#f85c70]/5 to-transparent opacity-0 transition-opacity duration-500;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 0, 0, 0.7);
+.game-card:hover::before {
+  @apply opacity-100;
+}
+
+.game-title {
+  @apply font-orbitron text-[#f85c70] tracking-wider;
+  text-shadow: 0 0 10px rgba(248, 92, 112, 0.3);
+}
+
+/* Pixel Art Button Styles */
+.pixel-button {
+  @apply relative flex items-center justify-center p-2 bg-[#2b2436] border-2 border-[#1a1621];
+  image-rendering: pixelated;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.pixel-button:active {
+  transform: scale(0.95);
+}
+
+.pixel-button.enhanced {
+  @apply border-[#f85c70]/60;
+  box-shadow: 0 0 10px rgba(248, 92, 112, 0.1);
+}
+
+.pixel-button::before {
+  content: "";
+  @apply absolute inset-0 bg-gradient-to-b from-[#3b3346] to-[#2b2436];
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.pixel-button:hover::before {
+  opacity: 0.7;
+}
+
+.pixel-button-content {
+  @apply relative z-10 flex items-center gap-2 px-4 py-1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.pixel-button-count {
+  @apply absolute -top-2 -right-2 px-2 py-0.5 text-xs font-mono bg-[#2b2436] border border-[#f85c70] rounded-sm;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.pixel-button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+  filter: grayscale(100%);
+}
+
+/* Game Animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(248, 92, 112, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(248, 92, 112, 0.5);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 3s ease-in-out infinite;
+}
+
+/* Glass Effect */
+.glass {
+  @apply bg-[#2b2436]/40 backdrop-blur-md;
+  border: 1px solid rgba(248, 92, 112, 0.1);
+}
+
+/* Text Effects */
+.text-shadow-game {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(248, 92, 112, 0.3);
+}
+
+.text-glow {
+  @apply text-[#f85c70];
+  text-shadow: 0 0 10px rgba(248, 92, 112, 0.5),
+    0 0 20px rgba(248, 92, 112, 0.3);
 }
 
 /* Smooth Scroll */
-html.lenis {
-  height: auto;
+.lenis {
+  @apply h-auto;
 }
 
 .lenis.lenis-smooth {
@@ -59,120 +203,11 @@ html.lenis {
 }
 
 .lenis.lenis-stopped {
-  overflow: hidden;
+  @apply overflow-hidden;
 }
 
-/* Animations */
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-pulse-slow {
-  animation: pulse 3s infinite;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* Glass Effect */
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Text Glow */
-.text-glow {
-  text-shadow: 0 0 10px rgba(255, 0, 0, 0.5), 0 0 20px rgba(255, 0, 0, 0.3),
-    0 0 30px rgba(255, 0, 0, 0.1);
-}
-
-/* Button Hover Effect */
-.hover-glow {
-  transition: all 0.3s ease;
-}
-
-.hover-glow:hover {
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5), 0 0 20px rgba(255, 0, 0, 0.3),
-    0 0 30px rgba(255, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-@keyframes flicker {
-  0%,
-  100% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 0.1;
-  }
-}
-
-@keyframes flicker-slow {
-  0%,
-  100% {
-    opacity: 0.1;
-  }
-  50% {
-    opacity: 0.05;
-  }
-}
-
-.animate-flicker {
-  animation: flicker 4s infinite;
-}
-
-.animate-flicker-slow {
-  animation: flicker-slow 6s infinite;
-}
-
-/* Pixel Art Button Styles */
-.pixel-button {
-  @apply relative flex items-center justify-center p-2 bg-[#2b2436] border-2 border-[#1a1621];
-  image-rendering: pixelated;
-}
-
-.pixel-button.enhanced {
-  @apply border-[#f85c70];
-}
-
-.pixel-button::before {
-  content: "";
-  @apply absolute inset-0 bg-gradient-to-b from-[#3b3346] to-[#2b2436];
-  opacity: 0.5;
-}
-
-.pixel-button:hover::before {
-  opacity: 0.7;
-}
-
-.pixel-button-content {
-  @apply relative z-10 flex items-center gap-2;
-}
-
-.pixel-button-count {
-  @apply absolute -top-2 -right-2 px-2 py-0.5 text-xs bg-[#2b2436] border border-[#f85c70] rounded-sm;
-}
-
-.pixel-button:disabled {
-  @apply opacity-50 cursor-not-allowed;
-  filter: grayscale(100%);
+/* Game Grid */
+.game-grid {
+  @apply grid gap-6;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }

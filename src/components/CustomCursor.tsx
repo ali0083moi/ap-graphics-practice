@@ -4,65 +4,71 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const CustomCursor = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isClicking, setIsClicking] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    const updatePosition = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+      setIsVisible(true);
     };
 
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
+    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => setIsVisible(true);
 
-    window.addEventListener("mousemove", updateMousePosition);
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
-
-    document.body.style.cursor = "none";
+    document.addEventListener("mousemove", updatePosition);
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
-      document.body.style.cursor = "auto";
+      document.removeEventListener("mousemove", updatePosition);
+      document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseenter", handleMouseEnter);
     };
   }, []);
 
   return (
     <>
       <motion.div
-        className="fixed pointer-events-none z-50"
+        className={`custom-cursor ${isClicking ? "clicking" : ""}`}
         animate={{
-          x: mousePosition.x - 4,
-          y: mousePosition.y - 4,
+          x: position.x,
+          y: position.y,
+          opacity: isVisible ? 1 : 0,
           scale: isClicking ? 0.8 : 1,
         }}
         transition={{
           type: "spring",
-          stiffness: 500,
-          damping: 28,
-          mass: 0.5,
+          stiffness: 1000,
+          damping: 50,
+          mass: 0.1,
         }}
-      >
-        <div className="w-2 h-2 bg-red-500 rounded-full" />
-      </motion.div>
+      />
       <motion.div
-        className="fixed pointer-events-none z-50 mix-blend-difference"
+        className="fixed w-2 h-2 bg-[#f85c70] rounded-full pointer-events-none z-50"
         animate={{
-          x: mousePosition.x - 16,
-          y: mousePosition.y - 16,
-          scale: isClicking ? 1.2 : 1,
+          x: position.x,
+          y: position.y,
+          opacity: isVisible ? 1 : 0,
+          scale: isClicking ? 1.5 : 1,
         }}
         transition={{
           type: "spring",
-          stiffness: 250,
-          damping: 24,
-          mass: 0.8,
+          stiffness: 1500,
+          damping: 50,
+          mass: 0.05,
         }}
-      >
-        <div className="w-8 h-8 border border-white rounded-full opacity-50" />
-      </motion.div>
+        style={{
+          transform: "translate(-50%, -50%)",
+        }}
+      />
     </>
   );
 };

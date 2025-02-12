@@ -11,6 +11,7 @@ const config: Config = {
       fontFamily: {
         orbitron: ["var(--font-orbitron)"],
         "space-grotesk": ["var(--font-space-grotesk)"],
+        mono: ["monospace"],
       },
       colors: {
         "game-red": {
