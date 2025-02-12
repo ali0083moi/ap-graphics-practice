@@ -7,7 +7,7 @@ const GameBackground = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { scrollYProgress } = useScroll();
 
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ["-3%", "3%"]);
   const overlayOpacity = useTransform(scrollYProgress, [0, 0.5], [0.5, 0.8]);
 
   useEffect(() => {
@@ -60,24 +60,3 @@ const GameBackground = () => {
 };
 
 export default GameBackground;
-
-// Add these animations to your globals.css
-/*
-@keyframes flicker {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 0.1; }
-}
-
-@keyframes flicker-slow {
-  0%, 100% { opacity: 0.1; }
-  50% { opacity: 0.05; }
-}
-
-.animate-flicker {
-  animation: flicker 4s infinite;
-}
-
-.animate-flicker-slow {
-  animation: flicker-slow 6s infinite;
-}
-*/

@@ -136,7 +136,7 @@ export default function Home() {
               className="mx-auto"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/50" />
+            <div className="absolute inset-0" />
           </motion.div>
 
           <motion.p
@@ -289,7 +289,7 @@ export default function Home() {
 
       {/* Download Section */}
       <section className="section relative py-32 px-4">
-        <div className="absolute inset-0 bg-[url('/images/T_EyeBlink.png')] bg-repeat opacity-5" />
+        <div className="absolute inset-0" />
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
             Download Assets
