@@ -71,7 +71,7 @@ const HeroCard = ({
           >
             {name}
           </h3>
-          <p className="text-sm font-space-grotesk text-[#2e3b52] line-clamp-2 group-hover:text-[#2e3b52]/80 transition-colors duration-300">
+          <p className="text-sm font-space-grotesk text-[#f5dbc9] line-clamp-2 group-hover:text-[#f5dbc9]/80 transition-colors duration-300">
             {description}
           </p>
         </div>
