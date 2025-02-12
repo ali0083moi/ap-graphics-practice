@@ -41,29 +41,6 @@
   }
 }
 
-/* Custom Game Cursor */
-.custom-cursor {
-  @apply fixed w-8 h-8 pointer-events-none z-50 mix-blend-screen;
-  background: radial-gradient(
-    circle,
-    rgba(248, 92, 112, 0.8) 0%,
-    rgba(248, 92, 112, 0.2) 50%,
-    transparent 100%
-  );
-  transform: translate(-50%, -50%);
-  transition: width 0.1s, height 0.1s, opacity 0.1s;
-}
-
-.custom-cursor.clicking {
-  @apply w-6 h-6;
-  background: radial-gradient(
-    circle,
-    rgba(248, 92, 112, 1) 0%,
-    rgba(248, 92, 112, 0.4) 50%,
-    transparent 100%
-  );
-}
-
 /* Game UI Elements */
 .game-card {
   @apply relative overflow-hidden bg-[#2b2436]/95 backdrop-blur-lg border-2;
@@ -210,4 +187,14 @@
 .game-grid {
   @apply grid gap-6;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* Remove old cursor styles */
+/* Custom Game Cursor */
+.custom-cursor {
+  display: none;
+}
+
+.custom-cursor.clicking {
+  display: none;
 }

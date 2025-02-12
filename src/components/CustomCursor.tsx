@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -36,37 +37,84 @@ const CustomCursor = () => {
 
   return (
     <>
+      {/* Game Cursor */}
       <motion.div
-        className={`custom-cursor ${isClicking ? "clicking" : ""}`}
+        className="fixed pointer-events-none z-50"
         animate={{
-          x: position.x,
-          y: position.y,
+          x: position.x - 16,
+          y: position.y - 16,
+          scale: isClicking ? 0.9 : 1,
           opacity: isVisible ? 1 : 0,
-          scale: isClicking ? 0.8 : 1,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 1000,
-          damping: 50,
-          mass: 0.1,
-        }}
-      />
-      <motion.div
-        className="fixed w-2 h-2 bg-[#f85c70] rounded-full pointer-events-none z-50"
-        animate={{
-          x: position.x,
-          y: position.y,
-          opacity: isVisible ? 1 : 0,
-          scale: isClicking ? 1.5 : 1,
         }}
         transition={{
           type: "spring",
           stiffness: 1500,
           damping: 50,
-          mass: 0.05,
+          mass: 0.2,
+        }}
+      >
+        <div className="relative w-8 h-8">
+          <Image
+            src="/images/Cursor.png"
+            alt="Cursor"
+            width={32}
+            height={32}
+            className="w-full h-full"
+            style={{ imageRendering: "pixelated" }}
+          />
+          <AnimatePresence>
+            {isClicking && (
+              <motion.div
+                className="absolute inset-0 rounded-full bg-[#f85c70] mix-blend-overlay"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 0.5, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.2 }}
+                transition={{ duration: 0.2 }}
+              />
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+
+      {/* Click Effect */}
+      <AnimatePresence>
+        {isClicking && (
+          <motion.div
+            className="fixed pointer-events-none z-40"
+            initial={{ scale: 0.5, opacity: 0.5 }}
+            animate={{ scale: 1.5, opacity: 0 }}
+            exit={{ scale: 2, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            style={{
+              left: position.x,
+              top: position.y,
+              x: "-50%",
+              y: "-50%",
+            }}
+          >
+            <div className="w-8 h-8 rounded-full border-2 border-[#f85c70]" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Cursor Trail Effect */}
+      <motion.div
+        className="fixed w-1 h-1 rounded-full bg-[#f85c70]/30 pointer-events-none z-40 mix-blend-screen"
+        animate={{
+          x: position.x,
+          y: position.y,
+          scale: isClicking ? 2 : 1,
+          opacity: isVisible ? 1 : 0,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 2000,
+          damping: 50,
+          mass: 0.1,
         }}
         style={{
           transform: "translate(-50%, -50%)",
+          boxShadow: "0 0 10px rgba(248, 92, 112, 0.3)",
         }}
       />
     </>
