@@ -592,6 +592,12 @@ const requirements: Requirement[] = [
 
 const categories = [
   {
+    id: "score-overview",
+    title: "Score Overview",
+    icon: "📊",
+    description: "Summary of required and optional scores",
+  },
+  {
     id: "authentication",
     title: "Authentication",
     icon: "🔐",
@@ -844,6 +850,152 @@ export default function ProjectRequirements() {
     );
   };
 
+  const renderScoreOverview = () => {
+    const requiredScores = requirements
+      .filter((req) => !req.is_optional)
+      .reduce((sum, req) => sum + req.score, 0);
+    const optionalScores = requirements
+      .filter((req) => req.is_optional)
+      .reduce((sum, req) => sum + req.score, 0);
+    const totalScore = requiredScores + optionalScores;
+
+    const categoryScores = categories
+      .filter((cat) => cat.id !== "score-overview")
+      .map((category) => {
+        const reqs = requirements.filter(
+          (req) => req.category.toLowerCase() === category.id
+        );
+        return {
+          ...category,
+          required: reqs
+            .filter((req) => !req.is_optional)
+            .reduce((sum, req) => sum + req.score, 0),
+          optional: reqs
+            .filter((req) => req.is_optional)
+            .reduce((sum, req) => sum + req.score, 0),
+        };
+      })
+      .filter((cat) => cat.required > 0 || cat.optional > 0);
+
+    return (
+      <div className="space-y-12">
+        {/* Total Score Overview */}
+        <div className="grid md:grid-cols-3 gap-6">
+          <motion.div
+            className="glass p-6 rounded-lg relative overflow-hidden"
+            whileHover={{ scale: 1.02 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-[#f85c70]/10" />
+            <h4 className="text-xl font-orbitron mb-4 text-green-400 text-center">
+              Required Score
+            </h4>
+            <p className="text-4xl font-space-grotesk text-center text-white">
+              {requiredScores}
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="glass p-6 rounded-lg relative overflow-hidden"
+            whileHover={{ scale: 1.02 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-[#f85c70]/10" />
+            <h4 className="text-xl font-orbitron mb-4 text-purple-400 text-center">
+              Optional Score
+            </h4>
+            <p className="text-4xl font-space-grotesk text-center text-white">
+              {optionalScores}
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="glass p-6 rounded-lg relative overflow-hidden"
+            whileHover={{ scale: 1.02 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/10 to-blue-500/10" />
+            <h4 className="text-xl font-orbitron mb-4 text-[#f85c70] text-center">
+              Total Score
+            </h4>
+            <p className="text-4xl font-space-grotesk text-center text-white">
+              {totalScore}
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Category Breakdown */}
+        <div>
+          <h3 className="text-2xl font-orbitron text-[#f85c70] mb-8 text-center">
+            Score Breakdown by Category
+          </h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categoryScores.map((category) => (
+              <motion.div
+                key={category.id}
+                className="glass p-6 rounded-lg relative overflow-hidden group"
+                whileHover={{ scale: 1.02 }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-2xl">{category.icon}</span>
+                  <h4 className="text-xl font-orbitron text-[#f85c70]">
+                    {category.title}
+                  </h4>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 font-space-grotesk">
+                      Required
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <div className="h-2 w-24 bg-gray-800 rounded-full overflow-hidden">
+                        <motion.div
+                          className="h-full bg-green-500"
+                          initial={{ width: 0 }}
+                          animate={{
+                            width: `${
+                              (category.required / requiredScores) * 100
+                            }%`,
+                          }}
+                          transition={{ duration: 1, ease: "easeOut" }}
+                        />
+                      </div>
+                      <span className="text-green-400 font-space-grotesk">
+                        {category.required}
+                      </span>
+                    </div>
+                  </div>
+                  {category.optional > 0 && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-400 font-space-grotesk">
+                        Optional
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <div className="h-2 w-24 bg-gray-800 rounded-full overflow-hidden">
+                          <motion.div
+                            className="h-full bg-purple-500"
+                            initial={{ width: 0 }}
+                            animate={{
+                              width: `${
+                                (category.optional / optionalScores) * 100
+                              }%`,
+                            }}
+                            transition={{ duration: 1, ease: "easeOut" }}
+                          />
+                        </div>
+                        <span className="text-purple-400 font-space-grotesk">
+                          {category.optional}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen py-20 px-4">
       <div className="max-w-7xl mx-auto">
@@ -903,8 +1055,10 @@ export default function ProjectRequirements() {
             </p>
           </div>
 
-          {/* Requirements Grid or Game Elements */}
-          {selectedCategory === "characters" ? (
+          {/* Render appropriate content based on selected category */}
+          {selectedCategory === "score-overview" ? (
+            renderScoreOverview()
+          ) : selectedCategory === "characters" ? (
             renderGameElements()
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
