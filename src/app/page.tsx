@@ -9,6 +9,7 @@ import HeroCard from "@/components/HeroCard";
 import GameModal from "@/components/GameModal";
 import GameBackground from "@/components/GameBackground";
 import MiniGame from "@/components/MiniGame";
+import ProjectRequirements from "@/components/ProjectRequirements";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -282,6 +283,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Project Requirements Section */}
+      <ProjectRequirements />
 
       {/* Heroes Section */}
       <section id="heroes" className="section relative py-32 px-4">
