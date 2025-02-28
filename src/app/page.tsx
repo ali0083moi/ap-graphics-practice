@@ -288,7 +288,7 @@ export default function Home() {
       <ProjectRequirements />
 
       {/* Heroes Section */}
-      <section id="heroes" className="section relative py-32 px-4">
+      {/* <section id="heroes" className="section relative py-32 px-4">
         <div className="max-w-7xl mx-auto">
           <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
             Available Heroes
@@ -314,7 +314,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Download Section */}
       <section className="section relative py-32 px-4">
@@ -546,7 +546,7 @@ export default function Home() {
       </footer>
 
       {/* Hero Modal */}
-      <GameModal
+      {/* <GameModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={selectedHero?.name || ""}
@@ -625,7 +625,7 @@ export default function Home() {
             </div>
           </div>
         )}
-      </GameModal>
+      </GameModal> */}
     </main>
   );
 }

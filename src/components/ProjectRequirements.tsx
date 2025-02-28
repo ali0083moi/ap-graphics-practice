@@ -1,6 +1,30 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import React from "react";
+import {
+  FaGem,
+  FaRunning,
+  FaHeart,
+  FaFire,
+  FaBullseye,
+  FaBomb,
+  FaBolt,
+  FaAngleDoubleRight,
+} from "react-icons/fa";
+import {
+  GiPistolGun,
+  GiShotgun,
+  GiMachineGun,
+  GiMagicSwirl,
+  GiSwordWound,
+} from "react-icons/gi";
+import {
+  RiHeartPulseFill,
+  RiTimerFlashFill,
+  RiSpeedFill,
+  RiShieldFlashFill,
+  RiSwordFill,
+} from "react-icons/ri";
 
 interface Requirement {
   id: string;
@@ -131,6 +155,31 @@ const abilities: Ability[] = [
     persian_description: "۲ برابر شدن سرعت حرکت بازیکن به مدت ۱۰ ثانیه",
   },
 ];
+
+// Add hero avatar images - you can replace these with better images for your project
+const heroImages = {
+  shana: "https://i.imgur.com/JQ5kAUX.png", // Female character with red theme
+  diamond: "https://i.imgur.com/VZRR6Ww.png", // Heavy armored character
+  scarlet: "https://i.imgur.com/8FTHvll.png", // Fast female character
+  lilith: "https://i.imgur.com/Yl7sx3H.png", // Magic wielder female character
+  dasher: "https://i.imgur.com/3kskAJH.png", // Quick male character
+};
+
+// Add weapon images
+const weaponImages = {
+  revolver: "https://i.imgur.com/N1QkBik.png",
+  shotgun: "https://i.imgur.com/rLIClmu.png",
+  dual_smgs: "https://i.imgur.com/NvRoSw8.png",
+};
+
+// Add ability icons - using appropriate icon components
+const abilityIcons = {
+  witality: <RiHeartPulseFill className="text-green-400 text-3xl" />,
+  damager: <FaFire className="text-red-400 text-3xl" />,
+  procrease: <FaBolt className="text-yellow-400 text-3xl" />,
+  amocrease: <FaBomb className="text-purple-400 text-3xl" />,
+  speedy: <RiSpeedFill className="text-blue-400 text-3xl" />,
+};
 
 const requirements: Requirement[] = [
   // Authentication Requirements
@@ -927,46 +976,107 @@ export default function ProjectRequirements() {
       <div className="space-y-16">
         {/* Heroes Section */}
         <div>
-          <h3 className="text-2xl font-orbitron text-[#f85c70] mb-8 text-center">
+          <motion.h3
+            className="text-3xl font-orbitron text-[#f85c70] mb-12 text-center"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
             Heroes
-          </h3>
-          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
+          </motion.h3>
+          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-8">
             {heroes.map((hero) => (
               <motion.div
                 key={hero.id}
-                className="glass p-6 rounded-lg relative overflow-hidden group"
-                whileHover={{ scale: 1.05 }}
+                className="glass rounded-xl relative overflow-hidden group h-[300px]"
+                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.5,
+                  delay: 0.1 * heroes.findIndex((h) => h.id === hero.id),
+                }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <h4 className="text-xl font-orbitron mb-4 text-center text-[#f85c70]">
-                  {hero.name}
-                </h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-400 font-space-grotesk">HP</span>
-                    <div className="flex gap-1">
-                      {[...Array(hero.hp)].map((_, i) => (
-                        <div
-                          key={i}
-                          className="w-2 h-2 bg-green-500 rounded-sm"
-                        />
-                      ))}
+                {/* Background Gradient */}
+                <div className="absolute inset-0 bg-transparent" />
+
+                {/* Hero Image */}
+                <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+                  <motion.img
+                    src={heroImages[hero.id as keyof typeof heroImages]}
+                    alt={hero.name}
+                    className="h-full w-full object-cover object-center filter"
+                    initial={{ scale: 1.2 }}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.5 }}
+                  />
+
+                  {/* Overlay on Hover */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+
+                {/* Hero Content */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                  <motion.h4
+                    className="text-2xl font-orbitron text-white mb-2 text-center drop-shadow-glow"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    {hero.name}
+                  </motion.h4>
+
+                  {/* Stats */}
+                  <div className="space-y-3 mt-4">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <FaHeart className="text-red-500" />
+                        <span className="text-gray-200 font-space-grotesk text-sm">
+                          HP
+                        </span>
+                      </div>
+                      <div className="flex gap-1">
+                        {[...Array(hero.hp)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="w-2 h-6 bg-gradient-to-t from-red-700 to-red-400 rounded-sm"
+                            initial={{ height: 0 }}
+                            animate={{ height: 6 + i * 1.2 }}
+                            transition={{
+                              delay: 0.5 + i * 0.05,
+                              duration: 0.4,
+                            }}
+                          />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-400 font-space-grotesk">
-                      Speed
-                    </span>
-                    <div className="flex gap-1">
-                      {[...Array(hero.speed)].map((_, i) => (
-                        <div
-                          key={i}
-                          className="w-2 h-2 bg-blue-500 rounded-sm"
-                        />
-                      ))}
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <FaRunning className="text-blue-500" />
+                        <span className="text-gray-200 font-space-grotesk text-sm">
+                          Speed
+                        </span>
+                      </div>
+                      <div className="flex gap-1">
+                        {[...Array(hero.speed)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="w-2 h-6 bg-gradient-to-t from-blue-700 to-blue-400 rounded-sm"
+                            initial={{ height: 0 }}
+                            animate={{ height: 6 + i * 0.6 }}
+                            transition={{
+                              delay: 0.7 + i * 0.02,
+                              duration: 0.4,
+                            }}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                {/* Hero Glow Effect */}
+                <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#f85c70] to-transparent opacity-70" />
               </motion.div>
             ))}
           </div>
@@ -974,53 +1084,154 @@ export default function ProjectRequirements() {
 
         {/* Weapons Section */}
         <div>
-          <h3 className="text-2xl font-orbitron text-[#f85c70] mb-8 text-center">
+          <motion.h3
+            className="text-3xl font-orbitron text-[#f85c70] mb-12 text-center"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
             Weapons
-          </h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            {weapons.map((weapon) => (
+          </motion.h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            {weapons.map((weapon, index) => (
               <motion.div
                 key={weapon.id}
-                className="glass p-6 rounded-lg relative overflow-hidden group"
-                whileHover={{ scale: 1.05 }}
+                className="glass p-8 rounded-xl relative overflow-hidden group"
+                whileHover={{
+                  y: -5,
+                  boxShadow:
+                    "0 20px 25px -5px rgba(248, 92, 112, 0.1), 0 10px 10px -5px rgba(248, 92, 112, 0.04)",
+                }}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 * index }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <h4 className="text-xl font-orbitron mb-4 text-center text-[#f85c70]">
-                  {weapon.name}
-                </h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400 font-space-grotesk">
-                      Damage
-                    </span>
-                    <span className="text-white font-space-grotesk">
-                      {weapon.damage}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400 font-space-grotesk">
-                      Projectiles
-                    </span>
-                    <span className="text-white font-space-grotesk">
-                      {weapon.projectile}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400 font-space-grotesk">
-                      Reload Time
-                    </span>
+                {/* Weapon Background Effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/10 opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
+
+                {/* Weapon Image and Name */}
+                <div className="flex flex-col items-center justify-center mb-6 relative">
+                  <motion.div
+                    className="w-24 h-24 mb-4 relative"
+                    whileHover={{ rotate: 5, scale: 1.05 }}
+                  >
+                    <img
+                      src={weaponImages[weapon.id as keyof typeof weaponImages]}
+                      alt={weapon.name}
+                      className="w-full h-full object-contain drop-shadow-[0_0_8px_rgba(248,92,112,0.5)]"
+                    />
+                  </motion.div>
+
+                  <h4 className="text-2xl font-orbitron text-[#f85c70] relative">
+                    {weapon.name}
+                    <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#f85c70] to-transparent opacity-70" />
+                  </h4>
+                </div>
+
+                {/* Weapon Stats */}
+                <div className="space-y-4 mt-6">
+                  <motion.div
+                    className="flex justify-between items-center"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <GiSwordWound className="text-red-500" />
+                      <span className="text-gray-400 font-space-grotesk">
+                        Damage
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-32 h-2 bg-gray-800 rounded-full overflow-hidden">
+                        <motion.div
+                          className="h-full bg-gradient-to-r from-red-600 to-red-400"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${(weapon.damage / 20) * 100}%` }}
+                          transition={{ duration: 1, delay: 0.5 }}
+                        />
+                      </div>
+                      <span className="text-white font-space-grotesk ml-2 min-w-[30px] text-right">
+                        {weapon.damage}
+                      </span>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    className="flex justify-between items-center"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <FaBullseye className="text-yellow-500" />
+                      <span className="text-gray-400 font-space-grotesk">
+                        Projectiles
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="flex gap-1">
+                        {[...Array(weapon.projectile)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="w-4 h-4 rounded-full bg-yellow-500"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.6 + i * 0.1 }}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-white font-space-grotesk ml-2 min-w-[30px] text-right">
+                        {weapon.projectile}
+                      </span>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    className="flex justify-between items-center"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <RiTimerFlashFill className="text-blue-500" />
+                      <span className="text-gray-400 font-space-grotesk">
+                        Reload Time
+                      </span>
+                    </div>
                     <span className="text-white font-space-grotesk">
                       {weapon.reload_time}s
                     </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400 font-space-grotesk">
-                      Max Ammo
-                    </span>
-                    <span className="text-white font-space-grotesk">
-                      {weapon.max_ammo}
-                    </span>
-                  </div>
+                  </motion.div>
+
+                  <motion.div
+                    className="flex justify-between items-center"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <RiShieldFlashFill className="text-purple-500" />
+                      <span className="text-gray-400 font-space-grotesk">
+                        Max Ammo
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-32 h-2 bg-gray-800 rounded-full overflow-hidden">
+                        <motion.div
+                          className="h-full bg-gradient-to-r from-purple-600 to-purple-400"
+                          initial={{ width: 0 }}
+                          animate={{
+                            width: `${(weapon.max_ammo / 24) * 100}%`,
+                          }}
+                          transition={{ duration: 1, delay: 0.7 }}
+                        />
+                      </div>
+                      <span className="text-white font-space-grotesk ml-2 min-w-[30px] text-right">
+                        {weapon.max_ammo}
+                      </span>
+                    </div>
+                  </motion.div>
                 </div>
               </motion.div>
             ))}
@@ -1029,25 +1240,81 @@ export default function ProjectRequirements() {
 
         {/* Abilities Section */}
         <div>
-          <h3 className="text-2xl font-orbitron text-[#f85c70] mb-8 text-center">
+          <motion.h3
+            className="text-3xl font-orbitron text-[#f85c70] mb-12 text-center"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
             Abilities
-          </h3>
-          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {abilities.map((ability) => (
+          </motion.h3>
+          <div className="grid md:grid-cols-5 gap-6">
+            {abilities.map((ability, idx) => (
               <motion.div
                 key={ability.id}
-                className="glass p-6 rounded-lg relative overflow-hidden group"
-                whileHover={{ scale: 1.05 }}
+                className="glass rounded-lg relative overflow-hidden group"
+                whileHover={{ y: -8, scale: 1.02 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 * idx }}
                 onHoverStart={() => setHoveredRequirement(ability.id)}
                 onHoverEnd={() => setHoveredRequirement(null)}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <h4 className="text-xl font-orbitron mb-4 text-center text-[#f85c70]">
-                  {ability.name}
-                </h4>
-                <p className="text-gray-300 font-space-grotesk text-center text-sm">
-                  {ability.description}
-                </p>
+                {/* Top highlight */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#f85c70] to-transparent opacity-70" />
+
+                {/* Icon and glow effect */}
+                <div className="pt-8 pb-4 px-4 relative flex flex-col items-center">
+                  <motion.div
+                    className="w-16 h-16 rounded-full flex items-center justify-center mb-4 relative"
+                    initial={{ scale: 0.8, opacity: 0.7 }}
+                    whileHover={{ scale: 1.1, opacity: 1 }}
+                    style={{
+                      background:
+                        "radial-gradient(circle, rgba(248,92,112,0.2) 0%, rgba(248,92,112,0) 70%)",
+                    }}
+                  >
+                    {/* Icon */}
+                    {abilityIcons[ability.id as keyof typeof abilityIcons]}
+
+                    {/* Animated glow */}
+                    <motion.div
+                      className="absolute inset-0 rounded-full"
+                      animate={{
+                        boxShadow: [
+                          "0 0 0 rgba(248, 92, 112, 0)",
+                          "0 0 15px rgba(248, 92, 112, 0.5)",
+                          "0 0 0 rgba(248, 92, 112, 0)",
+                        ],
+                      }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  </motion.div>
+
+                  <h4 className="text-xl font-orbitron text-[#f85c70] text-center mb-2">
+                    {ability.name}
+                  </h4>
+
+                  {/* Description in english */}
+                  <p className="text-gray-300 font-space-grotesk text-center text-sm mb-4">
+                    {ability.description}
+                  </p>
+                </div>
+
+                {/* Persian description on hover */}
+                <motion.div
+                  className="bg-gradient-to-t from-[#18101e]/95 to-[#18101e]/85 backdrop-blur-sm py-3 px-4 absolute bottom-0 left-0 right-0 text-right"
+                  initial={{ y: 60 }}
+                  animate={{ y: hoveredRequirement === ability.id ? 0 : 60 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                >
+                  <p
+                    className="text-gray-300 font-nastaliq text-base"
+                    dir="rtl"
+                  >
+                    {ability.persian_description}
+                  </p>
+                </motion.div>
               </motion.div>
             ))}
           </div>
@@ -1078,27 +1345,33 @@ export default function ProjectRequirements() {
     return (
       <div className="space-y-12">
         {/* Total Score Overview */}
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-8">
           <motion.div
-            className="glass p-6 rounded-lg relative overflow-hidden"
-            whileHover={{ scale: 1.02 }}
+            className="glass p-8 rounded-xl relative overflow-hidden shadow-glow"
+            whileHover={{
+              scale: 1.03,
+              boxShadow: "0 20px 25px -5px rgba(34, 197, 94, 0.1)",
+            }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-[#f85c70]/10" />
-            <h4 className="text-xl font-orbitron mb-4 text-green-400 text-center">
+            <h4 className="text-2xl font-orbitron mb-6 text-green-400 text-center">
               Required Score
             </h4>
             <div className="flex justify-center items-center gap-2">
-              <p className="text-4xl font-space-grotesk text-center text-white">
+              <p className="text-5xl font-space-grotesk text-center text-white">
                 {scores.requiredCompleted}
               </p>
-              <p className="text-xl font-space-grotesk text-center text-gray-400">
+              <p className="text-2xl font-space-grotesk text-center text-gray-400">
                 / {scores.requiredTotal}
               </p>
             </div>
             {/* Progress Bar */}
-            <div className="mt-4 h-2 bg-gray-800 rounded-full overflow-hidden">
+            <div className="mt-6 h-3 bg-gray-800 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-green-500"
+                className="h-full bg-gradient-to-r from-green-600 to-green-400"
                 initial={{ width: 0 }}
                 animate={{
                   width: `${
@@ -1111,25 +1384,31 @@ export default function ProjectRequirements() {
           </motion.div>
 
           <motion.div
-            className="glass p-6 rounded-lg relative overflow-hidden"
-            whileHover={{ scale: 1.02 }}
+            className="glass p-8 rounded-xl relative overflow-hidden shadow-glow"
+            whileHover={{
+              scale: 1.03,
+              boxShadow: "0 20px 25px -5px rgba(168, 85, 247, 0.1)",
+            }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-[#f85c70]/10" />
-            <h4 className="text-xl font-orbitron mb-4 text-purple-400 text-center">
+            <h4 className="text-2xl font-orbitron mb-6 text-purple-400 text-center">
               Optional Score
             </h4>
             <div className="flex justify-center items-center gap-2">
-              <p className="text-4xl font-space-grotesk text-center text-white">
+              <p className="text-5xl font-space-grotesk text-center text-white">
                 {scores.optionalCompleted}
               </p>
-              <p className="text-xl font-space-grotesk text-center text-gray-400">
+              <p className="text-2xl font-space-grotesk text-center text-gray-400">
                 / {scores.optionalTotal}
               </p>
             </div>
             {/* Progress Bar */}
-            <div className="mt-4 h-2 bg-gray-800 rounded-full overflow-hidden">
+            <div className="mt-6 h-3 bg-gray-800 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-purple-500"
+                className="h-full bg-gradient-to-r from-purple-600 to-purple-400"
                 initial={{ width: 0 }}
                 animate={{
                   width: `${
@@ -1142,25 +1421,31 @@ export default function ProjectRequirements() {
           </motion.div>
 
           <motion.div
-            className="glass p-6 rounded-lg relative overflow-hidden"
-            whileHover={{ scale: 1.02 }}
+            className="glass p-8 rounded-xl relative overflow-hidden shadow-glow"
+            whileHover={{
+              scale: 1.03,
+              boxShadow: "0 20px 25px -5px rgba(248, 92, 112, 0.1)",
+            }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/10 to-blue-500/10" />
-            <h4 className="text-xl font-orbitron mb-4 text-[#f85c70] text-center">
+            <h4 className="text-2xl font-orbitron mb-6 text-[#f85c70] text-center">
               Total Score
             </h4>
             <div className="flex justify-center items-center gap-2">
-              <p className="text-4xl font-space-grotesk text-center text-white">
+              <p className="text-5xl font-space-grotesk text-center text-white">
                 {scores.completed}
               </p>
-              <p className="text-xl font-space-grotesk text-center text-gray-400">
+              <p className="text-2xl font-space-grotesk text-center text-gray-400">
                 / {scores.total}
               </p>
             </div>
             {/* Progress Bar */}
-            <div className="mt-4 h-2 bg-gray-800 rounded-full overflow-hidden">
+            <div className="mt-6 h-3 bg-gray-800 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-[#f85c70]"
+                className="h-full bg-gradient-to-r from-[#f85c70]/60 to-[#f85c70]"
                 initial={{ width: 0 }}
                 animate={{
                   width: `${(scores.completed / scores.total) * 100}%`,
@@ -1173,32 +1458,40 @@ export default function ProjectRequirements() {
 
         {/* Category Breakdown */}
         <div>
-          <h3 className="text-2xl font-orbitron text-[#f85c70] mb-8 text-center">
+          <motion.h3
+            className="text-3xl font-orbitron text-[#f85c70] mb-12 text-center"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
             Score Breakdown by Category
-          </h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categoryScores.map((category) => (
+          </motion.h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {categoryScores.map((category, idx) => (
               <motion.div
                 key={category.id}
-                className="glass p-6 rounded-lg relative overflow-hidden group"
-                whileHover={{ scale: 1.02 }}
+                className="glass p-6 rounded-xl relative overflow-hidden group"
+                whileHover={{ scale: 1.03, y: -5 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.1 * idx }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-2xl">{category.icon}</span>
+                <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/10 to-purple-500/10 opacity-50 group-hover:opacity-70 transition-opacity" />
+                <div className="flex items-center gap-4 mb-6">
+                  <span className="text-3xl">{category.icon}</span>
                   <h4 className="text-xl font-orbitron text-[#f85c70]">
                     {category.title}
                   </h4>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 font-space-grotesk">
+                    <span className="text-gray-300 font-space-grotesk">
                       Required
                     </span>
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-24 bg-gray-800 rounded-full overflow-hidden">
+                    <div className="flex items-center gap-3">
+                      <div className="h-2 w-32 bg-gray-800 rounded-full overflow-hidden">
                         <motion.div
-                          className="h-full bg-green-500"
+                          className="h-full bg-gradient-to-r from-green-600 to-green-400"
                           initial={{ width: 0 }}
                           animate={{
                             width:
@@ -1220,13 +1513,13 @@ export default function ProjectRequirements() {
                   </div>
                   {category.optional > 0 && (
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 font-space-grotesk">
+                      <span className="text-gray-300 font-space-grotesk">
                         Optional
                       </span>
-                      <div className="flex items-center gap-2">
-                        <div className="h-2 w-24 bg-gray-800 rounded-full overflow-hidden">
+                      <div className="flex items-center gap-3">
+                        <div className="h-2 w-32 bg-gray-800 rounded-full overflow-hidden">
                           <motion.div
-                            className="h-full bg-purple-500"
+                            className="h-full bg-gradient-to-r from-purple-600 to-purple-400"
                             initial={{ width: 0 }}
                             animate={{
                               width: `${
@@ -1245,6 +1538,9 @@ export default function ProjectRequirements() {
                     </div>
                   )}
                 </div>
+
+                {/* Bottom highlight */}
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#f85c70] to-transparent opacity-0 group-hover:opacity-70 transition-all duration-300" />
               </motion.div>
             ))}
           </div>
@@ -1256,19 +1552,26 @@ export default function ProjectRequirements() {
   // Checkbox animation variants
   const checkboxVariants = {
     unchecked: {
-      scale: 0.8,
-      opacity: 0.6,
-      backgroundColor: "rgba(30, 30, 30, 0.6)",
-      borderColor: "rgba(248, 92, 112, 0.5)",
+      scale: 0.9,
+      opacity: 0.7,
+      backgroundColor: "rgba(30, 30, 30, 0.7)",
+      borderColor: "rgba(248, 92, 112, 0.4)",
     },
     checked: {
       scale: 1,
       opacity: 1,
-      backgroundColor: "rgba(248, 92, 112, 0.8)",
+      backgroundColor: "rgba(248, 92, 112, 0.9)",
       borderColor: "rgba(248, 92, 112, 1)",
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 30,
+        duration: 0.3,
+      },
     },
     hover: {
       scale: 1.1,
+      boxShadow: "0 0 12px rgba(248, 92, 112, 0.5)",
       transition: { type: "spring", stiffness: 400, damping: 10 },
     },
     tap: { scale: 0.9 },
@@ -1285,31 +1588,65 @@ export default function ProjectRequirements() {
   };
 
   return (
-    <div className="min-h-screen py-20 px-4">
+    <div className="min-h-screen py-20 px-4 bg-transparent">
       <div className="max-w-7xl mx-auto">
         <motion.h2
-          className="text-4xl md:text-5xl font-orbitron font-bold mb-8 text-center text-glow"
-          initial={{ opacity: 0, y: 20 }}
+          className="text-5xl md:text-6xl font-orbitron font-bold mb-8 text-center text-glow bg-clip-text text-transparent bg-gradient-to-r from-[#f85c70] to-[#f85c70]/80"
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
           Project Requirements
         </motion.h2>
 
-        {/* Storage Status Messages */}
-        <div className="mb-8">
+        {/* Hero section with animated text */}
+        <motion.div
+          className="mb-10 text-center max-w-3xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.4 }}
+        >
+          <p className="text-xl text-gray-300 font-space-grotesk mb-6">
+            Track your project progress and keep score of completed requirements
+          </p>
+        </motion.div>
+
+        {/* Storage Status Messages with improved styling */}
+        <div className="mb-12">
           <div className="flex justify-center items-center gap-4 mb-4">
             {!dataLoaded ? (
               <motion.div
-                className="px-4 py-2 rounded-lg bg-blue-500/20 text-blue-400 text-sm font-space-grotesk"
+                className="px-6 py-3 rounded-xl bg-blue-500/20 text-blue-400 text-sm font-space-grotesk backdrop-blur-sm border border-blue-500/20"
                 animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}
               >
-                Loading saved progress...
+                <div className="flex items-center gap-3">
+                  <svg
+                    className="animate-spin h-5 w-5 text-blue-400"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Loading saved progress...
+                </div>
               </motion.div>
             ) : loadError ? (
               <motion.div
-                className="px-4 py-2 rounded-lg bg-red-500/20 text-red-400 text-sm font-space-grotesk flex items-center gap-2"
+                className="px-6 py-3 rounded-xl bg-red-500/20 text-red-400 text-sm font-space-grotesk flex items-center gap-3 backdrop-blur-sm border border-red-500/20"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
@@ -1329,7 +1666,7 @@ export default function ProjectRequirements() {
               </motion.div>
             ) : completedRequirements.length > 0 ? (
               <motion.div
-                className="px-4 py-2 rounded-lg bg-green-500/20 text-green-400 text-sm font-space-grotesk flex items-center gap-2"
+                className="px-6 py-3 rounded-xl bg-green-500/20 text-green-400 text-sm font-space-grotesk flex items-center gap-3 backdrop-blur-sm border border-green-500/20"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
@@ -1350,7 +1687,7 @@ export default function ProjectRequirements() {
               </motion.div>
             ) : (
               <motion.div
-                className="px-4 py-2 rounded-lg bg-gray-500/20 text-gray-400 text-sm font-space-grotesk"
+                className="px-6 py-3 rounded-xl bg-gray-500/20 text-gray-400 text-sm font-space-grotesk backdrop-blur-sm border border-gray-500/20"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
@@ -1358,116 +1695,128 @@ export default function ProjectRequirements() {
               </motion.div>
             )}
           </div>
-
-          {/* Action Buttons */}
-          <div className="flex justify-center items-center gap-3 flex-wrap">
-            {/* Reset Button */}
-            {completedRequirements.length > 0 && (
-              <motion.button
-                className="px-4 py-2 rounded-lg bg-red-500/20 text-red-400 text-sm font-space-grotesk hover:bg-red-500/30 transition-colors flex items-center gap-2"
-                onClick={() => {
-                  if (
-                    window.confirm(
-                      "Are you sure you want to reset all progress? This cannot be undone."
-                    )
-                  ) {
-                    resetSavedProgress();
-                  }
-                }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zM9.414 8l1.414-1.414L12 7.758l1.172-1.172L14.586 8 13.414 9.172 12.242 8l-1.172 1.172L9.414 8zm-4 8l1.414-1.414L8 15.758l1.172-1.172L10.586 16 9.414 17.172 8.242 16l-1.172 1.172L5.414 16zm12 0l1.414-1.414L20 15.758l1.172-1.172L22.586 16l-1.172 1.172L20.242 16l-1.172 1.172L17.414 16z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Reset Progress
-              </motion.button>
-            )}
-
-            {/* Export Button */}
-            {dataLoaded && (
-              <motion.button
-                className="px-4 py-2 rounded-lg bg-blue-500/20 text-blue-400 text-sm font-space-grotesk hover:bg-blue-500/30 transition-colors flex items-center gap-2"
-                onClick={exportProgress}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                title="Export your progress as a JSON file"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M13 10h5l-6-6-6 6h5v8h2v-8zm-9 9h16v-7h2v8a1 1 0 01-1 1H3a1 1 0 01-1-1v-8h2v7z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Export Progress
-              </motion.button>
-            )}
-
-            {/* Import Button */}
-            {dataLoaded && (
-              <>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={importProgress}
-                  accept=".json"
-                  className="hidden"
-                  id="import-progress-file"
-                />
-                <motion.button
-                  className="px-4 py-2 rounded-lg bg-purple-500/20 text-purple-400 text-sm font-space-grotesk hover:bg-purple-500/30 transition-colors flex items-center gap-2"
-                  onClick={() => fileInputRef.current?.click()}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  title="Import progress from a JSON file"
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M13 14h5l-6 6-6-6h5V6h2v8zm-9 5h16v-7h2v8a1 1 0 01-1 1H3a1 1 0 01-1-1v-8h2v7z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Import Progress
-                </motion.button>
-              </>
-            )}
-          </div>
         </div>
 
-        {/* Category Navigation */}
+        {/* Action Buttons with improved styling */}
+        <div className="flex justify-center items-center gap-4 flex-wrap mb-8">
+          {/* Reset Button */}
+          {completedRequirements.length > 0 && (
+            <motion.button
+              className="px-6 py-3 rounded-xl bg-red-500/10 text-red-400 text-sm font-space-grotesk hover:bg-red-500/20 transition-colors flex items-center gap-3 border border-red-500/20"
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "Are you sure you want to reset all progress? This cannot be undone."
+                  )
+                ) {
+                  resetSavedProgress();
+                }
+              }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 10px 15px -3px rgba(248, 92, 112, 0.1)",
+              }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zM9.414 8l1.414-1.414L12 7.758l1.172-1.172L14.586 8 13.414 9.172 12.242 8l-1.172 1.172L9.414 8zm-4 8l1.414-1.414L8 15.758l1.172-1.172L10.586 16 9.414 17.172 8.242 16l-1.172 1.172L5.414 16zm12 0l1.414-1.414L20 15.758l1.172-1.172L22.586 16l-1.172 1.172L20.242 16l-1.172 1.172L17.414 16z"
+                  fill="currentColor"
+                />
+              </svg>
+              Reset Progress
+            </motion.button>
+          )}
+
+          {/* Export Button */}
+          {dataLoaded && (
+            <motion.button
+              className="px-6 py-3 rounded-xl bg-blue-500/10 text-blue-400 text-sm font-space-grotesk hover:bg-blue-500/20 transition-colors flex items-center gap-3 border border-blue-500/20"
+              onClick={exportProgress}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 10px 15px -3px rgba(59, 130, 246, 0.1)",
+              }}
+              whileTap={{ scale: 0.95 }}
+              title="Export your progress as a JSON file"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13 10h5l-6-6-6 6h5v8h2v-8zm-9 9h16v-7h2v8a1 1 0 01-1 1H3a1 1 0 01-1-1v-8h2v7z"
+                  fill="currentColor"
+                />
+              </svg>
+              Export Progress
+            </motion.button>
+          )}
+
+          {/* Import Button */}
+          {dataLoaded && (
+            <>
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={importProgress}
+                accept=".json"
+                className="hidden"
+                id="import-progress-file"
+              />
+              <motion.button
+                className="px-6 py-3 rounded-xl bg-purple-500/10 text-purple-400 text-sm font-space-grotesk hover:bg-purple-500/20 transition-colors flex items-center gap-3 border border-purple-500/20"
+                onClick={() => fileInputRef.current?.click()}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 10px 15px -3px rgba(168, 85, 247, 0.1)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                title="Import progress from a JSON file"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13 14h5l-6 6-6-6h5V6h2v8zm-9 5h16v-7h2v8a1 1 0 01-1 1H3a1 1 0 01-1-1v-8h2v7z"
+                    fill="currentColor"
+                  />
+                </svg>
+                Import Progress
+              </motion.button>
+            </>
+          )}
+        </div>
+
+        {/* Category Navigation with improved styling */}
         <div className="flex flex-wrap gap-3 justify-center mb-16">
-          {categories.map((category) => (
+          {categories.map((category, idx) => (
             <motion.button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`px-5 py-3 rounded-lg glass relative ${
+              className={`px-5 py-3 rounded-xl glass relative ${
                 selectedCategory === category.id
                   ? "border-2 border-[#f85c70]"
                   : "border-2 border-transparent hover:border-[#f85c70]/50"
               }`}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * idx, duration: 0.3 }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/5 transition-all duration-300" />
               <div className="relative flex items-center gap-3">
@@ -1485,7 +1834,7 @@ export default function ProjectRequirements() {
           ))}
         </div>
 
-        {/* Requirements Section */}
+        {/* Requirements Section - rest of the component */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
