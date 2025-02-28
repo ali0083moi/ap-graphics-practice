@@ -317,7 +317,7 @@ export default function Home() {
       </section> */}
 
       {/* Download Section */}
-      <section className="section relative py-32 px-4">
+      <section className="section relative py-16 px-4">
         <div className="absolute inset-0" />
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">

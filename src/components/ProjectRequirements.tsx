@@ -2047,7 +2047,7 @@ export default function ProjectRequirements() {
   };
 
   return (
-    <div className="min-h-screen py-20 px-4 bg-transparent">
+    <div className="min-h-screen pt-20 pb-8 px-4 bg-transparent">
       <div className="max-w-7xl mx-auto">
         <motion.h2
           className="text-5xl md:text-6xl font-orbitron font-bold mb-8 text-center text-glow bg-clip-text text-transparent bg-gradient-to-r from-[#f85c70] to-[#f85c70]/80"
