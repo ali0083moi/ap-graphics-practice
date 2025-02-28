@@ -1698,7 +1698,7 @@ export default function ProjectRequirements() {
         </div>
 
         {/* Action Buttons with improved styling */}
-        <div className="flex justify-center items-center gap-4 flex-wrap mb-8">
+        <div className="flex justify-center items-center gap-4 flex-wrap mb-12">
           {/* Reset Button */}
           {completedRequirements.length > 0 && (
             <motion.button
@@ -1726,7 +1726,7 @@ export default function ProjectRequirements() {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zM9.414 8l1.414-1.414L12 7.758l1.172-1.172L14.586 8 13.414 9.172 12.242 8l-1.172 1.172L9.414 8zm-4 8l1.414-1.414L8 15.758l1.172-1.172L10.586 16 9.414 17.172 8.242 16l-1.172 1.172L5.414 16zm12 0l1.414-1.414L20 15.758l1.172-1.172L22.586 16l-1.172 1.172L20.242 16l-1.172 1.172L17.414 16z"
+                  d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm0-8v6h2V7h-2z"
                   fill="currentColor"
                 />
               </svg>
@@ -1801,258 +1801,297 @@ export default function ProjectRequirements() {
           )}
         </div>
 
-        {/* Category Navigation with improved styling */}
-        <div className="flex flex-wrap gap-3 justify-center mb-16">
-          {categories.map((category, idx) => (
-            <motion.button
-              key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`px-5 py-3 rounded-xl glass relative ${
-                selectedCategory === category.id
-                  ? "border-2 border-[#f85c70]"
-                  : "border-2 border-transparent hover:border-[#f85c70]/50"
-              }`}
-              whileHover={{ scale: 1.05, y: -3 }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * idx, duration: 0.3 }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/5 transition-all duration-300" />
-              <div className="relative flex items-center gap-3">
-                <span className="text-2xl">{category.icon}</span>
-                <div className="flex flex-col items-start">
-                  <span className="font-orbitron text-white text-sm">
+        {/* Category Navigation with improved styling - Tab-like */}
+        <div className="mb-16">
+          {/* Tab Header */}
+          <div className="relative mb-2">
+            {/* Bottom Border */}
+            <div className="absolute bottom-0 w-full h-0.5 bg-gray-800"></div>
+
+            {/* Tab-Like Buttons */}
+            <div className="flex flex-wrap overflow-x-auto hide-scrollbar gap-1 justify-center pb-1">
+              {categories.map((category, idx) => (
+                <motion.button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-5 py-3 rounded-t-lg relative ${
+                    selectedCategory === category.id
+                      ? "bg-gradient-to-b from-[#f85c70]/10 to-[#18101e] text-[#f85c70]"
+                      : "text-gray-400 hover:text-gray-200"
+                  } transition-colors flex items-center gap-2`}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05 * idx, duration: 0.3 }}
+                >
+                  {/* Tab Bottom Highlight - Only for Active Tab */}
+                  {selectedCategory === category.id && (
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#f85c70]"
+                      layoutId="tabIndicator"
+                    />
+                  )}
+
+                  {/* Icon and Text */}
+                  <span className="text-2xl">{category.icon}</span>
+                  <span className="font-orbitron text-sm whitespace-nowrap">
                     {category.title}
                   </span>
-                  <span className="text-gray-400 text-xs font-space-grotesk">
-                    {category.description}
-                  </span>
-                </div>
-              </div>
-            </motion.button>
-          ))}
-        </div>
-
-        {/* Requirements Section - rest of the component */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="relative"
-        >
-          {/* Section Title */}
-          <div className="mb-8 text-center">
-            <h3 className="text-2xl font-orbitron text-[#f85c70] mb-2">
-              {categories.find((c) => c.id === selectedCategory)?.title}
-            </h3>
-            <p className="text-gray-400 font-space-grotesk">
-              {categories.find((c) => c.id === selectedCategory)?.description}
-            </p>
+                </motion.button>
+              ))}
+            </div>
           </div>
 
-          {/* Render appropriate content based on selected category */}
-          {selectedCategory === "score-overview" ? (
-            renderScoreOverview()
-          ) : selectedCategory === "characters" ? (
-            renderGameElements()
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
-              {requirements
-                .filter(
-                  (req) => req.category.toLowerCase() === selectedCategory
-                )
-                .map((requirement) => (
-                  <motion.div
-                    key={requirement.id}
-                    className={`glass p-6 rounded-lg relative group ${
-                      requirement.is_optional
-                        ? "border border-[#f85c70]/30"
-                        : ""
-                    }`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    whileHover={{
-                      scale: 1.02,
-                      transition: { duration: 0.2 },
-                    }}
-                    style={{
-                      zIndex: hoveredRequirement === requirement.id ? 50 : 1,
-                    }}
-                  >
-                    {/* Card Background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/5 group-hover:from-[#f85c70]/10 group-hover:to-purple-500/10 transition-all duration-300" />
+          {/* Tab Description */}
+          <motion.div
+            className="glass rounded-xl p-4 mb-8"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            key={`description-${selectedCategory}`}
+          >
+            <p className="text-gray-300 font-space-grotesk text-center">
+              {categories.find((c) => c.id === selectedCategory)?.description}
+            </p>
+          </motion.div>
 
-                    {/* Header Section */}
-                    <div className="relative flex items-start justify-between mb-6">
-                      <div className="flex items-center gap-3">
-                        {/* Checkbox */}
-                        <motion.div
-                          className="relative w-10 h-10 rounded-full border-2 cursor-pointer flex items-center justify-center"
-                          variants={checkboxVariants}
-                          initial="unchecked"
-                          animate={
-                            completedRequirements.includes(requirement.id)
-                              ? "checked"
-                              : "unchecked"
-                          }
-                          whileHover="hover"
-                          whileTap="tap"
-                          onClick={() => toggleRequirement(requirement.id)}
-                        >
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 18 18"
-                            fill="none"
-                          >
-                            <motion.path
-                              d="M3.5 9.5L7 13L14.5 5.5"
-                              stroke="white"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              variants={checkmarkVariants}
+          {/* Tab Content */}
+          <div className="relative min-h-[500px]">
+            <motion.div
+              key={`tab-content-${selectedCategory}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              {selectedCategory === "score-overview" ? (
+                renderScoreOverview()
+              ) : selectedCategory === "characters" ? (
+                renderGameElements()
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
+                  {requirements
+                    .filter(
+                      (req) => req.category.toLowerCase() === selectedCategory
+                    )
+                    .map((requirement) => (
+                      <motion.div
+                        key={requirement.id}
+                        className={`glass p-6 rounded-lg relative group ${
+                          requirement.is_optional
+                            ? "border border-[#f85c70]/30"
+                            : ""
+                        }`}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        whileHover={{
+                          scale: 1.02,
+                          transition: { duration: 0.2 },
+                        }}
+                        style={{
+                          zIndex:
+                            hoveredRequirement === requirement.id ? 50 : 1,
+                        }}
+                      >
+                        {/* Card Background */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/5 group-hover:from-[#f85c70]/10 group-hover:to-purple-500/10 transition-all duration-300" />
+
+                        {/* Header Section */}
+                        <div className="relative flex items-start justify-between mb-6">
+                          <div className="flex items-center gap-3">
+                            {/* Checkbox */}
+                            <motion.div
+                              className="relative w-10 h-10 rounded-full border-2 cursor-pointer flex items-center justify-center"
+                              variants={checkboxVariants}
                               initial="unchecked"
                               animate={
                                 completedRequirements.includes(requirement.id)
                                   ? "checked"
                                   : "unchecked"
                               }
-                            />
-                          </svg>
+                              whileHover="hover"
+                              whileTap="tap"
+                              onClick={() => toggleRequirement(requirement.id)}
+                            >
+                              <svg
+                                width="18"
+                                height="18"
+                                viewBox="0 0 18 18"
+                                fill="none"
+                              >
+                                <motion.path
+                                  d="M3.5 9.5L7 13L14.5 5.5"
+                                  stroke="white"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  variants={checkmarkVariants}
+                                  initial="unchecked"
+                                  animate={
+                                    completedRequirements.includes(
+                                      requirement.id
+                                    )
+                                      ? "checked"
+                                      : "unchecked"
+                                  }
+                                />
+                              </svg>
 
-                          {/* Score Badge */}
-                          <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#f85c70]/20 flex items-center justify-center">
-                            <span className="text-[#f85c70] text-xs font-bold">
-                              {requirement.score}
-                            </span>
+                              {/* Score Badge */}
+                              <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#f85c70]/20 flex items-center justify-center">
+                                <span className="text-[#f85c70] text-xs font-bold">
+                                  {requirement.score}
+                                </span>
+                              </div>
+                            </motion.div>
+
+                            {/* Title */}
+                            <h3 className="text-xl font-orbitron text-[#f85c70] text-glow">
+                              {requirement.title}
+                            </h3>
                           </div>
-                        </motion.div>
 
-                        {/* Title */}
-                        <h3 className="text-xl font-orbitron text-[#f85c70] text-glow">
-                          {requirement.title}
-                        </h3>
-                      </div>
-
-                      {/* Optional Badge */}
-                      {requirement.is_optional && (
-                        <div className="px-2 py-1 rounded-full bg-[#f85c70]/10 text-[#f85c70] text-xs font-space-grotesk">
-                          Optional
+                          {/* Optional Badge */}
+                          {requirement.is_optional && (
+                            <div className="px-2 py-1 rounded-full bg-[#f85c70]/10 text-[#f85c70] text-xs font-space-grotesk">
+                              Optional
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
 
-                    {/* Description */}
-                    <div className="relative">
-                      <p className="text-gray-300 font-space-grotesk mb-4">
-                        {requirement.description}
-                      </p>
+                        {/* Description */}
+                        <div className="relative">
+                          <p className="text-gray-300 font-space-grotesk mb-4">
+                            {requirement.description}
+                          </p>
 
-                      {/* Translation Button Container */}
-                      <div className="absolute -top-1 right-0 group/trans">
-                        <motion.div
-                          className="w-8 h-8 rounded-full bg-gradient-to-br from-[#f85c70]/20 to-purple-500/20 
+                          {/* Translation Button Container */}
+                          <div className="absolute -top-1 right-0 group/trans">
+                            <motion.div
+                              className="w-8 h-8 rounded-full bg-gradient-to-br from-[#f85c70]/20 to-purple-500/20 
                                    flex items-center justify-center cursor-pointer backdrop-blur-sm 
                                    border border-[#f85c70]/20 shadow-lg hover:shadow-[#f85c70]/20"
-                          whileHover={{
-                            scale: 1.1,
-                            backgroundColor: "rgba(248, 92, 112, 0.3)",
-                          }}
-                          whileTap={{ scale: 0.95 }}
-                          onHoverStart={() =>
-                            setHoveredRequirement(requirement.id)
-                          }
-                          onHoverEnd={() => setHoveredRequirement(null)}
-                        >
-                          <span className="text-[#f85c70] text-sm font-nastaliq">
-                            فا
-                          </span>
-                        </motion.div>
+                              whileHover={{
+                                scale: 1.1,
+                                backgroundColor: "rgba(248, 92, 112, 0.3)",
+                              }}
+                              whileTap={{ scale: 0.95 }}
+                              onHoverStart={() =>
+                                setHoveredRequirement(requirement.id)
+                              }
+                              onHoverEnd={() => setHoveredRequirement(null)}
+                            >
+                              <span className="text-[#f85c70] text-sm font-nastaliq">
+                                فا
+                              </span>
+                            </motion.div>
 
-                        {/* Persian Tooltip */}
-                        {hoveredRequirement === requirement.id && (
+                            {/* Persian Tooltip */}
+                            {/* Persian Tooltip */}
+                            {hoveredRequirement === requirement.id && (
+                              <motion.div
+                                className="absolute w-[300px] 
+                                   bg-gradient-to-br from-black/95 to-[#18101e]/95 
+                                   backdrop-blur-md rounded-lg shadow-xl
+                                   border border-[#f85c70]/20"
+                                style={{
+                                  top: "calc(100% + 12px)",
+                                  right: "0",
+                                  zIndex: 100,
+                                }}
+                                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                transition={{
+                                  type: "spring",
+                                  stiffness: 300,
+                                  damping: 20,
+                                }}
+                              >
+                                {/* Tooltip Arrow */}
+                                <div
+                                  className="absolute -top-2 right-3 w-4 h-4 bg-gradient-to-br from-black/95 to-[#18101e]/95 
+                                        transform rotate-45 border-t border-r border-[#f85c70]/20"
+                                />
+
+                                {/* Content Container */}
+                                <div className="relative p-4">
+                                  <div
+                                    className="text-right space-y-3"
+                                    dir="rtl"
+                                  >
+                                    <motion.h4
+                                      className="text-lg font-nastaliq text-[#f85c70] leading-relaxed"
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: 0.1 }}
+                                    >
+                                      {requirement.persian_title}
+                                    </motion.h4>
+                                    <motion.p
+                                      className="text-gray-300 font-nastaliq text-base leading-relaxed"
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: 0.2 }}
+                                    >
+                                      {requirement.persian_description}
+                                    </motion.p>
+                                  </div>
+
+                                  {/* Decorative Elements */}
+                                  <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-[#f85c70]/20 to-transparent" />
+                                  <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-[#f85c70]/20 to-transparent" />
+                                </div>
+                              </motion.div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Status message for completed requirements */}
+                        {completedRequirements.includes(requirement.id) && (
                           <motion.div
-                            className="absolute w-[300px] 
-                                     bg-gradient-to-br from-black/95 to-[#18101e]/95 
-                                     backdrop-blur-md rounded-lg shadow-xl
-                                     border border-[#f85c70]/20"
-                            style={{
-                              top: "calc(100% + 12px)",
-                              right: "0",
-                              zIndex: 100,
-                            }}
-                            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            transition={{
-                              type: "spring",
-                              stiffness: 300,
-                              damping: 20,
-                            }}
+                            className="mt-4 pt-3 border-t border-[#f85c70]/20 text-center"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
                           >
-                            {/* Tooltip Arrow */}
-                            <div
-                              className="absolute -top-2 right-3 w-4 h-4 bg-gradient-to-br from-black/95 to-[#18101e]/95 
-                                          transform rotate-45 border-t border-r border-[#f85c70]/20"
-                            />
-
-                            {/* Content Container */}
-                            <div className="relative p-4">
-                              <div className="text-right space-y-3" dir="rtl">
-                                <motion.h4
-                                  className="text-lg font-nastaliq text-[#f85c70] leading-relaxed"
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: 0.1 }}
-                                >
-                                  {requirement.persian_title}
-                                </motion.h4>
-                                <motion.p
-                                  className="text-gray-300 font-nastaliq text-base leading-relaxed"
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: 0.2 }}
-                                >
-                                  {requirement.persian_description}
-                                </motion.p>
-                              </div>
-
-                              {/* Decorative Elements */}
-                              <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-[#f85c70]/20 to-transparent" />
-                              <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-[#f85c70]/20 to-transparent" />
-                            </div>
+                            <motion.span
+                              className="text-green-400 text-sm font-space-grotesk"
+                              initial={{ scale: 0.8 }}
+                              animate={{ scale: 1 }}
+                              transition={{
+                                type: "spring",
+                                stiffness: 400,
+                                damping: 10,
+                              }}
+                            >
+                              ✓ Completed
+                            </motion.span>
                           </motion.div>
                         )}
-                      </div>
-                    </div>
-
-                    {/* Status message for completed requirements */}
-                    {completedRequirements.includes(requirement.id) && (
-                      <motion.div
-                        className="mt-4 pt-3 border-t border-[#f85c70]/20 text-center"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                      >
-                        <motion.span
-                          className="text-green-400 text-sm font-space-grotesk"
-                          initial={{ scale: 0.8 }}
-                          animate={{ scale: 1 }}
-                          transition={{
-                            type: "spring",
-                            stiffness: 400,
-                            damping: 10,
-                          }}
-                        >
-                          ✓ Completed
-                        </motion.span>
                       </motion.div>
-                    )}
-                  </motion.div>
-                ))}
-            </div>
-          )}
-        </motion.div>
+                    ))}
+                </div>
+              )}
+            </motion.div>
+          </div>
+
+          {/* CSS for tab scrollbar hiding */}
+          <style jsx global>{`
+            .hide-scrollbar::-webkit-scrollbar {
+              display: none;
+            }
+            .hide-scrollbar {
+              -ms-overflow-style: none;
+              scrollbar-width: none;
+            }
+            .shadow-glow {
+              box-shadow: 0 0 15px rgba(248, 92, 112, 0.15);
+            }
+            .text-glow {
+              text-shadow: 0 0 10px rgba(248, 92, 112, 0.3);
+            }
+          `}</style>
+        </div>
       </div>
     </div>
   );
