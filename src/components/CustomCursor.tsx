@@ -8,32 +8,57 @@ const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isClicking, setIsClicking] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      setIsVisible(true);
+    // Check if device is mobile
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
     };
 
-    const handleMouseDown = () => setIsClicking(true);
-    const handleMouseUp = () => setIsClicking(false);
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
+    // Run initial check
+    checkIfMobile();
 
-    document.addEventListener("mousemove", updatePosition);
-    document.addEventListener("mousedown", handleMouseDown);
-    document.addEventListener("mouseup", handleMouseUp);
-    document.addEventListener("mouseleave", handleMouseLeave);
-    document.addEventListener("mouseenter", handleMouseEnter);
+    // Add resize listener to update when window size changes
+    window.addEventListener("resize", checkIfMobile);
+
+    // Only set up cursor events if not on mobile
+    if (!isMobile) {
+      const updatePosition = (e: MouseEvent) => {
+        setPosition({ x: e.clientX, y: e.clientY });
+        setIsVisible(true);
+      };
+
+      const handleMouseDown = () => setIsClicking(true);
+      const handleMouseUp = () => setIsClicking(false);
+      const handleMouseLeave = () => setIsVisible(false);
+      const handleMouseEnter = () => setIsVisible(true);
+
+      document.addEventListener("mousemove", updatePosition);
+      document.addEventListener("mousedown", handleMouseDown);
+      document.addEventListener("mouseup", handleMouseUp);
+      document.addEventListener("mouseleave", handleMouseLeave);
+      document.addEventListener("mouseenter", handleMouseEnter);
+
+      return () => {
+        document.removeEventListener("mousemove", updatePosition);
+        document.removeEventListener("mousedown", handleMouseDown);
+        document.removeEventListener("mouseup", handleMouseUp);
+        document.removeEventListener("mouseleave", handleMouseLeave);
+        document.removeEventListener("mouseenter", handleMouseEnter);
+        window.removeEventListener("resize", checkIfMobile);
+      };
+    }
 
     return () => {
-      document.removeEventListener("mousemove", updatePosition);
-      document.removeEventListener("mousedown", handleMouseDown);
-      document.removeEventListener("mouseup", handleMouseUp);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-      document.removeEventListener("mouseenter", handleMouseEnter);
+      window.removeEventListener("resize", checkIfMobile);
     };
-  }, []);
+  }, [isMobile]);
+
+  // Don't render anything if on mobile
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <>

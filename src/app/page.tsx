@@ -245,7 +245,7 @@ export default function Home() {
       <section id="project-overview" className="section relative py-32 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
-            Project Overview
+            Practice Overview
           </motion.h2>
           <div className="grid md:grid-cols-2 gap-12">
             <motion.div

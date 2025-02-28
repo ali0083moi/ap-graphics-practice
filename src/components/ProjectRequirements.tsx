@@ -801,7 +801,7 @@ export default function ProjectRequirements() {
                 </p>
 
                 {/* Persian Tooltip for Abilities */}
-                {hoveredRequirement === ability.id && (
+                {/* {hoveredRequirement === ability.id && (
                   <motion.div
                     className="absolute z-50 w-[300px]
                              bg-gradient-to-br from-black/95 to-[#18101e]/95 
@@ -815,16 +815,16 @@ export default function ProjectRequirements() {
                     initial={{ opacity: 0, y: -10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  >
-                    {/* Tooltip Arrow */}
-                    <div
+                  > */}
+                {/* Tooltip Arrow */}
+                {/* <div
                       className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 
                                   bg-gradient-to-br from-black/95 to-[#18101e]/95 
                                   transform rotate-45 border-t border-r border-[#f85c70]/20"
-                    />
+                    /> */}
 
-                    {/* Content Container */}
-                    <div className="relative p-4">
+                {/* Content Container */}
+                {/* <div className="relative p-4">
                       <div className="text-right" dir="rtl">
                         <motion.p
                           className="text-gray-300 font-nastaliq text-base leading-relaxed"
@@ -834,14 +834,14 @@ export default function ProjectRequirements() {
                         >
                           {ability.persian_description}
                         </motion.p>
-                      </div>
+                      </div> */}
 
-                      {/* Decorative Elements */}
-                      <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-[#f85c70]/20 to-transparent" />
+                {/* Decorative Elements */}
+                {/* <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-[#f85c70]/20 to-transparent" />
                       <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-[#f85c70]/20 to-transparent" />
                     </div>
                   </motion.div>
-                )}
+                )} */}
               </motion.div>
             ))}
           </div>
