@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import React from "react";
 
 interface Requirement {
   id: string;
@@ -34,6 +35,9 @@ interface Ability {
   description: string;
   persian_description: string;
 }
+
+// LocalStorage key for completed requirements
+const COMPLETED_REQUIREMENTS_KEY = "graphic_app_completed_requirements";
 
 const heroes: Hero[] = [
   {
@@ -670,6 +674,251 @@ export default function ProjectRequirements() {
   const [hoveredRequirement, setHoveredRequirement] = useState<string | null>(
     null
   );
+  const [completedRequirements, setCompletedRequirements] = useState<string[]>(
+    []
+  );
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  // Function to reset all saved progress
+  const resetSavedProgress = () => {
+    try {
+      localStorage.removeItem(COMPLETED_REQUIREMENTS_KEY);
+      setCompletedRequirements([]);
+      console.log("Progress reset successfully");
+    } catch (error) {
+      console.error("Error resetting progress:", error);
+    }
+  };
+
+  // Function to export progress as a JSON file
+  const exportProgress = () => {
+    try {
+      const data = JSON.stringify({
+        completedRequirements,
+        exportDate: new Date().toISOString(),
+        version: "1.0",
+      });
+
+      const blob = new Blob([data], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `project-progress-${new Date()
+        .toISOString()
+        .slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+
+      // Cleanup
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error exporting progress:", error);
+      alert("Failed to export progress. See console for details.");
+    }
+  };
+
+  // Function to import progress from a JSON file
+  const importProgress = (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const file = event.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const contents = e.target?.result as string;
+          const parsed = JSON.parse(contents);
+
+          if (Array.isArray(parsed.completedRequirements)) {
+            setCompletedRequirements(parsed.completedRequirements);
+            console.log(
+              "Progress imported successfully:",
+              parsed.completedRequirements
+            );
+          } else {
+            throw new Error(
+              "Invalid format: completedRequirements is not an array"
+            );
+          }
+        } catch (error) {
+          console.error("Error parsing import file:", error);
+          alert(
+            "Invalid file format. Please select a valid progress export file."
+          );
+        }
+      };
+
+      reader.readAsText(file);
+    } catch (error) {
+      console.error("Error importing progress:", error);
+      alert("Failed to import progress. See console for details.");
+    }
+
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  // Load completed requirements from localStorage on mount
+  useEffect(() => {
+    // Check if localStorage is available
+    const isLocalStorageAvailable = () => {
+      try {
+        const testKey = "test_storage";
+        localStorage.setItem(testKey, testKey);
+        localStorage.removeItem(testKey);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    if (!isLocalStorageAvailable()) {
+      console.error("localStorage is not available in this browser");
+      setLoadError("localStorage is not available in your browser.");
+      setDataLoaded(true);
+      return;
+    }
+
+    try {
+      console.log("Attempting to load from localStorage");
+      const savedRequirements = localStorage.getItem(
+        COMPLETED_REQUIREMENTS_KEY
+      );
+      console.log("Raw data from localStorage:", savedRequirements);
+
+      if (savedRequirements) {
+        const parsedRequirements = JSON.parse(savedRequirements);
+        console.log("Loading saved requirements:", parsedRequirements);
+        setCompletedRequirements(parsedRequirements);
+        setDataLoaded(true);
+      } else {
+        console.log("No saved requirements found in localStorage");
+        setDataLoaded(true);
+      }
+    } catch (error) {
+      console.error("Error loading saved requirements:", error);
+      setLoadError(
+        "Failed to load saved progress. Storage might be corrupted."
+      );
+      setDataLoaded(true);
+    }
+  }, []);
+
+  // Save completed requirements to localStorage when they change
+  useEffect(() => {
+    // Skip initial save on component mount
+    if (!dataLoaded) {
+      console.log("Skipping initial save, data not yet loaded");
+      return;
+    }
+
+    try {
+      console.log(
+        "Saving requirements to localStorage:",
+        completedRequirements
+      );
+      const dataToSave = JSON.stringify(completedRequirements);
+      console.log("Stringified data:", dataToSave);
+
+      localStorage.setItem(COMPLETED_REQUIREMENTS_KEY, dataToSave);
+
+      // Verify storage worked
+      const savedData = localStorage.getItem(COMPLETED_REQUIREMENTS_KEY);
+      console.log("Verification - data in localStorage:", savedData);
+
+      if (savedData !== dataToSave) {
+        console.error("Storage verification failed! Data mismatch.");
+      }
+    } catch (error) {
+      console.error("Error saving requirements:", error);
+    }
+  }, [completedRequirements, dataLoaded]);
+
+  // Toggle requirement completion
+  const toggleRequirement = (id: string) => {
+    setCompletedRequirements((prev) => {
+      const updated = prev.includes(id)
+        ? prev.filter((reqId) => reqId !== id)
+        : [...prev, id];
+
+      console.log(`Requirement ${id} toggled. Updated list:`, updated);
+      return updated;
+    });
+  };
+
+  // Calculate completed scores for a category
+  const calculateCategoryScores = (categoryId: string) => {
+    const categoryReqs = requirements.filter(
+      (req) => req.category.toLowerCase() === categoryId
+    );
+
+    const completed = categoryReqs
+      .filter((req) => completedRequirements.includes(req.id))
+      .reduce((sum, req) => sum + req.score, 0);
+
+    const total = categoryReqs.reduce((sum, req) => sum + req.score, 0);
+
+    const optionalCompleted = categoryReqs
+      .filter(
+        (req) => req.is_optional && completedRequirements.includes(req.id)
+      )
+      .reduce((sum, req) => sum + req.score, 0);
+
+    const requiredCompleted = completed - optionalCompleted;
+
+    const optionalTotal = categoryReqs
+      .filter((req) => req.is_optional)
+      .reduce((sum, req) => sum + req.score, 0);
+
+    const requiredTotal = total - optionalTotal;
+
+    return {
+      completed,
+      total,
+      optionalCompleted,
+      optionalTotal,
+      requiredCompleted,
+      requiredTotal,
+    };
+  };
+
+  // Calculate total completed scores
+  const calculateTotalScores = () => {
+    const completed = requirements
+      .filter((req) => completedRequirements.includes(req.id))
+      .reduce((sum, req) => sum + req.score, 0);
+
+    const total = requirements.reduce((sum, req) => sum + req.score, 0);
+
+    const optionalCompleted = requirements
+      .filter(
+        (req) => req.is_optional && completedRequirements.includes(req.id)
+      )
+      .reduce((sum, req) => sum + req.score, 0);
+
+    const requiredCompleted = completed - optionalCompleted;
+
+    const optionalTotal = requirements
+      .filter((req) => req.is_optional)
+      .reduce((sum, req) => sum + req.score, 0);
+
+    const requiredTotal = total - optionalTotal;
+
+    return {
+      completed,
+      total,
+      optionalCompleted,
+      optionalTotal,
+      requiredCompleted,
+      requiredTotal,
+    };
+  };
 
   const renderGameElements = () => {
     if (selectedCategory !== "characters") return null;
@@ -799,49 +1048,6 @@ export default function ProjectRequirements() {
                 <p className="text-gray-300 font-space-grotesk text-center text-sm">
                   {ability.description}
                 </p>
-
-                {/* Persian Tooltip for Abilities */}
-                {/* {hoveredRequirement === ability.id && (
-                  <motion.div
-                    className="absolute z-50 w-[300px]
-                             bg-gradient-to-br from-black/95 to-[#18101e]/95 
-                             backdrop-blur-md rounded-lg shadow-xl
-                             border border-[#f85c70]/20"
-                    style={{
-                      bottom: "-12px",
-                      left: "50%",
-                      transform: "translateX(-50%) translateY(100%)",
-                    }}
-                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  > */}
-                {/* Tooltip Arrow */}
-                {/* <div
-                      className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 
-                                  bg-gradient-to-br from-black/95 to-[#18101e]/95 
-                                  transform rotate-45 border-t border-r border-[#f85c70]/20"
-                    /> */}
-
-                {/* Content Container */}
-                {/* <div className="relative p-4">
-                      <div className="text-right" dir="rtl">
-                        <motion.p
-                          className="text-gray-300 font-nastaliq text-base leading-relaxed"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 0.1 }}
-                        >
-                          {ability.persian_description}
-                        </motion.p>
-                      </div> */}
-
-                {/* Decorative Elements */}
-                {/* <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-[#f85c70]/20 to-transparent" />
-                      <div className="absolute bottom-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-[#f85c70]/20 to-transparent" />
-                    </div>
-                  </motion.div>
-                )} */}
               </motion.div>
             ))}
           </div>
@@ -851,28 +1057,20 @@ export default function ProjectRequirements() {
   };
 
   const renderScoreOverview = () => {
-    const requiredScores = requirements
-      .filter((req) => !req.is_optional)
-      .reduce((sum, req) => sum + req.score, 0);
-    const optionalScores = requirements
-      .filter((req) => req.is_optional)
-      .reduce((sum, req) => sum + req.score, 0);
-    const totalScore = requiredScores + optionalScores;
+    const scores = calculateTotalScores();
 
     const categoryScores = categories
-      .filter((cat) => cat.id !== "score-overview")
+      .filter((cat) => cat.id !== "score-overview" && cat.id !== "characters")
       .map((category) => {
-        const reqs = requirements.filter(
-          (req) => req.category.toLowerCase() === category.id
-        );
+        const catScores = calculateCategoryScores(category.id);
         return {
           ...category,
-          required: reqs
-            .filter((req) => !req.is_optional)
-            .reduce((sum, req) => sum + req.score, 0),
-          optional: reqs
-            .filter((req) => req.is_optional)
-            .reduce((sum, req) => sum + req.score, 0),
+          required: catScores.requiredTotal,
+          requiredCompleted: catScores.requiredCompleted,
+          optional: catScores.optionalTotal,
+          optionalCompleted: catScores.optionalCompleted,
+          total: catScores.total,
+          completed: catScores.completed,
         };
       })
       .filter((cat) => cat.required > 0 || cat.optional > 0);
@@ -889,9 +1087,27 @@ export default function ProjectRequirements() {
             <h4 className="text-xl font-orbitron mb-4 text-green-400 text-center">
               Required Score
             </h4>
-            <p className="text-4xl font-space-grotesk text-center text-white">
-              {requiredScores}
-            </p>
+            <div className="flex justify-center items-center gap-2">
+              <p className="text-4xl font-space-grotesk text-center text-white">
+                {scores.requiredCompleted}
+              </p>
+              <p className="text-xl font-space-grotesk text-center text-gray-400">
+                / {scores.requiredTotal}
+              </p>
+            </div>
+            {/* Progress Bar */}
+            <div className="mt-4 h-2 bg-gray-800 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-green-500"
+                initial={{ width: 0 }}
+                animate={{
+                  width: `${
+                    (scores.requiredCompleted / scores.requiredTotal) * 100
+                  }%`,
+                }}
+                transition={{ duration: 1, ease: "easeOut" }}
+              />
+            </div>
           </motion.div>
 
           <motion.div
@@ -902,9 +1118,27 @@ export default function ProjectRequirements() {
             <h4 className="text-xl font-orbitron mb-4 text-purple-400 text-center">
               Optional Score
             </h4>
-            <p className="text-4xl font-space-grotesk text-center text-white">
-              {optionalScores}
-            </p>
+            <div className="flex justify-center items-center gap-2">
+              <p className="text-4xl font-space-grotesk text-center text-white">
+                {scores.optionalCompleted}
+              </p>
+              <p className="text-xl font-space-grotesk text-center text-gray-400">
+                / {scores.optionalTotal}
+              </p>
+            </div>
+            {/* Progress Bar */}
+            <div className="mt-4 h-2 bg-gray-800 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-purple-500"
+                initial={{ width: 0 }}
+                animate={{
+                  width: `${
+                    (scores.optionalCompleted / scores.optionalTotal) * 100
+                  }%`,
+                }}
+                transition={{ duration: 1, ease: "easeOut" }}
+              />
+            </div>
           </motion.div>
 
           <motion.div
@@ -915,9 +1149,25 @@ export default function ProjectRequirements() {
             <h4 className="text-xl font-orbitron mb-4 text-[#f85c70] text-center">
               Total Score
             </h4>
-            <p className="text-4xl font-space-grotesk text-center text-white">
-              {totalScore}
-            </p>
+            <div className="flex justify-center items-center gap-2">
+              <p className="text-4xl font-space-grotesk text-center text-white">
+                {scores.completed}
+              </p>
+              <p className="text-xl font-space-grotesk text-center text-gray-400">
+                / {scores.total}
+              </p>
+            </div>
+            {/* Progress Bar */}
+            <div className="mt-4 h-2 bg-gray-800 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-[#f85c70]"
+                initial={{ width: 0 }}
+                animate={{
+                  width: `${(scores.completed / scores.total) * 100}%`,
+                }}
+                transition={{ duration: 1, ease: "easeOut" }}
+              />
+            </div>
           </motion.div>
         </div>
 
@@ -951,15 +1201,20 @@ export default function ProjectRequirements() {
                           className="h-full bg-green-500"
                           initial={{ width: 0 }}
                           animate={{
-                            width: `${
-                              (category.required / requiredScores) * 100
-                            }%`,
+                            width:
+                              category.required > 0
+                                ? `${
+                                    (category.requiredCompleted /
+                                      category.required) *
+                                    100
+                                  }%`
+                                : "0%",
                           }}
                           transition={{ duration: 1, ease: "easeOut" }}
                         />
                       </div>
                       <span className="text-green-400 font-space-grotesk">
-                        {category.required}
+                        {category.requiredCompleted}/{category.required}
                       </span>
                     </div>
                   </div>
@@ -975,14 +1230,16 @@ export default function ProjectRequirements() {
                             initial={{ width: 0 }}
                             animate={{
                               width: `${
-                                (category.optional / optionalScores) * 100
+                                (category.optionalCompleted /
+                                  category.optional) *
+                                100
                               }%`,
                             }}
                             transition={{ duration: 1, ease: "easeOut" }}
                           />
                         </div>
                         <span className="text-purple-400 font-space-grotesk">
-                          {category.optional}
+                          {category.optionalCompleted}/{category.optional}
                         </span>
                       </div>
                     </div>
@@ -996,17 +1253,207 @@ export default function ProjectRequirements() {
     );
   };
 
+  // Checkbox animation variants
+  const checkboxVariants = {
+    unchecked: {
+      scale: 0.8,
+      opacity: 0.6,
+      backgroundColor: "rgba(30, 30, 30, 0.6)",
+      borderColor: "rgba(248, 92, 112, 0.5)",
+    },
+    checked: {
+      scale: 1,
+      opacity: 1,
+      backgroundColor: "rgba(248, 92, 112, 0.8)",
+      borderColor: "rgba(248, 92, 112, 1)",
+    },
+    hover: {
+      scale: 1.1,
+      transition: { type: "spring", stiffness: 400, damping: 10 },
+    },
+    tap: { scale: 0.9 },
+  };
+
+  // Checkmark animation variants
+  const checkmarkVariants = {
+    unchecked: { pathLength: 0, opacity: 0 },
+    checked: {
+      pathLength: 1,
+      opacity: 1,
+      transition: { duration: 0.3, ease: "easeOut" },
+    },
+  };
+
   return (
     <div className="min-h-screen py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <motion.h2
-          className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow"
+          className="text-4xl md:text-5xl font-orbitron font-bold mb-8 text-center text-glow"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
           Project Requirements
         </motion.h2>
+
+        {/* Storage Status Messages */}
+        <div className="mb-8">
+          <div className="flex justify-center items-center gap-4 mb-4">
+            {!dataLoaded ? (
+              <motion.div
+                className="px-4 py-2 rounded-lg bg-blue-500/20 text-blue-400 text-sm font-space-grotesk"
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
+              >
+                Loading saved progress...
+              </motion.div>
+            ) : loadError ? (
+              <motion.div
+                className="px-4 py-2 rounded-lg bg-red-500/20 text-red-400 text-sm font-space-grotesk flex items-center gap-2"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm0-8v6h2V7h-2z"
+                    fill="currentColor"
+                  />
+                </svg>
+                {loadError}
+              </motion.div>
+            ) : completedRequirements.length > 0 ? (
+              <motion.div
+                className="px-4 py-2 rounded-lg bg-green-500/20 text-green-400 text-sm font-space-grotesk flex items-center gap-2"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1.177-7.86l-2.765-2.767L7 12.431l3.119 3.121a1 1 0 001.414 0l5.952-5.95-1.062-1.062-5.6 5.6z"
+                    fill="currentColor"
+                  />
+                </svg>
+                Progress loaded successfully ({completedRequirements.length}{" "}
+                items completed)
+              </motion.div>
+            ) : (
+              <motion.div
+                className="px-4 py-2 rounded-lg bg-gray-500/20 text-gray-400 text-sm font-space-grotesk"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                No saved progress found. Start checking off requirements!
+              </motion.div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-center items-center gap-3 flex-wrap">
+            {/* Reset Button */}
+            {completedRequirements.length > 0 && (
+              <motion.button
+                className="px-4 py-2 rounded-lg bg-red-500/20 text-red-400 text-sm font-space-grotesk hover:bg-red-500/30 transition-colors flex items-center gap-2"
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      "Are you sure you want to reset all progress? This cannot be undone."
+                    )
+                  ) {
+                    resetSavedProgress();
+                  }
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zM9.414 8l1.414-1.414L12 7.758l1.172-1.172L14.586 8 13.414 9.172 12.242 8l-1.172 1.172L9.414 8zm-4 8l1.414-1.414L8 15.758l1.172-1.172L10.586 16 9.414 17.172 8.242 16l-1.172 1.172L5.414 16zm12 0l1.414-1.414L20 15.758l1.172-1.172L22.586 16l-1.172 1.172L20.242 16l-1.172 1.172L17.414 16z"
+                    fill="currentColor"
+                  />
+                </svg>
+                Reset Progress
+              </motion.button>
+            )}
+
+            {/* Export Button */}
+            {dataLoaded && (
+              <motion.button
+                className="px-4 py-2 rounded-lg bg-blue-500/20 text-blue-400 text-sm font-space-grotesk hover:bg-blue-500/30 transition-colors flex items-center gap-2"
+                onClick={exportProgress}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                title="Export your progress as a JSON file"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13 10h5l-6-6-6 6h5v8h2v-8zm-9 9h16v-7h2v8a1 1 0 01-1 1H3a1 1 0 01-1-1v-8h2v7z"
+                    fill="currentColor"
+                  />
+                </svg>
+                Export Progress
+              </motion.button>
+            )}
+
+            {/* Import Button */}
+            {dataLoaded && (
+              <>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={importProgress}
+                  accept=".json"
+                  className="hidden"
+                  id="import-progress-file"
+                />
+                <motion.button
+                  className="px-4 py-2 rounded-lg bg-purple-500/20 text-purple-400 text-sm font-space-grotesk hover:bg-purple-500/30 transition-colors flex items-center gap-2"
+                  onClick={() => fileInputRef.current?.click()}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  title="Import progress from a JSON file"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M13 14h5l-6 6-6-6h5V6h2v8zm-9 5h16v-7h2v8a1 1 0 01-1 1H3a1 1 0 01-1-1v-8h2v7z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Import Progress
+                </motion.button>
+              </>
+            )}
+          </div>
+        </div>
 
         {/* Category Navigation */}
         <div className="flex flex-wrap gap-3 justify-center mb-16">
@@ -1090,12 +1537,49 @@ export default function ProjectRequirements() {
                     {/* Header Section */}
                     <div className="relative flex items-start justify-between mb-6">
                       <div className="flex items-center gap-3">
-                        {/* Score Circle */}
-                        <div className="w-10 h-10 rounded-full bg-[#f85c70]/10 flex items-center justify-center">
-                          <span className="text-[#f85c70] font-space-grotesk font-bold">
-                            {requirement.score}
-                          </span>
-                        </div>
+                        {/* Checkbox */}
+                        <motion.div
+                          className="relative w-10 h-10 rounded-full border-2 cursor-pointer flex items-center justify-center"
+                          variants={checkboxVariants}
+                          initial="unchecked"
+                          animate={
+                            completedRequirements.includes(requirement.id)
+                              ? "checked"
+                              : "unchecked"
+                          }
+                          whileHover="hover"
+                          whileTap="tap"
+                          onClick={() => toggleRequirement(requirement.id)}
+                        >
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                          >
+                            <motion.path
+                              d="M3.5 9.5L7 13L14.5 5.5"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              variants={checkmarkVariants}
+                              initial="unchecked"
+                              animate={
+                                completedRequirements.includes(requirement.id)
+                                  ? "checked"
+                                  : "unchecked"
+                              }
+                            />
+                          </svg>
+
+                          {/* Score Badge */}
+                          <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#f85c70]/20 flex items-center justify-center">
+                            <span className="text-[#f85c70] text-xs font-bold">
+                              {requirement.score}
+                            </span>
+                          </div>
+                        </motion.div>
 
                         {/* Title */}
                         <h3 className="text-xl font-orbitron text-[#f85c70] text-glow">
@@ -1193,6 +1677,28 @@ export default function ProjectRequirements() {
                         )}
                       </div>
                     </div>
+
+                    {/* Status message for completed requirements */}
+                    {completedRequirements.includes(requirement.id) && (
+                      <motion.div
+                        className="mt-4 pt-3 border-t border-[#f85c70]/20 text-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                      >
+                        <motion.span
+                          className="text-green-400 text-sm font-space-grotesk"
+                          initial={{ scale: 0.8 }}
+                          animate={{ scale: 1 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 10,
+                          }}
+                        >
+                          ✓ Completed
+                        </motion.span>
+                      </motion.div>
+                    )}
                   </motion.div>
                 ))}
             </div>
