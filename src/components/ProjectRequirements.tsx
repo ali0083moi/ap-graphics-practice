@@ -641,6 +641,159 @@ const requirements: Requirement[] = [
     is_optional: false,
     category: "Gameplay",
   },
+  // Hero Implementation Requirements
+  {
+    id: "hero_implementation_shana",
+    title: "Hero Implementation - Shana",
+    persian_title: "پیاده‌سازی شخصیت شانا",
+    description: "Implement the Shana hero with proper HP and speed attributes",
+    persian_description: "پیاده‌سازی شخصیت شانا با ویژگی‌های درست HP و سرعت",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  {
+    id: "hero_implementation_diamond",
+    title: "Hero Implementation - Diamond",
+    persian_title: "پیاده‌سازی شخصیت دایموند",
+    description:
+      "Implement the Diamond hero with proper HP and speed attributes",
+    persian_description: "پیاده‌سازی شخصیت دایموند با ویژگی‌های درست HP و سرعت",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  {
+    id: "hero_implementation_scarlet",
+    title: "Hero Implementation - Scarlet",
+    persian_title: "پیاده‌سازی شخصیت اسکارلت",
+    description:
+      "Implement the Scarlet hero with proper HP and speed attributes",
+    persian_description: "پیاده‌سازی شخصیت اسکارلت با ویژگی‌های درست HP و سرعت",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  {
+    id: "hero_implementation_lilith",
+    title: "Hero Implementation - Lilith",
+    persian_title: "پیاده‌سازی شخصیت لیلیت",
+    description:
+      "Implement the Lilith hero with proper HP and speed attributes",
+    persian_description: "پیاده‌سازی شخصیت لیلیت با ویژگی‌های درست HP و سرعت",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  {
+    id: "hero_implementation_dasher",
+    title: "Hero Implementation - Dasher",
+    persian_title: "پیاده‌سازی شخصیت داشر",
+    description:
+      "Implement the Dasher hero with proper HP and speed attributes",
+    persian_description: "پیاده‌سازی شخصیت داشر با ویژگی‌های درست HP و سرعت",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  // Weapon Implementation Requirements
+  {
+    id: "weapon_implementation_revolver",
+    title: "Weapon Implementation - Revolver",
+    persian_title: "پیاده‌سازی سلاح رولور",
+    description:
+      "Implement the Revolver weapon with proper damage, projectile, reload time, and max ammo attributes",
+    persian_description:
+      "پیاده‌سازی سلاح رولور با ویژگی‌های درست دمیج، تعداد پرتابه، زمان ریلود و ماکزیمم مهمات",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  {
+    id: "weapon_implementation_shotgun",
+    title: "Weapon Implementation - Shotgun",
+    persian_title: "پیاده‌سازی سلاح شاتگان",
+    description:
+      "Implement the Shotgun weapon with proper damage, projectile, reload time, and max ammo attributes",
+    persian_description:
+      "پیاده‌سازی سلاح شاتگان با ویژگی‌های درست دمیج، تعداد پرتابه، زمان ریلود و ماکزیمم مهمات",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  {
+    id: "weapon_implementation_dual_smgs",
+    title: "Weapon Implementation - Dual SMGs",
+    persian_title: "پیاده‌سازی سلاح دوتایی SMG",
+    description:
+      "Implement the Dual SMGs weapon with proper damage, projectile, reload time, and max ammo attributes",
+    persian_description:
+      "پیاده‌سازی سلاح دوتایی SMG با ویژگی‌های درست دمیج، تعداد پرتابه، زمان ریلود و ماکزیمم مهمات",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  // Ability Implementation Requirements
+  {
+    id: "ability_implementation_witality",
+    title: "Ability Implementation - Witality",
+    persian_title: "پیاده‌سازی قابلیت ویتالیتی",
+    description:
+      "Implement the Witality ability to increase maximum HP by 1 unit",
+    persian_description:
+      "پیاده‌سازی قابلیت ویتالیتی برای افزایش ماکزیمم HP به اندازه یک واحد",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  {
+    id: "ability_implementation_damager",
+    title: "Ability Implementation - Damager",
+    persian_title: "پیاده‌سازی قابلیت دمیجر",
+    description:
+      "Implement the Damager ability to increase weapon damage by 25% for 10 seconds",
+    persian_description:
+      "پیاده‌سازی قابلیت دمیجر برای افزایش ۲۵ درصدی میزان دمیج سلاح به مدت ۱۰ ثانیه",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  {
+    id: "ability_implementation_procrease",
+    title: "Ability Implementation - Procrease",
+    persian_title: "پیاده‌سازی قابلیت پروکریس",
+    description:
+      "Implement the Procrease ability to increase weapon projectile count by 1",
+    persian_description:
+      "پیاده‌سازی قابلیت پروکریس برای افزایش یک واحدی projectile سلاح",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  {
+    id: "ability_implementation_amocrease",
+    title: "Ability Implementation - Amocrease",
+    persian_title: "پیاده‌سازی قابلیت آموکریس",
+    description:
+      "Implement the Amocrease ability to increase maximum ammo by 5",
+    persian_description:
+      "پیاده‌سازی قابلیت آموکریس برای افزایش ۵ واحدی حداکثر تعداد تیر های سلاح",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
+  {
+    id: "ability_implementation_speedy",
+    title: "Ability Implementation - Speedy",
+    persian_title: "پیاده‌سازی قابلیت اسپیدی",
+    description:
+      "Implement the Speedy ability to double movement speed for 10 seconds",
+    persian_description:
+      "پیاده‌سازی قابلیت اسپیدی برای ۲ برابر کردن سرعت حرکت بازیکن به مدت ۱۰ ثانیه",
+    score: 5,
+    is_optional: false,
+    category: "characters",
+  },
 ];
 
 const categories = [
@@ -1080,6 +1233,108 @@ export default function ProjectRequirements() {
               </motion.div>
             ))}
           </div>
+
+          {/* Hero Implementation Requirements */}
+          <div className="mt-12">
+            <motion.h4
+              className="text-2xl font-orbitron text-[#f85c70] mb-6 text-center"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              Hero Implementation Requirements
+            </motion.h4>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {requirements
+                .filter(
+                  (req) =>
+                    req.category.toLowerCase() === "characters" &&
+                    req.id.startsWith("hero_implementation_")
+                )
+                .map((requirement) => (
+                  <motion.div
+                    key={requirement.id}
+                    className="glass p-6 rounded-lg relative group"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{
+                      scale: 1.02,
+                      transition: { duration: 0.2 },
+                    }}
+                    style={{
+                      zIndex: hoveredRequirement === requirement.id ? 50 : 1,
+                    }}
+                  >
+                    {/* Card Background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/5 group-hover:from-[#f85c70]/10 group-hover:to-purple-500/10 transition-all duration-300" />
+
+                    {/* Header Section */}
+                    <div className="relative flex items-start justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        {/* Checkbox */}
+                        <motion.div
+                          className="relative w-10 h-10 rounded-full border-2 cursor-pointer flex items-center justify-center"
+                          variants={checkboxVariants}
+                          initial="unchecked"
+                          animate={
+                            completedRequirements.includes(requirement.id)
+                              ? "checked"
+                              : "unchecked"
+                          }
+                          whileHover="hover"
+                          whileTap="tap"
+                          onClick={() => toggleRequirement(requirement.id)}
+                        >
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                          >
+                            <motion.path
+                              d="M3.5 9.5L7 13L14.5 5.5"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              variants={checkmarkVariants}
+                              initial="unchecked"
+                              animate={
+                                completedRequirements.includes(requirement.id)
+                                  ? "checked"
+                                  : "unchecked"
+                              }
+                            />
+                          </svg>
+
+                          {/* Score Badge */}
+                          <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#f85c70]/20 flex items-center justify-center">
+                            <span className="text-[#f85c70] text-xs font-bold">
+                              {requirement.score}
+                            </span>
+                          </div>
+                        </motion.div>
+
+                        {/* Title */}
+                        <h3 className="text-lg text-white font-space-grotesk">
+                          {requirement.title}
+                        </h3>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <div className="pl-12">
+                      <p className="text-gray-300 text-sm mb-2">
+                        {requirement.description}
+                      </p>
+                      <p className="text-[#f85c70] text-sm" dir="rtl">
+                        {requirement.persian_description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+            </div>
+          </div>
         </div>
 
         {/* Weapons Section */}
@@ -1236,6 +1491,108 @@ export default function ProjectRequirements() {
               </motion.div>
             ))}
           </div>
+
+          {/* Weapon Implementation Requirements */}
+          <div className="mt-12">
+            <motion.h4
+              className="text-2xl font-orbitron text-[#f85c70] mb-6 text-center"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              Weapon Implementation Requirements
+            </motion.h4>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {requirements
+                .filter(
+                  (req) =>
+                    req.category.toLowerCase() === "characters" &&
+                    req.id.startsWith("weapon_implementation_")
+                )
+                .map((requirement) => (
+                  <motion.div
+                    key={requirement.id}
+                    className="glass p-6 rounded-lg relative group"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{
+                      scale: 1.02,
+                      transition: { duration: 0.2 },
+                    }}
+                    style={{
+                      zIndex: hoveredRequirement === requirement.id ? 50 : 1,
+                    }}
+                  >
+                    {/* Card Background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/5 group-hover:from-[#f85c70]/10 group-hover:to-purple-500/10 transition-all duration-300" />
+
+                    {/* Header Section */}
+                    <div className="relative flex items-start justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        {/* Checkbox */}
+                        <motion.div
+                          className="relative w-10 h-10 rounded-full border-2 cursor-pointer flex items-center justify-center"
+                          variants={checkboxVariants}
+                          initial="unchecked"
+                          animate={
+                            completedRequirements.includes(requirement.id)
+                              ? "checked"
+                              : "unchecked"
+                          }
+                          whileHover="hover"
+                          whileTap="tap"
+                          onClick={() => toggleRequirement(requirement.id)}
+                        >
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                          >
+                            <motion.path
+                              d="M3.5 9.5L7 13L14.5 5.5"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              variants={checkmarkVariants}
+                              initial="unchecked"
+                              animate={
+                                completedRequirements.includes(requirement.id)
+                                  ? "checked"
+                                  : "unchecked"
+                              }
+                            />
+                          </svg>
+
+                          {/* Score Badge */}
+                          <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#f85c70]/20 flex items-center justify-center">
+                            <span className="text-[#f85c70] text-xs font-bold">
+                              {requirement.score}
+                            </span>
+                          </div>
+                        </motion.div>
+
+                        {/* Title */}
+                        <h3 className="text-lg text-white font-space-grotesk">
+                          {requirement.title}
+                        </h3>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <div className="pl-12">
+                      <p className="text-gray-300 text-sm mb-2">
+                        {requirement.description}
+                      </p>
+                      <p className="text-[#f85c70] text-sm" dir="rtl">
+                        {requirement.persian_description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+            </div>
+          </div>
         </div>
 
         {/* Abilities Section */}
@@ -1318,6 +1675,108 @@ export default function ProjectRequirements() {
               </motion.div>
             ))}
           </div>
+
+          {/* Ability Implementation Requirements */}
+          <div className="mt-12">
+            <motion.h4
+              className="text-2xl font-orbitron text-[#f85c70] mb-6 text-center"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              Ability Implementation Requirements
+            </motion.h4>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {requirements
+                .filter(
+                  (req) =>
+                    req.category.toLowerCase() === "characters" &&
+                    req.id.startsWith("ability_implementation_")
+                )
+                .map((requirement) => (
+                  <motion.div
+                    key={requirement.id}
+                    className="glass p-6 rounded-lg relative group"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    whileHover={{
+                      scale: 1.02,
+                      transition: { duration: 0.2 },
+                    }}
+                    style={{
+                      zIndex: hoveredRequirement === requirement.id ? 50 : 1,
+                    }}
+                  >
+                    {/* Card Background */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/5 group-hover:from-[#f85c70]/10 group-hover:to-purple-500/10 transition-all duration-300" />
+
+                    {/* Header Section */}
+                    <div className="relative flex items-start justify-between mb-6">
+                      <div className="flex items-center gap-3">
+                        {/* Checkbox */}
+                        <motion.div
+                          className="relative w-10 h-10 rounded-full border-2 cursor-pointer flex items-center justify-center"
+                          variants={checkboxVariants}
+                          initial="unchecked"
+                          animate={
+                            completedRequirements.includes(requirement.id)
+                              ? "checked"
+                              : "unchecked"
+                          }
+                          whileHover="hover"
+                          whileTap="tap"
+                          onClick={() => toggleRequirement(requirement.id)}
+                        >
+                          <svg
+                            width="18"
+                            height="18"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                          >
+                            <motion.path
+                              d="M3.5 9.5L7 13L14.5 5.5"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              variants={checkmarkVariants}
+                              initial="unchecked"
+                              animate={
+                                completedRequirements.includes(requirement.id)
+                                  ? "checked"
+                                  : "unchecked"
+                              }
+                            />
+                          </svg>
+
+                          {/* Score Badge */}
+                          <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#f85c70]/20 flex items-center justify-center">
+                            <span className="text-[#f85c70] text-xs font-bold">
+                              {requirement.score}
+                            </span>
+                          </div>
+                        </motion.div>
+
+                        {/* Title */}
+                        <h3 className="text-lg text-white font-space-grotesk">
+                          {requirement.title}
+                        </h3>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <div className="pl-12">
+                      <p className="text-gray-300 text-sm mb-2">
+                        {requirement.description}
+                      </p>
+                      <p className="text-[#f85c70] text-sm" dir="rtl">
+                        {requirement.persian_description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -1327,7 +1786,7 @@ export default function ProjectRequirements() {
     const scores = calculateTotalScores();
 
     const categoryScores = categories
-      .filter((cat) => cat.id !== "score-overview" && cat.id !== "characters")
+      .filter((cat) => cat.id !== "score-overview")
       .map((category) => {
         const catScores = calculateCategoryScores(category.id);
         return {
