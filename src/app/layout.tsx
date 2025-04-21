@@ -1,18 +1,9 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Orbitron } from "next/font/google";
 import "./globals.css";
+import "./fonts.css"; // Import the font CSS
 import ClientLayout from "@/components/ClientLayout";
 import { RequirementsProvider } from "@/context/RequirementsContext";
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
-});
-
-const orbitron = Orbitron({
-  variable: "--font-orbitron",
-  subsets: ["latin"],
-});
+import { lanternFont, expressFont, inter } from "./fonts";
 
 export const metadata: Metadata = {
   title: "20 Minutes Till Dawn - AP Project",
@@ -33,8 +24,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <style>{`
+          /* Ensure fonts are properly loaded */
+          @font-face {
+            font-family: 'Lantern';
+            src: url('/fonts/ChevyRay - Lantern.ttf') format('truetype');
+            font-display: swap;
+          }
+          
+          @font-face {
+            font-family: 'Express';
+            src: url('/fonts/ChevyRay - Express.ttf') format('truetype');
+            font-display: swap;
+          }
+        `}</style>
+      </head>
       <body
-        className={`${spaceGrotesk.variable} ${orbitron.variable} bg-black text-white antialiased overflow-x-hidden`}
+        className={`${inter.variable} ${lanternFont.variable} ${expressFont.variable} bg-black text-white antialiased overflow-x-hidden`}
       >
         <RequirementsProvider>
           <ClientLayout>{children}</ClientLayout>

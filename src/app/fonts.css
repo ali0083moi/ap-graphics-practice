@@ -1,0 +1,77 @@
+/* Font face declarations for pixel art fonts */
+@font-face {
+  font-family: "Lantern";
+  src: url("/fonts/ChevyRay - Lantern.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Express";
+  src: url("/fonts/ChevyRay - Express.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Override classes to ensure the fonts are applied correctly */
+.font-orbitron {
+  font-family: var(--font-lantern), monospace !important;
+  letter-spacing: 0.05em;
+  text-rendering: optimizeSpeed;
+}
+
+.font-space-grotesk {
+  font-family: var(--font-express), monospace !important;
+  letter-spacing: 0.02em;
+  text-rendering: optimizeSpeed;
+}
+
+/* Add classes for direct access to the fonts */
+.font-lantern {
+  font-family: var(--font-lantern), monospace !important;
+  letter-spacing: 0.05em;
+  text-rendering: optimizeSpeed;
+}
+
+.font-express {
+  font-family: var(--font-express), monospace !important;
+  letter-spacing: 0.02em;
+  text-rendering: optimizeSpeed;
+}
+
+/* Pixel-perfect rendering for pixel fonts */
+.pixel-text {
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Make headings use the Lantern font explicitly */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-lantern), "Lantern", monospace;
+  letter-spacing: 0.05em;
+}
+
+/* Make body text use the Express font explicitly */
+body,
+p,
+span,
+div,
+button {
+  font-family: var(--font-express), "Express", monospace;
+  letter-spacing: 0.02em;
+}
+
+/* Pixel art styling - prevents anti-aliasing for pixel-perfect display */
+.pixel-art {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
