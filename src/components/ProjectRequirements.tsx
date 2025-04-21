@@ -74,123 +74,123 @@ interface Ability {
 // LocalStorage key for completed requirements
 const COMPLETED_REQUIREMENTS_KEY = "graphic_app_completed_requirements";
 
-const heroes: Hero[] = [
-  {
-    id: "shana",
-    name: "SHANA",
-    hp: 4,
-    speed: 4,
-  },
-  {
-    id: "diamond",
-    name: "DIAMOND",
-    hp: 7,
-    speed: 1,
-  },
-  {
-    id: "scarlet",
-    name: "SCARLET",
-    hp: 3,
-    speed: 5,
-  },
-  {
-    id: "lilith",
-    name: "LILITH",
-    hp: 5,
-    speed: 3,
-  },
-  {
-    id: "dasher",
-    name: "DASHER",
-    hp: 2,
-    speed: 10,
-  },
-];
+// const heroes: Hero[] = [
+//   {
+//     id: "shana",
+//     name: "SHANA",
+//     hp: 4,
+//     speed: 4,
+//   },
+//   {
+//     id: "diamond",
+//     name: "DIAMOND",
+//     hp: 7,
+//     speed: 1,
+//   },
+//   {
+//     id: "scarlet",
+//     name: "SCARLET",
+//     hp: 3,
+//     speed: 5,
+//   },
+//   {
+//     id: "lilith",
+//     name: "LILITH",
+//     hp: 5,
+//     speed: 3,
+//   },
+//   {
+//     id: "dasher",
+//     name: "DASHER",
+//     hp: 2,
+//     speed: 10,
+//   },
+// ];
 
-const weapons: Weapon[] = [
-  {
-    id: "revolver",
-    name: "Revolver",
-    damage: 20,
-    projectile: 1,
-    reload_time: 1,
-    max_ammo: 6,
-  },
-  {
-    id: "shotgun",
-    name: "Shotgun",
-    damage: 10,
-    projectile: 4,
-    reload_time: 1,
-    max_ammo: 2,
-  },
-  {
-    id: "dual_smgs",
-    name: "Dual SMGs",
-    damage: 8,
-    projectile: 1,
-    reload_time: 2,
-    max_ammo: 24,
-  },
-];
+// const weapons: Weapon[] = [
+//   {
+//     id: "revolver",
+//     name: "Revolver",
+//     damage: 20,
+//     projectile: 1,
+//     reload_time: 1,
+//     max_ammo: 6,
+//   },
+//   {
+//     id: "shotgun",
+//     name: "Shotgun",
+//     damage: 10,
+//     projectile: 4,
+//     reload_time: 1,
+//     max_ammo: 2,
+//   },
+//   {
+//     id: "dual_smgs",
+//     name: "Dual SMGs",
+//     damage: 8,
+//     projectile: 1,
+//     reload_time: 2,
+//     max_ammo: 24,
+//   },
+// ];
 
-const abilities: Ability[] = [
-  {
-    id: "witality",
-    name: "WITALITY",
-    description: "Increase maximum HP by 1 unit",
-    persian_description: "افزایش ماکسیمم hp به اندازه یک واحد",
-  },
-  {
-    id: "damager",
-    name: "DAMAGER",
-    description: "Increase weapon damage by 25% for 10 seconds",
-    persian_description: "افزایش ۲۵ درصدی میزان دمیج سلاح به مدت ۱۰ ثانیه",
-  },
-  {
-    id: "procrease",
-    name: "PROCREASE",
-    description: "Increase weapon projectile count by 1",
-    persian_description: "افزایش یک واحدی projectile سلاح",
-  },
-  {
-    id: "amocrease",
-    name: "AMOCREASE",
-    description: "Increase maximum ammo by 5",
-    persian_description: "افزایش ۵ واحدی حداکثر تعداد تیر های سلاح",
-  },
-  {
-    id: "speedy",
-    name: "SPEEDY",
-    description: "Double movement speed for 10 seconds",
-    persian_description: "۲ برابر شدن سرعت حرکت بازیکن به مدت ۱۰ ثانیه",
-  },
-];
+// const abilities: Ability[] = [
+//   {
+//     id: "witality",
+//     name: "WITALITY",
+//     description: "Increase maximum HP by 1 unit",
+//     persian_description: "افزایش ماکسیمم hp به اندازه یک واحد",
+//   },
+//   {
+//     id: "damager",
+//     name: "DAMAGER",
+//     description: "Increase weapon damage by 25% for 10 seconds",
+//     persian_description: "افزایش ۲۵ درصدی میزان دمیج سلاح به مدت ۱۰ ثانیه",
+//   },
+//   {
+//     id: "procrease",
+//     name: "PROCREASE",
+//     description: "Increase weapon projectile count by 1",
+//     persian_description: "افزایش یک واحدی projectile سلاح",
+//   },
+//   {
+//     id: "amocrease",
+//     name: "AMOCREASE",
+//     description: "Increase maximum ammo by 5",
+//     persian_description: "افزایش ۵ واحدی حداکثر تعداد تیر های سلاح",
+//   },
+//   {
+//     id: "speedy",
+//     name: "SPEEDY",
+//     description: "Double movement speed for 10 seconds",
+//     persian_description: "۲ برابر شدن سرعت حرکت بازیکن به مدت ۱۰ ثانیه",
+//   },
+// ];
 
-// Add hero avatar images - you can replace these with better images for your project
-const heroImages = {
-  shana: "https://i.imgur.com/JQ5kAUX.png", // Female character with red theme
-  diamond: "https://i.imgur.com/VZRR6Ww.png", // Heavy armored character
-  scarlet: "https://i.imgur.com/8FTHvll.png", // Fast female character
-  lilith: "https://i.imgur.com/Yl7sx3H.png", // Magic wielder female character
-  dasher: "https://i.imgur.com/3kskAJH.png", // Quick male character
-};
+// // Add hero avatar images - you can replace these with better images for your project
+// const heroImages = {
+//   shana: "https://i.imgur.com/JQ5kAUX.png", // Female character with red theme
+//   diamond: "https://i.imgur.com/VZRR6Ww.png", // Heavy armored character
+//   scarlet: "https://i.imgur.com/8FTHvll.png", // Fast female character
+//   lilith: "https://i.imgur.com/Yl7sx3H.png", // Magic wielder female character
+//   dasher: "https://i.imgur.com/3kskAJH.png", // Quick male character
+// };
 
-// Add weapon images
-const weaponImages = {
-  revolver: "https://i.imgur.com/N1QkBik.png",
-  shotgun: "https://i.imgur.com/rLIClmu.png",
-  dual_smgs: "https://i.imgur.com/NvRoSw8.png",
-};
+// // Add weapon images
+// const weaponImages = {
+//   revolver: "https://i.imgur.com/N1QkBik.png",
+//   shotgun: "https://i.imgur.com/rLIClmu.png",
+//   dual_smgs: "https://i.imgur.com/NvRoSw8.png",
+// };
 
-// Add ability icons - using appropriate icon components
-const abilityIcons = {
-  witality: <RiHeartPulseFill className="text-green-400 text-3xl" />,
-  damager: <FaFire className="text-red-400 text-3xl" />,
-  procrease: <FaBolt className="text-yellow-400 text-3xl" />,
-  amocrease: <FaBomb className="text-purple-400 text-3xl" />,
-  speedy: <RiSpeedFill className="text-blue-400 text-3xl" />,
-};
+// // Add ability icons - using appropriate icon components
+// const abilityIcons = {
+//   witality: <RiHeartPulseFill className="text-green-400 text-3xl" />,
+//   damager: <FaFire className="text-red-400 text-3xl" />,
+//   procrease: <FaBolt className="text-yellow-400 text-3xl" />,
+//   amocrease: <FaBomb className="text-purple-400 text-3xl" />,
+//   speedy: <RiSpeedFill className="text-blue-400 text-3xl" />,
+// };
 
 const requirements: Requirement[] = [
   // signup Requirements
@@ -1096,665 +1096,11 @@ export default function ProjectRequirements() {
     };
   };
 
-  const renderGameElements = () => {
-    if (selectedCategory !== "characters") return null;
+  // const renderGameElements = () => {
+  //   if (selectedCategory !== "characters") return null;
 
-    return (
-      <div className="space-y-16">
-        {/* Heroes Section */}
-        <div>
-          <motion.h3
-            className="text-3xl font-orbitron text-[#f85c70] mb-12 text-center"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            Heroes
-          </motion.h3>
-          <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-8">
-            {heroes.map((hero) => (
-              <motion.div
-                key={hero.id}
-                className="glass rounded-xl relative overflow-hidden group h-[300px]"
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.5,
-                  delay: 0.1 * heroes.findIndex((h) => h.id === hero.id),
-                }}
-              >
-                {/* Background Gradient */}
-                <div className="absolute inset-0 bg-transparent" />
-
-                {/* Hero Image */}
-                <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-                  <motion.img
-                    src={heroImages[hero.id as keyof typeof heroImages]}
-                    alt={hero.name}
-                    className="h-full w-full object-cover object-center filter"
-                    initial={{ scale: 1.2 }}
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.5 }}
-                  />
-
-                  {/* Overlay on Hover */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-
-                {/* Hero Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-                  <motion.h4
-                    className="text-2xl font-orbitron text-white mb-2 text-center drop-shadow-glow"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                  >
-                    {hero.name}
-                  </motion.h4>
-
-                  {/* Stats */}
-                  <div className="space-y-3 mt-4">
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <FaHeart className="text-red-500" />
-                        <span className="text-gray-200 font-space-grotesk text-sm">
-                          HP
-                        </span>
-                      </div>
-                      <div className="flex gap-1">
-                        {[...Array(hero.hp)].map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className="w-2 h-6 bg-gradient-to-t from-red-700 to-red-400 rounded-sm"
-                            initial={{ height: 0 }}
-                            animate={{ height: 6 + i * 1.2 }}
-                            transition={{
-                              delay: 0.5 + i * 0.05,
-                              duration: 0.4,
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <FaRunning className="text-blue-500" />
-                        <span className="text-gray-200 font-space-grotesk text-sm">
-                          Speed
-                        </span>
-                      </div>
-                      <div className="flex gap-1">
-                        {[...Array(hero.speed)].map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className="w-2 h-6 bg-gradient-to-t from-blue-700 to-blue-400 rounded-sm"
-                            initial={{ height: 0 }}
-                            animate={{ height: 6 + i * 0.6 }}
-                            transition={{
-                              delay: 0.7 + i * 0.02,
-                              duration: 0.4,
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Hero Glow Effect */}
-                <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#f85c70] to-transparent opacity-70" />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Hero Implementation Requirements */}
-          <div className="mt-12">
-            <motion.h4
-              className="text-2xl font-orbitron text-[#f85c70] mb-6 text-center"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              Hero Implementation Requirements
-            </motion.h4>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {requirements
-                .filter(
-                  (req) =>
-                    req.category.toLowerCase() === "characters" &&
-                    req.id.startsWith("hero_implementation_")
-                )
-                .map((requirement) => (
-                  <motion.div
-                    key={requirement.id}
-                    className="glass p-6 rounded-lg relative group"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    whileHover={{
-                      scale: 1.02,
-                      transition: { duration: 0.2 },
-                    }}
-                    style={{
-                      zIndex: hoveredRequirement === requirement.id ? 50 : 1,
-                    }}
-                  >
-                    {/* Card Background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/5 group-hover:from-[#f85c70]/10 group-hover:to-purple-500/10 transition-all duration-300" />
-
-                    {/* Header Section */}
-                    <div className="relative flex items-start justify-between mb-6">
-                      <div className="flex items-center gap-3">
-                        {/* Checkbox */}
-                        <motion.div
-                          className="relative w-10 h-10 rounded-full border-2 cursor-pointer flex items-center justify-center"
-                          variants={checkboxVariants}
-                          initial="unchecked"
-                          animate={
-                            completedRequirements.includes(requirement.id)
-                              ? "checked"
-                              : "unchecked"
-                          }
-                          whileHover="hover"
-                          whileTap="tap"
-                          onClick={() => toggleRequirement(requirement.id)}
-                        >
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 18 18"
-                            fill="none"
-                          >
-                            <motion.path
-                              d="M3.5 9.5L7 13L14.5 5.5"
-                              stroke="white"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              variants={checkmarkVariants}
-                              initial="unchecked"
-                              animate={
-                                completedRequirements.includes(requirement.id)
-                                  ? "checked"
-                                  : "unchecked"
-                              }
-                            />
-                          </svg>
-
-                          {/* Score Badge */}
-                          <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#f85c70]/20 flex items-center justify-center">
-                            <span className="text-[#f85c70] text-xs font-bold">
-                              {requirement.score}
-                            </span>
-                          </div>
-                        </motion.div>
-
-                        {/* Title */}
-                        <h3 className="text-lg text-white font-space-grotesk">
-                          {requirement.title}
-                        </h3>
-                      </div>
-                    </div>
-
-                    {/* Description */}
-                    <div className="pl-12">
-                      <p className="text-gray-300 text-sm mb-2">
-                        {requirement.description}
-                      </p>
-                      <p className="text-[#f85c70] text-sm" dir="rtl">
-                        {requirement.persian_description}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Weapons Section */}
-        <div>
-          <motion.h3
-            className="text-3xl font-orbitron text-[#f85c70] mb-12 text-center"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            Weapons
-          </motion.h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            {weapons.map((weapon, index) => (
-              <motion.div
-                key={weapon.id}
-                className="glass p-8 rounded-xl relative overflow-hidden group"
-                whileHover={{
-                  y: -5,
-                  boxShadow:
-                    "0 20px 25px -5px rgba(248, 92, 112, 0.1), 0 10px 10px -5px rgba(248, 92, 112, 0.04)",
-                }}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 * index }}
-              >
-                {/* Weapon Background Effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/10 opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
-
-                {/* Weapon Image and Name */}
-                <div className="flex flex-col items-center justify-center mb-6 relative">
-                  <motion.div
-                    className="w-24 h-24 mb-4 relative"
-                    whileHover={{ rotate: 5, scale: 1.05 }}
-                  >
-                    <img
-                      src={weaponImages[weapon.id as keyof typeof weaponImages]}
-                      alt={weapon.name}
-                      className="w-full h-full object-contain drop-shadow-[0_0_8px_rgba(248,92,112,0.5)]"
-                    />
-                  </motion.div>
-
-                  <h4 className="text-2xl font-orbitron text-[#f85c70] relative">
-                    {weapon.name}
-                    <div className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#f85c70] to-transparent opacity-70" />
-                  </h4>
-                </div>
-
-                {/* Weapon Stats */}
-                <div className="space-y-4 mt-6">
-                  <motion.div
-                    className="flex justify-between items-center"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <GiSwordWound className="text-red-500" />
-                      <span className="text-gray-400 font-space-grotesk">
-                        Damage
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-32 h-2 bg-gray-800 rounded-full overflow-hidden">
-                        <motion.div
-                          className="h-full bg-gradient-to-r from-red-600 to-red-400"
-                          initial={{ width: 0 }}
-                          animate={{ width: `${(weapon.damage / 20) * 100}%` }}
-                          transition={{ duration: 1, delay: 0.5 }}
-                        />
-                      </div>
-                      <span className="text-white font-space-grotesk ml-2 min-w-[30px] text-right">
-                        {weapon.damage}
-                      </span>
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    className="flex justify-between items-center"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.4 }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <FaBullseye className="text-yellow-500" />
-                      <span className="text-gray-400 font-space-grotesk">
-                        Projectiles
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="flex gap-1">
-                        {[...Array(weapon.projectile)].map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className="w-4 h-4 rounded-full bg-yellow-500"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: 0.6 + i * 0.1 }}
-                          />
-                        ))}
-                      </div>
-                      <span className="text-white font-space-grotesk ml-2 min-w-[30px] text-right">
-                        {weapon.projectile}
-                      </span>
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    className="flex justify-between items-center"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <RiTimerFlashFill className="text-blue-500" />
-                      <span className="text-gray-400 font-space-grotesk">
-                        Reload Time
-                      </span>
-                    </div>
-                    <span className="text-white font-space-grotesk">
-                      {weapon.reload_time}s
-                    </span>
-                  </motion.div>
-
-                  <motion.div
-                    className="flex justify-between items-center"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <RiShieldFlashFill className="text-purple-500" />
-                      <span className="text-gray-400 font-space-grotesk">
-                        Max Ammo
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-32 h-2 bg-gray-800 rounded-full overflow-hidden">
-                        <motion.div
-                          className="h-full bg-gradient-to-r from-purple-600 to-purple-400"
-                          initial={{ width: 0 }}
-                          animate={{
-                            width: `${(weapon.max_ammo / 24) * 100}%`,
-                          }}
-                          transition={{ duration: 1, delay: 0.7 }}
-                        />
-                      </div>
-                      <span className="text-white font-space-grotesk ml-2 min-w-[30px] text-right">
-                        {weapon.max_ammo}
-                      </span>
-                    </div>
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Weapon Implementation Requirements */}
-          <div className="mt-12">
-            <motion.h4
-              className="text-2xl font-orbitron text-[#f85c70] mb-6 text-center"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              Weapon Implementation Requirements
-            </motion.h4>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {requirements
-                .filter(
-                  (req) =>
-                    req.category.toLowerCase() === "characters" &&
-                    req.id.startsWith("weapon_implementation_")
-                )
-                .map((requirement) => (
-                  <motion.div
-                    key={requirement.id}
-                    className="glass p-6 rounded-lg relative group"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    whileHover={{
-                      scale: 1.02,
-                      transition: { duration: 0.2 },
-                    }}
-                    style={{
-                      zIndex: hoveredRequirement === requirement.id ? 50 : 1,
-                    }}
-                  >
-                    {/* Card Background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/5 group-hover:from-[#f85c70]/10 group-hover:to-purple-500/10 transition-all duration-300" />
-
-                    {/* Header Section */}
-                    <div className="relative flex items-start justify-between mb-6">
-                      <div className="flex items-center gap-3">
-                        {/* Checkbox */}
-                        <motion.div
-                          className="relative w-10 h-10 rounded-full border-2 cursor-pointer flex items-center justify-center"
-                          variants={checkboxVariants}
-                          initial="unchecked"
-                          animate={
-                            completedRequirements.includes(requirement.id)
-                              ? "checked"
-                              : "unchecked"
-                          }
-                          whileHover="hover"
-                          whileTap="tap"
-                          onClick={() => toggleRequirement(requirement.id)}
-                        >
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 18 18"
-                            fill="none"
-                          >
-                            <motion.path
-                              d="M3.5 9.5L7 13L14.5 5.5"
-                              stroke="white"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              variants={checkmarkVariants}
-                              initial="unchecked"
-                              animate={
-                                completedRequirements.includes(requirement.id)
-                                  ? "checked"
-                                  : "unchecked"
-                              }
-                            />
-                          </svg>
-
-                          {/* Score Badge */}
-                          <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#f85c70]/20 flex items-center justify-center">
-                            <span className="text-[#f85c70] text-xs font-bold">
-                              {requirement.score}
-                            </span>
-                          </div>
-                        </motion.div>
-
-                        {/* Title */}
-                        <h3 className="text-lg text-white font-space-grotesk">
-                          {requirement.title}
-                        </h3>
-                      </div>
-                    </div>
-
-                    {/* Description */}
-                    <div className="pl-12">
-                      <p className="text-gray-300 text-sm mb-2">
-                        {requirement.description}
-                      </p>
-                      <p className="text-[#f85c70] text-sm" dir="rtl">
-                        {requirement.persian_description}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Abilities Section */}
-        <div>
-          <motion.h3
-            className="text-3xl font-orbitron text-[#f85c70] mb-12 text-center"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            Abilities
-          </motion.h3>
-          <div className="grid md:grid-cols-5 gap-6">
-            {abilities.map((ability, idx) => (
-              <motion.div
-                key={ability.id}
-                className="glass rounded-lg relative overflow-hidden group"
-                whileHover={{ y: -8, scale: 1.02 }}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.1 * idx }}
-                onHoverStart={() => setHoveredRequirement(ability.id)}
-                onHoverEnd={() => setHoveredRequirement(null)}
-              >
-                {/* Top highlight */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#f85c70] to-transparent opacity-70" />
-
-                {/* Icon and glow effect */}
-                <div className="pt-8 pb-4 px-4 relative flex flex-col items-center">
-                  <motion.div
-                    className="w-16 h-16 rounded-full flex items-center justify-center mb-4 relative"
-                    initial={{ scale: 0.8, opacity: 0.7 }}
-                    whileHover={{ scale: 1.1, opacity: 1 }}
-                    style={{
-                      background:
-                        "radial-gradient(circle, rgba(248,92,112,0.2) 0%, rgba(248,92,112,0) 70%)",
-                    }}
-                  >
-                    {/* Icon */}
-                    {abilityIcons[ability.id as keyof typeof abilityIcons]}
-
-                    {/* Animated glow */}
-                    <motion.div
-                      className="absolute inset-0 rounded-full"
-                      animate={{
-                        boxShadow: [
-                          "0 0 0 rgba(248, 92, 112, 0)",
-                          "0 0 15px rgba(248, 92, 112, 0.5)",
-                          "0 0 0 rgba(248, 92, 112, 0)",
-                        ],
-                      }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                  </motion.div>
-
-                  <h4 className="text-xl font-orbitron text-[#f85c70] text-center mb-2">
-                    {ability.name}
-                  </h4>
-
-                  {/* Description in english */}
-                  <p className="text-gray-300 font-space-grotesk text-center text-sm mb-4">
-                    {ability.description}
-                  </p>
-                </div>
-
-                {/* Persian description on hover */}
-                <motion.div
-                  className="bg-gradient-to-t from-[#18101e]/95 to-[#18101e]/85 backdrop-blur-sm py-3 px-4 absolute bottom-0 left-0 right-0 text-right"
-                  initial={{ y: 60 }}
-                  animate={{ y: hoveredRequirement === ability.id ? 0 : 60 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                >
-                  <p
-                    className="text-gray-300 font-nastaliq text-base"
-                    dir="rtl"
-                  >
-                    {ability.persian_description}
-                  </p>
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Ability Implementation Requirements */}
-          <div className="mt-12">
-            <motion.h4
-              className="text-2xl font-orbitron text-[#f85c70] mb-6 text-center"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              Ability Implementation Requirements
-            </motion.h4>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {requirements
-                .filter(
-                  (req) =>
-                    req.category.toLowerCase() === "characters" &&
-                    req.id.startsWith("ability_implementation_")
-                )
-                .map((requirement) => (
-                  <motion.div
-                    key={requirement.id}
-                    className="glass p-6 rounded-lg relative group"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    whileHover={{
-                      scale: 1.02,
-                      transition: { duration: 0.2 },
-                    }}
-                    style={{
-                      zIndex: hoveredRequirement === requirement.id ? 50 : 1,
-                    }}
-                  >
-                    {/* Card Background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#f85c70]/5 to-purple-500/5 group-hover:from-[#f85c70]/10 group-hover:to-purple-500/10 transition-all duration-300" />
-
-                    {/* Header Section */}
-                    <div className="relative flex items-start justify-between mb-6">
-                      <div className="flex items-center gap-3">
-                        {/* Checkbox */}
-                        <motion.div
-                          className="relative w-10 h-10 rounded-full border-2 cursor-pointer flex items-center justify-center"
-                          variants={checkboxVariants}
-                          initial="unchecked"
-                          animate={
-                            completedRequirements.includes(requirement.id)
-                              ? "checked"
-                              : "unchecked"
-                          }
-                          whileHover="hover"
-                          whileTap="tap"
-                          onClick={() => toggleRequirement(requirement.id)}
-                        >
-                          <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 18 18"
-                            fill="none"
-                          >
-                            <motion.path
-                              d="M3.5 9.5L7 13L14.5 5.5"
-                              stroke="white"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              variants={checkmarkVariants}
-                              initial="unchecked"
-                              animate={
-                                completedRequirements.includes(requirement.id)
-                                  ? "checked"
-                                  : "unchecked"
-                              }
-                            />
-                          </svg>
-
-                          {/* Score Badge */}
-                          <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#f85c70]/20 flex items-center justify-center">
-                            <span className="text-[#f85c70] text-xs font-bold">
-                              {requirement.score}
-                            </span>
-                          </div>
-                        </motion.div>
-
-                        {/* Title */}
-                        <h3 className="text-lg text-white font-space-grotesk">
-                          {requirement.title}
-                        </h3>
-                      </div>
-                    </div>
-
-                    {/* Description */}
-                    <div className="pl-12">
-                      <p className="text-gray-300 text-sm mb-2">
-                        {requirement.description}
-                      </p>
-                      <p className="text-[#f85c70] text-sm" dir="rtl">
-                        {requirement.persian_description}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  //   return <div className="space-y-16"></div>;
+  // };
 
   const renderScoreOverview = () => {
     const scores = calculateTotalScores();
@@ -2310,8 +1656,6 @@ export default function ProjectRequirements() {
             >
               {selectedCategory === "score-overview" ? (
                 renderScoreOverview()
-              ) : selectedCategory === "characters" ? (
-                renderGameElements()
               ) : (
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 relative">
                   {requirements
