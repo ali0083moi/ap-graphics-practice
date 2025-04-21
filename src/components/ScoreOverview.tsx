@@ -50,9 +50,57 @@ const COMPLETED_REQUIREMENTS_KEY = "graphic_app_completed_requirements";
 const categories = [
   {
     id: "signup",
-    title: "Sign Up",
-    icon: "📝",
-    description: "User registration and authentication",
+    title: "signup",
+    icon: "🔐",
+    description: "User signup and account management features",
+  },
+  {
+    id: "main menu",
+    title: "main menu",
+    icon: "📋",
+    description: "main menu and their functionalities",
+  },
+  {
+    id: "login",
+    title: "Login",
+    icon: "🔑",
+    description: "User login and password recovery features",
+  },
+  {
+    id: "settings",
+    title: "Settings",
+    icon: "⚙️",
+    description: "Game settings and customization options",
+  },
+  {
+    id: "profile",
+    title: "Profile",
+    icon: "👤",
+    description: "User profile management and customization features",
+  },
+  {
+    id: "pre-game",
+    title: "Pre-game",
+    icon: "🎮",
+    description: "Pre-game setup and configuration options",
+  },
+  {
+    id: "hint",
+    title: "Hint",
+    icon: "💡",
+    description: "Game hints and talent information",
+  },
+  {
+    id: "pause",
+    title: "Pause",
+    icon: "⏸️",
+    description: "In-game pause menu features",
+  },
+  {
+    id: "scoreboard",
+    title: "Scoreboard",
+    icon: "🏆",
+    description: "Game scoreboard and player rankings",
   },
   {
     id: "controls",
