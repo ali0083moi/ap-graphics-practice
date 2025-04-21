@@ -353,9 +353,12 @@ export default function Home() {
               </p>
               <button className="pixel-button enhanced">
                 <div className="pixel-button-content">
-                  <span className="text-white font-space-grotesk">
+                  <a
+                    href="https://drive.google.com/file/d/1HCYoMEc_qsToT0NqknV1YjTy5tqLx5uK/view?usp=sharing"
+                    className="text-white font-space-grotesk"
+                  >
                     Download
-                  </span>
+                  </a>
                   <svg
                     className="w-5 h-5"
                     fill="none"
@@ -390,9 +393,12 @@ export default function Home() {
               </p>
               <button className="pixel-button enhanced">
                 <div className="pixel-button-content">
-                  <span className="text-white font-space-grotesk">
+                  <a
+                    href="https://drive.google.com/file/d/11uMZZqMJjVIDYu636e49tFRuivwBX8vb/view?usp=sharing"
+                    className="text-white font-space-grotesk"
+                  >
                     Download
-                  </span>
+                  </a>
                   <svg
                     className="w-5 h-5"
                     fill="none"
@@ -427,9 +433,12 @@ export default function Home() {
               </p>
               <button className="pixel-button enhanced">
                 <div className="pixel-button-content">
-                  <span className="text-white font-space-grotesk">
+                  <a
+                    href="https://drive.google.com/file/d/1gyMdO0_hFGNS_RmDP56M8M6Fu-gelVpy/view?usp=sharing"
+                    className="text-white font-space-grotesk"
+                  >
                     Download
-                  </span>
+                  </a>
                   <svg
                     className="w-5 h-5"
                     fill="none"
