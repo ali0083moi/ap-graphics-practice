@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Orbitron } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
+import { RequirementsProvider } from "@/context/RequirementsContext";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -35,7 +36,9 @@ export default function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${orbitron.variable} bg-black text-white antialiased overflow-x-hidden`}
       >
-        <ClientLayout>{children}</ClientLayout>
+        <RequirementsProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </RequirementsProvider>
       </body>
     </html>
   );

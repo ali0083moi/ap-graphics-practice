@@ -25,7 +25,7 @@ import {
   RiShieldFlashFill,
   RiSwordFill,
 } from "react-icons/ri";
-import { dispatchRequirementsUpdated } from "./ScoreOverview";
+import { useRequirements } from "@/context/RequirementsContext";
 
 /*
  * IMPORTANT NOTE ON SCORING:
@@ -75,125 +75,7 @@ interface Ability {
 // LocalStorage key for completed requirements
 const COMPLETED_REQUIREMENTS_KEY = "graphic_app_completed_requirements";
 
-// const heroes: Hero[] = [
-//   {
-//     id: "shana",
-//     name: "SHANA",
-//     hp: 4,
-//     speed: 4,
-//   },
-//   {
-//     id: "diamond",
-//     name: "DIAMOND",
-//     hp: 7,
-//     speed: 1,
-//   },
-//   {
-//     id: "scarlet",
-//     name: "SCARLET",
-//     hp: 3,
-//     speed: 5,
-//   },
-//   {
-//     id: "lilith",
-//     name: "LILITH",
-//     hp: 5,
-//     speed: 3,
-//   },
-//   {
-//     id: "dasher",
-//     name: "DASHER",
-//     hp: 2,
-//     speed: 10,
-//   },
-// ];
-
-// const weapons: Weapon[] = [
-//   {
-//     id: "revolver",
-//     name: "Revolver",
-//     damage: 20,
-//     projectile: 1,
-//     reload_time: 1,
-//     max_ammo: 6,
-//   },
-//   {
-//     id: "shotgun",
-//     name: "Shotgun",
-//     damage: 10,
-//     projectile: 4,
-//     reload_time: 1,
-//     max_ammo: 2,
-//   },
-//   {
-//     id: "dual_smgs",
-//     name: "Dual SMGs",
-//     damage: 8,
-//     projectile: 1,
-//     reload_time: 2,
-//     max_ammo: 24,
-//   },
-// ];
-
-// const abilities: Ability[] = [
-//   {
-//     id: "witality",
-//     name: "WITALITY",
-//     description: "Increase maximum HP by 1 unit",
-//     persian_description: "افزایش ماکسیمم hp به اندازه یک واحد",
-//   },
-//   {
-//     id: "damager",
-//     name: "DAMAGER",
-//     description: "Increase weapon damage by 25% for 10 seconds",
-//     persian_description: "افزایش ۲۵ درصدی میزان دمیج سلاح به مدت ۱۰ ثانیه",
-//   },
-//   {
-//     id: "procrease",
-//     name: "PROCREASE",
-//     description: "Increase weapon projectile count by 1",
-//     persian_description: "افزایش یک واحدی projectile سلاح",
-//   },
-//   {
-//     id: "amocrease",
-//     name: "AMOCREASE",
-//     description: "Increase maximum ammo by 5",
-//     persian_description: "افزایش ۵ واحدی حداکثر تعداد تیرهای سلاح",
-//   },
-//   {
-//     id: "speedy",
-//     name: "SPEEDY",
-//     description: "Double movement speed for 10 seconds",
-//     persian_description: "۲ برابر شدن سرعت حرکت بازیکن به مدت ۱۰ ثانیه",
-//   },
-// ];
-
-// // Add hero avatar images - you can replace these with better images for your project
-// const heroImages = {
-//   shana: "https://i.imgur.com/JQ5kAUX.png", // Female character with red theme
-//   diamond: "https://i.imgur.com/VZRR6Ww.png", // Heavy armored character
-//   scarlet: "https://i.imgur.com/8FTHvll.png", // Fast female character
-//   lilith: "https://i.imgur.com/Yl7sx3H.png", // Magic wielder female character
-//   dasher: "https://i.imgur.com/3kskAJH.png", // Quick male character
-// };
-
-// // Add weapon images
-// const weaponImages = {
-//   revolver: "https://i.imgur.com/N1QkBik.png",
-//   shotgun: "https://i.imgur.com/rLIClmu.png",
-//   dual_smgs: "https://i.imgur.com/NvRoSw8.png",
-// };
-
-// // Add ability icons - using appropriate icon components
-// const abilityIcons = {
-//   witality: <RiHeartPulseFill className="text-green-400 text-3xl" />,
-//   damager: <FaFire className="text-red-400 text-3xl" />,
-//   procrease: <FaBolt className="text-yellow-400 text-3xl" />,
-//   amocrease: <FaBomb className="text-purple-400 text-3xl" />,
-//   speedy: <RiSpeedFill className="text-blue-400 text-3xl" />,
-// };
-
-const requirements: Requirement[] = [
+export const requirements: Requirement[] = [
   // signup Requirements
   {
     id: "signup_username",
@@ -1646,23 +1528,10 @@ export default function ProjectRequirements() {
   const [hoveredRequirement, setHoveredRequirement] = useState<string | null>(
     null
   );
-  const [completedRequirements, setCompletedRequirements] = useState<string[]>(
-    []
-  );
-  const [dataLoaded, setDataLoaded] = useState(false);
+  const { completedRequirements, toggleRequirement, resetProgress, loading } =
+    useRequirements();
   const [loadError, setLoadError] = useState<string | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
-
-  // Function to reset all saved progress
-  const resetSavedProgress = () => {
-    try {
-      localStorage.removeItem(COMPLETED_REQUIREMENTS_KEY);
-      setCompletedRequirements([]);
-      console.log("Progress reset successfully");
-    } catch (error) {
-      console.error("Error resetting progress:", error);
-    }
-  };
 
   // Function to export progress as a JSON file
   const exportProgress = () => {
@@ -1706,11 +1575,14 @@ export default function ProjectRequirements() {
           const parsed = JSON.parse(contents);
 
           if (Array.isArray(parsed.completedRequirements)) {
-            setCompletedRequirements(parsed.completedRequirements);
-            console.log(
-              "Progress imported successfully:",
-              parsed.completedRequirements
+            // Update localStorage with the imported data
+            localStorage.setItem(
+              COMPLETED_REQUIREMENTS_KEY,
+              JSON.stringify(parsed.completedRequirements)
             );
+
+            // Force a reload to apply the changes
+            window.location.reload();
           } else {
             throw new Error(
               "Invalid format: completedRequirements is not an array"
@@ -1734,98 +1606,6 @@ export default function ProjectRequirements() {
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-  };
-
-  // Load completed requirements from localStorage on mount
-  useEffect(() => {
-    // Check if localStorage is available
-    const isLocalStorageAvailable = () => {
-      try {
-        const testKey = "test_storage";
-        localStorage.setItem(testKey, testKey);
-        localStorage.removeItem(testKey);
-        return true;
-      } catch (e) {
-        return false;
-      }
-    };
-
-    if (!isLocalStorageAvailable()) {
-      console.error("localStorage is not available in this browser");
-      setLoadError("localStorage is not available in your browser.");
-      setDataLoaded(true);
-      return;
-    }
-
-    try {
-      console.log("Attempting to load from localStorage");
-      const savedRequirements = localStorage.getItem(
-        COMPLETED_REQUIREMENTS_KEY
-      );
-      console.log("Raw data from localStorage:", savedRequirements);
-
-      if (savedRequirements) {
-        const parsedRequirements = JSON.parse(savedRequirements);
-        console.log("Loading saved requirements:", parsedRequirements);
-        setCompletedRequirements(parsedRequirements);
-        setDataLoaded(true);
-      } else {
-        console.log("No saved requirements found in localStorage");
-        setDataLoaded(true);
-      }
-    } catch (error) {
-      console.error("Error loading saved requirements:", error);
-      setLoadError(
-        "Failed to load saved progress. Storage might be corrupted."
-      );
-      setDataLoaded(true);
-    }
-  }, []);
-
-  // Save completed requirements to localStorage when they change
-  useEffect(() => {
-    // Skip initial save on component mount
-    if (!dataLoaded) {
-      console.log("Skipping initial save, data not yet loaded");
-      return;
-    }
-
-    try {
-      console.log(
-        "Saving requirements to localStorage:",
-        completedRequirements
-      );
-      const dataToSave = JSON.stringify(completedRequirements);
-      console.log("Stringified data:", dataToSave);
-
-      localStorage.setItem(COMPLETED_REQUIREMENTS_KEY, dataToSave);
-
-      // Verify storage worked
-      const savedData = localStorage.getItem(COMPLETED_REQUIREMENTS_KEY);
-      console.log("Verification - data in localStorage:", savedData);
-
-      if (savedData !== dataToSave) {
-        console.error("Storage verification failed! Data mismatch.");
-      }
-    } catch (error) {
-      console.error("Error saving requirements:", error);
-    }
-  }, [completedRequirements, dataLoaded]);
-
-  // Toggle requirement completion
-  const toggleRequirement = (id: string) => {
-    setCompletedRequirements((prev) => {
-      const updated = prev.includes(id)
-        ? prev.filter((reqId) => reqId !== id)
-        : [...prev, id];
-
-      console.log(`Requirement ${id} toggled. Updated list:`, updated);
-
-      // Notify other components about the change with the updated data
-      dispatchRequirementsUpdated(updated);
-
-      return updated;
-    });
   };
 
   // Calculate completed scores for a category
@@ -1895,12 +1675,6 @@ export default function ProjectRequirements() {
       requiredTotal,
     };
   };
-
-  // const renderGameElements = () => {
-  //   if (selectedCategory !== "characters") return null;
-
-  //   return <div className="space-y-16"></div>;
-  // };
 
   const renderScoreOverview = () => {
     const scores = calculateTotalScores();
@@ -2203,15 +1977,15 @@ export default function ProjectRequirements() {
         {/* Storage Status Messages with improved styling */}
         <div className="mb-12">
           <div className="flex justify-center items-center gap-4 mb-4">
-            {!dataLoaded ? (
+            {loading ? (
               <motion.div
                 className="px-6 py-3 rounded-xl bg-blue-500/20 text-blue-400 text-sm font-space-grotesk backdrop-blur-sm border border-blue-500/20"
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
               >
                 <div className="flex items-center gap-3">
                   <svg
-                    className="animate-spin h-5 w-5 text-blue-400"
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-400"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -2298,7 +2072,7 @@ export default function ProjectRequirements() {
                     "Are you sure you want to reset all progress? This cannot be undone."
                   )
                 ) {
-                  resetSavedProgress();
+                  resetProgress();
                 }
               }}
               whileHover={{
@@ -2324,7 +2098,7 @@ export default function ProjectRequirements() {
           )}
 
           {/* Export Button */}
-          {dataLoaded && (
+          {!loading && (
             <motion.button
               className="px-6 py-3 rounded-xl bg-blue-500/10 text-blue-400 text-sm font-space-grotesk hover:bg-blue-500/20 transition-colors flex items-center gap-3 border border-blue-500/20"
               onClick={exportProgress}
@@ -2333,7 +2107,6 @@ export default function ProjectRequirements() {
                 boxShadow: "0 10px 15px -3px rgba(59, 130, 246, 0.1)",
               }}
               whileTap={{ scale: 0.95 }}
-              title="Export your progress as a JSON file"
             >
               <svg
                 width="16"
@@ -2343,8 +2116,11 @@ export default function ProjectRequirements() {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  d="M13 10h5l-6-6-6 6h5v8h2v-8zm-9 9h16v-7h2v8a1 1 0 01-1 1H3a1 1 0 01-1-1v-8h2v7z"
-                  fill="currentColor"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               Export Progress
@@ -2352,25 +2128,24 @@ export default function ProjectRequirements() {
           )}
 
           {/* Import Button */}
-          {dataLoaded && (
+          {!loading && (
             <>
               <input
                 type="file"
+                id="fileInput"
                 ref={fileInputRef}
                 onChange={importProgress}
+                style={{ display: "none" }}
                 accept=".json"
-                className="hidden"
-                id="import-progress-file"
               />
               <motion.button
-                className="px-6 py-3 rounded-xl bg-purple-500/10 text-purple-400 text-sm font-space-grotesk hover:bg-purple-500/20 transition-colors flex items-center gap-3 border border-purple-500/20"
+                className="px-6 py-3 rounded-xl bg-green-500/10 text-green-400 text-sm font-space-grotesk hover:bg-green-500/20 transition-colors flex items-center gap-3 border border-green-500/20"
                 onClick={() => fileInputRef.current?.click()}
                 whileHover={{
                   scale: 1.05,
-                  boxShadow: "0 10px 15px -3px rgba(168, 85, 247, 0.1)",
+                  boxShadow: "0 10px 15px -3px rgba(34, 197, 94, 0.1)",
                 }}
                 whileTap={{ scale: 0.95 }}
-                title="Import progress from a JSON file"
               >
                 <svg
                   width="16"
@@ -2380,8 +2155,11 @@ export default function ProjectRequirements() {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M13 14h5l-6 6-6-6h5V6h2v8zm-9 5h16v-7h2v8a1 1 0 01-1 1H3a1 1 0 01-1-1v-8h2v7z"
-                    fill="currentColor"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
                 Import Progress
