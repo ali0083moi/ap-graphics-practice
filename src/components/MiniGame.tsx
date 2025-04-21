@@ -236,7 +236,7 @@ const MiniGame = ({ isSectionVisible = true }: MiniGameProps) => {
           id: Date.now(),
           x,
           y,
-          health: 100,
+          health: 20,
           rotation: Math.random() * 360,
         },
       ]);
