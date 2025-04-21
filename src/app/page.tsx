@@ -7,10 +7,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import HeroCard from "@/components/HeroCard";
 import GameModal from "@/components/GameModal";
-import GameBackground from "@/components/GameBackground";
+import EnhancedBackground from "@/components/EnhancedBackground";
 import MiniGame from "@/components/MiniGame";
 import ProjectRequirements from "@/components/ProjectRequirements";
 import ScoreOverview from "@/components/ScoreOverview";
+import FloatingNav from "@/components/FloatingNav";
+import ScrollProgress from "@/components/ScrollProgress";
+import CustomCursor from "@/components/CustomCursor";
+import LoadingScreen from "@/components/LoadingScreen";
+import SpotlightEffect from "@/components/SpotlightEffect";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -78,6 +83,7 @@ export default function Home() {
     null
   );
   const [isGameVisible, setIsGameVisible] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -142,9 +148,41 @@ export default function Home() {
     }));
   }, []);
 
+  // Add effect to handle page loaded state
+  useEffect(() => {
+    // Set loaded after all resources have loaded
+    window.addEventListener("load", () => {
+      setIsLoaded(true);
+    });
+
+    // If resources are already loaded
+    if (document.readyState === "complete") {
+      setIsLoaded(true);
+    }
+
+    return () => {
+      window.removeEventListener("load", () => {
+        setIsLoaded(true);
+      });
+    };
+  }, []);
+
   return (
     <main className="relative min-h-screen">
-      <GameBackground />
+      {/* Add loading screen */}
+      <LoadingScreen />
+
+      {/* Add custom cursor */}
+      <CustomCursor />
+
+      {/* Add scroll progress bar */}
+      <ScrollProgress />
+
+      {/* Add floating navigation */}
+      <FloatingNav />
+
+      {/* Use enhanced background instead of GameBackground */}
+      <EnhancedBackground />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-4">
@@ -155,7 +193,7 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, type: "spring" }}
+            transition={{ duration: 1.2, type: "spring", stiffness: 50 }}
             className="mb-8 relative"
           >
             <Image
@@ -173,16 +211,16 @@ export default function Home() {
             className="text-xl md:text-2xl font-space-grotesk mb-8 text-gray-300"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
           >
             Advanced Programming Course Practice
           </motion.p>
 
           <motion.div
-            className="flex flex-col sm:flex-row justify-center"
+            className="flex flex-col sm:flex-row justify-center gap-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
           >
             <button
               onClick={() => {
@@ -197,20 +235,6 @@ export default function Home() {
                 </span>
               </div>
             </button>
-
-            {/* <button
-              onClick={() => {
-                const element = document.getElementById("heroes");
-                element?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="pixel-button"
-            >
-              <div className="pixel-button-content">
-                <span className="text-white font-space-grotesk">
-                  View Heroes
-                </span>
-              </div>
-            </button> */}
           </motion.div>
         </motion.div>
 
@@ -245,40 +269,52 @@ export default function Home() {
       {/* Project Overview Section */}
       <section id="project-overview" className="section relative py-32 px-4">
         <div className="max-w-6xl mx-auto">
-          <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
+          <motion.h2
+            className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
             Practice Overview
           </motion.h2>
           <div className="grid md:grid-cols-2 gap-12">
             <motion.div
-              className="glass p-8 rounded-lg relative overflow-hidden group"
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              viewport={{ once: true }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <h3 className="text-2xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
-                Practice TAs
-              </h3>
-              <p className="font-space-grotesk text-gray-300 relative z-10">
-                Ali Moghadasi
-                <br></br>
-                Amir Hossein Vahidi Tabar
-              </p>
+              <SpotlightEffect className="glass p-8 rounded-lg relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <h3 className="text-2xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
+                  Practice TAs
+                </h3>
+                <p className="font-space-grotesk text-gray-300 relative z-10">
+                  Ali Moghadasi
+                  <br></br>
+                  Amir Hossein Vahidi Tabar
+                </p>
+              </SpotlightEffect>
             </motion.div>
 
             <motion.div
-              className="glass p-8 rounded-lg relative overflow-hidden group"
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <h3 className="text-2xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
-                Practice Description
-              </h3>
-              <ul className="font-space-grotesk text-gray-300 list-disc list-inside space-y-2 relative z-10">
-                <li>Deadline: Ordibehesht 23rd</li>
-                <li>Libraries to use: JavaFX | LibGDX</li>
-                <li>Course: Advanced Programming</li>
-              </ul>
+              <SpotlightEffect className="glass p-8 rounded-lg relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <h3 className="text-2xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
+                  Practice Description
+                </h3>
+                <ul className="font-space-grotesk text-gray-300 list-disc list-inside space-y-2 relative z-10">
+                  <li>Deadline: Ordibehesht 23rd</li>
+                  <li>Libraries to use: JavaFX | LibGDX</li>
+                  <li>Course: Advanced Programming</li>
+                </ul>
+              </SpotlightEffect>
             </motion.div>
           </div>
         </div>
@@ -290,216 +326,212 @@ export default function Home() {
       {/* Score Overview Section */}
       <section id="score-overview" className="section relative py-32 px-4">
         <div className="max-w-7xl mx-auto">
-          <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
+          <motion.h2
+            className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
             Score Overview
           </motion.h2>
-          <div className="glass p-8 rounded-lg">
+          <motion.div
+            className="glass p-8 rounded-lg"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
             <ScoreOverview />
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Heroes Section */}
-      {/* <section id="heroes" className="section relative py-32 px-4">
-        <div className="max-w-7xl mx-auto">
-          <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
-            Available Heroes
-          </motion.h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {heroes.map((hero) => (
-              <div
-                key={hero.id}
-                onClick={() => {
-                  setSelectedHero(hero);
-                  setIsModalOpen(true);
-                }}
-              >
-                <HeroCard
-                  heroImage={hero.image}
-                  name={hero.name}
-                  description={hero.description}
-                  unlocked={hero.unlocked !== false}
-                  level={hero.level}
-                  stats={hero.stats}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
       {/* Download Section */}
-      <section className="section relative py-16 px-4">
+      <section id="download-section" className="section relative py-32 px-4">
         <div className="absolute inset-0" />
         <div className="max-w-6xl mx-auto relative z-10">
-          <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
+          <motion.h2
+            className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
             Download Assets
           </motion.h2>
           <div className="grid md:grid-cols-3 gap-8">
             <motion.div
-              className="glass p-8 rounded-lg hover:border-red-500/50 transition-all duration-300
-                       relative overflow-hidden group"
-              whileHover={{ scale: 1.02 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
             >
-              <div
-                className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10
+              <SpotlightEffect className="glass p-8 rounded-lg relative overflow-hidden group">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10
                            opacity-0 group-hover:opacity-100 transition-opacity"
-              />
-              <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
-                Sprites & Graphical Assets
-              </h3>
-              <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
-                Download all game sprites and graphical assets.
-              </p>
-              <button className="pixel-button enhanced">
-                <div className="pixel-button-content">
-                  <a
-                    href="https://drive.google.com/file/d/1HCYoMEc_qsToT0NqknV1YjTy5tqLx5uK/view?usp=sharing"
-                    className="text-white font-space-grotesk"
-                  >
-                    Download
-                  </a>
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                    />
-                  </svg>
-                </div>
-              </button>
+                />
+                <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
+                  Sprites & Graphical Assets
+                </h3>
+                <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
+                  Download all game sprites and graphical assets.
+                </p>
+                <button className="pixel-button enhanced">
+                  <div className="pixel-button-content">
+                    <a
+                      href="https://drive.google.com/file/d/1HCYoMEc_qsToT0NqknV1YjTy5tqLx5uK/view?usp=sharing"
+                      className="text-white font-space-grotesk"
+                    >
+                      Download
+                    </a>
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                      />
+                    </svg>
+                  </div>
+                </button>
+              </SpotlightEffect>
             </motion.div>
 
             <motion.div
-              className="glass p-8 rounded-lg hover:border-red-500/50 transition-all duration-300
-                       relative overflow-hidden group"
-              whileHover={{ scale: 1.02 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
             >
-              <div
-                className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10
+              <SpotlightEffect className="glass p-8 rounded-lg relative overflow-hidden group">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10
                            opacity-0 group-hover:opacity-100 transition-opacity"
-              />
-              <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
-                Sound Effects
-              </h3>
-              <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
-                Get all sound effects and music files.
-              </p>
-              <button className="pixel-button enhanced">
-                <div className="pixel-button-content">
-                  <a
-                    href="https://drive.google.com/file/d/11uMZZqMJjVIDYu636e49tFRuivwBX8vb/view?usp=sharing"
-                    className="text-white font-space-grotesk"
-                  >
-                    Download
-                  </a>
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                    />
-                  </svg>
-                </div>
-              </button>
+                />
+                <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
+                  Sound Effects
+                </h3>
+                <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
+                  Get all sound effects and music files.
+                </p>
+                <button className="pixel-button enhanced">
+                  <div className="pixel-button-content">
+                    <a
+                      href="https://drive.google.com/file/d/11uMZZqMJjVIDYu636e49tFRuivwBX8vb/view?usp=sharing"
+                      className="text-white font-space-grotesk"
+                    >
+                      Download
+                    </a>
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                      />
+                    </svg>
+                  </div>
+                </button>
+              </SpotlightEffect>
             </motion.div>
 
             <motion.div
-              className="glass p-8 rounded-lg hover:border-red-500/50 transition-all duration-300
-                       relative overflow-hidden group"
-              whileHover={{ scale: 1.02 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
             >
-              <div
-                className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10
+              <SpotlightEffect className="glass p-8 rounded-lg relative overflow-hidden group">
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10
                            opacity-0 group-hover:opacity-100 transition-opacity"
-              />
-              <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
-                Fonts
-              </h3>
-              <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
-                Get all of the game fonts.
-              </p>
-              <button className="pixel-button enhanced">
-                <div className="pixel-button-content">
-                  <a
-                    href="https://drive.google.com/file/d/1gyMdO0_hFGNS_RmDP56M8M6Fu-gelVpy/view?usp=sharing"
-                    className="text-white font-space-grotesk"
-                  >
-                    Download
-                  </a>
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                    />
-                  </svg>
-                </div>
-              </button>
+                />
+                <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
+                  Fonts
+                </h3>
+                <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
+                  Get all of the game fonts.
+                </p>
+                <button className="pixel-button enhanced">
+                  <div className="pixel-button-content">
+                    <a
+                      href="https://drive.google.com/file/d/1gyMdO0_hFGNS_RmDP56M8M6Fu-gelVpy/view?usp=sharing"
+                      className="text-white font-space-grotesk"
+                    >
+                      Download
+                    </a>
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                      />
+                    </svg>
+                  </div>
+                </button>
+              </SpotlightEffect>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* Mini Game Section */}
-      <section ref={gameRef} className="section relative py-32 px-4">
+      <section
+        id="game-section"
+        ref={gameRef}
+        className="section relative py-32 px-4"
+      >
         <div className="max-w-7xl mx-auto">
-          <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
+          <motion.h2
+            className="text-4xl md:text-5xl font-orbitron font-bold mb-8 text-center text-glow"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
             Try The Game
           </motion.h2>
-          <motion.p className="text-xl text-center text-gray-400 mb-12 font-space-grotesk">
+          <motion.p
+            className="text-xl text-center text-gray-400 mb-12 font-space-grotesk"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
             Click and drag to shoot at the enemies!
           </motion.p>
-          <MiniGame isSectionVisible={isGameVisible} />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: true }}
+          >
+            <MiniGame isSectionVisible={isGameVisible} />
+          </motion.div>
         </div>
       </section>
 
       {/* Footer Section */}
       <footer className="relative py-16 px-4 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-[#18101e] to-transparent opacity-50" />
-
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          {particles.map((particle) => (
-            <motion.div
-              key={particle.id}
-              className="absolute w-1 h-1 bg-[#f85c70] rounded-full"
-              style={{
-                left: `${particle.x}%`,
-                top: `${particle.y}%`,
-              }}
-              animate={{
-                x: [0, (particle.moveX % 30) - 15, 0],
-                y: [0, (particle.moveY % 30) - 15, 0],
-                opacity: [0.2, 1, 0.2],
-                scale: [1, 1.5, 1],
-              }}
-              transition={{
-                duration: particle.duration,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
-        </div>
 
         <div className="max-w-7xl mx-auto relative">
           <div className="text-center">
@@ -565,88 +597,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-
-      {/* Hero Modal */}
-      {/* <GameModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={selectedHero?.name || ""}
-      >
-        {selectedHero && (
-          <div className="flex flex-col items-center p-6 select-none">
-            <div className="relative w-64 h-64 mb-8 flex-shrink-0">
-              <Image
-                src={selectedHero.image}
-                alt={selectedHero.name}
-                fill
-                className="object-contain"
-                style={{ imageRendering: "pixelated" }}
-                priority
-                draggable={false}
-              />
-              {selectedHero.level && (
-                <div
-                  className="absolute top-4 right-4 bg-red-500/90 text-white px-3 py-1
-                            rounded-full font-orbitron text-sm shadow-lg backdrop-blur-sm"
-                >
-                  Level {selectedHero.level}
-                </div>
-              )}
-            </div>
-
-            <p className="text-gray-300 font-space-grotesk text-center mb-8 max-w-lg">
-              {selectedHero.description}
-            </p>
-
-            <div className="w-full max-w-md space-y-4">
-              <div className="space-y-1">
-                <div className="flex justify-between text-sm font-space-grotesk text-gray-400">
-                  <span>Health</span>
-                  <span>{selectedHero.stats.health}%</span>
-                </div>
-                <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-green-500"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${selectedHero.stats.health}%` }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex justify-between text-sm font-space-grotesk text-gray-400">
-                  <span>Speed</span>
-                  <span>{selectedHero.stats.speed}%</span>
-                </div>
-                <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-blue-500"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${selectedHero.stats.speed}%` }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex justify-between text-sm font-space-grotesk text-gray-400">
-                  <span>Damage</span>
-                  <span>{selectedHero.stats.damage}%</span>
-                </div>
-                <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-red-500"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${selectedHero.stats.damage}%` }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </GameModal> */}
     </main>
   );
 }

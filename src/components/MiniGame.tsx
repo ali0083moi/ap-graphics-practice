@@ -3,6 +3,7 @@
 import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import { AnimatePresence } from "framer-motion";
 
 interface Enemy {
   id: number;
@@ -18,6 +19,13 @@ interface Bullet {
   startY: number;
   targetX: number;
   targetY: number;
+  timestamp: number;
+}
+
+interface Impact {
+  id: number;
+  x: number;
+  y: number;
   timestamp: number;
 }
 
@@ -43,6 +51,13 @@ const MiniGame = ({ isSectionVisible = true }: MiniGameProps) => {
   const enemySpawnInterval = useRef<NodeJS.Timeout>();
   const bulletSpeed = 1200;
   const enemySpeed = 1; // Reduced enemy speed
+  const [impacts, setImpacts] = useState<Impact[]>([]);
+  const [score, setScore] = useState(0);
+  const [combo, setCombo] = useState(0);
+  const [lastKillTime, setLastKillTime] = useState(0);
+  const [showScorePopup, setShowScorePopup] = useState(false);
+  const [scorePopupValue, setScorePopupValue] = useState(0);
+  const [scorePopupPosition, setScorePopupPosition] = useState({ x: 0, y: 0 });
 
   // Check if device is mobile
   useEffect(() => {
@@ -294,16 +309,83 @@ const MiniGame = ({ isSectionVisible = true }: MiniGameProps) => {
           const currentY =
             bullet.startY + (bullet.targetY - bullet.startY) * progress;
 
+          // Update enemy collision detection to add impact effects and scores
+          let bulletHit = false;
           setEnemies((prevEnemies) => {
-            return prevEnemies.filter((enemy) => {
-              const dx = currentX - enemy.x;
-              const dy = currentY - enemy.y;
-              const distance = Math.sqrt(dx * dx + dy * dy);
-              return distance > 25;
-            });
+            return prevEnemies
+              .map((enemy) => {
+                const dx = currentX - enemy.x;
+                const dy = currentY - enemy.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 25 && !bulletHit) {
+                  bulletHit = true;
+
+                  // Create impact animation
+                  setImpacts((prev) => [
+                    ...prev,
+                    {
+                      id: Date.now(),
+                      x: enemy.x,
+                      y: enemy.y,
+                      timestamp: Date.now(),
+                    },
+                  ]);
+
+                  // Apply damage to enemy
+                  const updatedHealth = enemy.health - 20;
+
+                  // If enemy is killed
+                  if (updatedHealth <= 0) {
+                    // Add score based on combo
+                    const currentTime = Date.now();
+                    const timeSinceLastKill = currentTime - lastKillTime;
+
+                    // Increase combo if kill is within 1.5 seconds of last kill
+                    let newCombo = combo;
+                    if (timeSinceLastKill < 1500) {
+                      newCombo = combo + 1;
+                    } else {
+                      newCombo = 1;
+                    }
+
+                    setCombo(newCombo);
+                    setLastKillTime(currentTime);
+
+                    // Calculate score with combo multiplier
+                    const pointsEarned = 100 * newCombo;
+                    setScore((prev) => prev + pointsEarned);
+
+                    // Show score popup
+                    setScorePopupValue(pointsEarned);
+                    setScorePopupPosition({ x: enemy.x, y: enemy.y });
+                    setShowScorePopup(true);
+
+                    // Hide score popup after animation
+                    setTimeout(() => {
+                      setShowScorePopup(false);
+                    }, 1000);
+
+                    // Enemy destroyed
+                    return {
+                      ...enemy,
+                      health: 0,
+                    };
+                  }
+
+                  // Enemy still alive, update health
+                  return {
+                    ...enemy,
+                    health: updatedHealth,
+                  };
+                }
+
+                return enemy;
+              })
+              .filter((enemy) => enemy.health > 0);
           });
 
-          return true;
+          return !bulletHit;
         });
       });
 
@@ -598,6 +680,70 @@ const MiniGame = ({ isSectionVisible = true }: MiniGameProps) => {
           />
         </svg>
       )}
+
+      {/* Impact Animations */}
+      {impacts.map((impact) => {
+        const age = Date.now() - impact.timestamp;
+        // Remove impacts after 500ms
+        if (age > 500) return null;
+
+        return (
+          <motion.div
+            key={impact.id}
+            className="absolute z-20"
+            style={{
+              left: impact.x,
+              top: impact.y,
+              x: "-50%",
+              y: "-50%",
+            }}
+            initial={{ scale: 0.2, opacity: 1 }}
+            animate={{ scale: 1.5, opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <div className="w-6 h-6 rounded-full border-2 border-[#f85c70]" />
+          </motion.div>
+        );
+      })}
+
+      {/* Score Popup */}
+      <AnimatePresence>
+        {showScorePopup && (
+          <motion.div
+            className="absolute z-30 text-[#f85c70] font-bold font-space-grotesk"
+            style={{
+              left: scorePopupPosition.x,
+              top: scorePopupPosition.y,
+              x: "-50%",
+              y: "-50%",
+            }}
+            initial={{ scale: 0.5, opacity: 0, y: 0 }}
+            animate={{ scale: 1.2, opacity: 1, y: -30 }}
+            exit={{ scale: 0.8, opacity: 0, y: -50 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            +{scorePopupValue}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Score UI */}
+      <div className="absolute top-4 right-4 glass px-4 py-2 rounded-lg">
+        <div className="flex items-center gap-4">
+          <div>
+            <span className="text-xs text-gray-400">SCORE</span>
+            <div className="text-xl font-orbitron text-[#f85c70]">{score}</div>
+          </div>
+          {combo > 1 && (
+            <div className="animate-pulse-slow">
+              <span className="text-xs text-gray-400">COMBO</span>
+              <div className="text-xl font-orbitron text-yellow-400">
+                x{combo}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
