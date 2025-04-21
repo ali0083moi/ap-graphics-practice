@@ -175,11 +175,11 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            Advanced Programming Course Project
+            Advanced Programming Course Practice
           </motion.p>
 
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex flex-col sm:flex-row justify-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -198,7 +198,7 @@ export default function Home() {
               </div>
             </button>
 
-            <button
+            {/* <button
               onClick={() => {
                 const element = document.getElementById("heroes");
                 element?.scrollIntoView({ behavior: "smooth" });
@@ -210,13 +210,13 @@ export default function Home() {
                   View Heroes
                 </span>
               </div>
-            </button>
+            </button> */}
           </motion.div>
         </motion.div>
 
         {/* Scroll Indicator */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-8"
           animate={{
             y: [0, 10, 0],
           }}
@@ -226,7 +226,7 @@ export default function Home() {
             ease: "easeInOut",
           }}
         >
-          <div className="w-6 h-10 rounded-full border-2 border-red-500/50 flex justify-center p-2">
+          <div className="w-6 h-10 rounded-full border-2 border-red-500/50 flex justify-center">
             <motion.div
               className="w-1 h-1 bg-red-500 rounded-full"
               animate={{
@@ -256,12 +256,12 @@ export default function Home() {
             >
               <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <h3 className="text-2xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
-                Game Description
+                Practice TAs
               </h3>
               <p className="font-space-grotesk text-gray-300 relative z-10">
-                20 Minutes Till Dawn is a roguelite survival game where you must
-                survive waves of cosmic horrors for 20 minutes. Your task is to
-                recreate this game using Java and its graphics libraries.
+                Ali Moghadasi
+                <br></br>
+                Amir Hossein Vahidi Tabar
               </p>
             </motion.div>
 
@@ -272,13 +272,12 @@ export default function Home() {
             >
               <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <h3 className="text-2xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
-                Technical Requirements
+                Practice Description
               </h3>
               <ul className="font-space-grotesk text-gray-300 list-disc list-inside space-y-2 relative z-10">
-                <li>Java Graphics Implementation</li>
-                <li>Object-Oriented Design</li>
-                <li>Game State Management</li>
-                <li>Event Handling System</li>
+                <li>Deadline: Ordibehesht 23rd</li>
+                <li>Libraries to use: JavaFX | LibGDX</li>
+                <li>Course: Advanced Programming</li>
               </ul>
             </motion.div>
           </div>
@@ -347,10 +346,10 @@ export default function Home() {
                            opacity-0 group-hover:opacity-100 transition-opacity"
               />
               <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
-                Sprites & Animations
+                Sprites & Graphical Assets
               </h3>
               <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
-                Download all game sprites and animation assets.
+                Download all game sprites and graphical assets.
               </p>
               <button className="pixel-button enhanced">
                 <div className="pixel-button-content">
@@ -421,10 +420,10 @@ export default function Home() {
                            opacity-0 group-hover:opacity-100 transition-opacity"
               />
               <h3 className="text-xl font-orbitron mb-4 text-red-400 text-glow relative z-10">
-                Project Template
+                Fonts
               </h3>
               <p className="text-gray-300 mb-6 font-space-grotesk relative z-10">
-                Start with our base project template.
+                Get all of the game fonts.
               </p>
               <button className="pixel-button enhanced">
                 <div className="pixel-button-content">
