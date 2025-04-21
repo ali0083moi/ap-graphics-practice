@@ -25,6 +25,7 @@ import {
   RiShieldFlashFill,
   RiSwordFill,
 } from "react-icons/ri";
+import { dispatchRequirementsUpdated } from "./ScoreOverview";
 
 /*
  * IMPORTANT NOTE ON SCORING:
@@ -1819,6 +1820,10 @@ export default function ProjectRequirements() {
         : [...prev, id];
 
       console.log(`Requirement ${id} toggled. Updated list:`, updated);
+
+      // Notify other components about the change with the updated data
+      dispatchRequirementsUpdated(updated);
+
       return updated;
     });
   };

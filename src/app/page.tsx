@@ -10,6 +10,7 @@ import GameModal from "@/components/GameModal";
 import GameBackground from "@/components/GameBackground";
 import MiniGame from "@/components/MiniGame";
 import ProjectRequirements from "@/components/ProjectRequirements";
+import ScoreOverview from "@/components/ScoreOverview";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -286,6 +287,18 @@ export default function Home() {
 
       {/* Project Requirements Section */}
       <ProjectRequirements />
+
+      {/* Score Overview Section */}
+      <section id="score-overview" className="section relative py-32 px-4">
+        <div className="max-w-7xl mx-auto">
+          <motion.h2 className="text-4xl md:text-5xl font-orbitron font-bold mb-16 text-center text-glow">
+            Score Overview
+          </motion.h2>
+          <div className="glass p-8 rounded-lg">
+            <ScoreOverview />
+          </div>
+        </div>
+      </section>
 
       {/* Heroes Section */}
       {/* <section id="heroes" className="section relative py-32 px-4">
