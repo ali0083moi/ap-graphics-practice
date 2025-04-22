@@ -321,7 +321,12 @@ export default function Home() {
       </section>
 
       {/* Project Requirements Section */}
-      <ProjectRequirements />
+      <section
+        id="project-requirements"
+        className="section relative py-32 px-4"
+      >
+        <ProjectRequirements />
+      </section>
 
       {/* Score Overview Section */}
       <section id="score-overview" className="section relative py-32 px-4">
