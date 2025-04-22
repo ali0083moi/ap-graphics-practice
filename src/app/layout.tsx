@@ -6,14 +6,14 @@ import { RequirementsProvider } from "@/context/RequirementsContext";
 import { lanternFont, expressFont, inter } from "./fonts";
 
 export const metadata: Metadata = {
-  title: "20 Minutes Till Dawn - AP Project",
+  title: "20 Minutes Till Dawn - AP Graphic Practice",
   description:
-    "Advanced Programming Course Project - A Java implementation of 20 Minutes Till Dawn",
+    "Advanced Programming Course Practice - A Java implementation of 20 Minutes Till Dawn",
   keywords: [
     "Java",
     "Game Development",
     "20 Minutes Till Dawn",
-    "Programming Project",
+    "Programming Practice",
   ],
 };
 

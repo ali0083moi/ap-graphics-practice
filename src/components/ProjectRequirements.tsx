@@ -1959,7 +1959,7 @@ export default function ProjectRequirements() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Project Requirements
+          Requirements
         </motion.h2>
 
         {/* Hero section with animated text */}
@@ -1970,7 +1970,8 @@ export default function ProjectRequirements() {
           transition={{ duration: 1, delay: 0.4 }}
         >
           <p className="text-xl text-gray-300 font-space-grotesk mb-6">
-            Track your project progress and keep score of completed requirements
+            Track your Practice progress and keep score of completed
+            requirements
           </p>
         </motion.div>
 
